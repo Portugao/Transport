@@ -1,0 +1,21 @@
+div.mutransportForm div.pn-adminformrow label, div.pn-frontendrow label {
+    width: 14em;
+}
+
+div.mutransportLabelHelp {
+    font-style: italic;
+    font-size: 90%;
+}
+
+
+div.mutransportForm div.mutransportButtons {
+    margin: 10px 0px 10px 0px;
+}
+
+div.linktabs {
+    margin-bottom: 10px;
+}
+
+#number {
+  margin-right: 25px;
+}

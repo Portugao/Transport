@@ -1,0 +1,335 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Zikula 1.2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-15 09:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: pnadmin.php:408
+msgid "Done! Saved module configuration."
+msgstr ""
+
+#: pnversion.php:19
+msgid "MUTransport"
+msgstr ""
+
+#: pnversion.php:20
+msgid "Transport of Content from module to module."
+msgstr ""
+
+#: pnversion.php:22
+msgid "mutransport"
+msgstr ""
+
+#: pnadminapi.php:59 pnadminapi.php:110
+#: pntemplates/MUTransport_admin_modul_view.htm:13
+msgid "not installed"
+msgstr ""
+
+#: pnadminapi.php:62 pnadminapi.php:113
+#: pntemplates/MUTransport_admin_modul_view.htm:12
+msgid "inactive"
+msgstr ""
+
+#: pnadminapi.php:65 pnadminapi.php:116
+#: pntemplates/MUTransport_admin_modul_view.htm:11
+msgid "active"
+msgstr ""
+
+#: pnadminapi.php:68 pnadminapi.php:119
+msgid "update available"
+msgstr ""
+
+#: pnadminapi.php:71 pnadminapi.php:122
+msgid "not available"
+msgstr ""
+
+#: pnadminapi.php:258 pnadminapi.php:373 pnadminapi.php:457 pnadminapi.php:503
+#: pnadminapi.php:751
+msgid "Done! "
+msgstr ""
+
+#: pnadminapi.php:258
+msgid " page of Module Pages add to MUTransport "
+msgid_plural " pages of Module Pages add to MUTransport "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:258
+msgid " page of Module Pages in MUTransport updated "
+msgid_plural " pages of Module Pages in MUTransport updated "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:262
+msgid "No pages in Module Pages available !"
+msgstr ""
+
+#: pnadminapi.php:327
+msgid "Attention ! There is no content for this page !"
+msgstr ""
+
+#: pnadminapi.php:373
+msgid " page of Module Content add to MUTransport "
+msgid_plural " pages of Module Content add to MUTransport "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:373
+msgid " page of Module Content in MUTransport updated "
+msgid_plural " pages of Module Content in MUTransport updated "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:377
+msgid "No pages in modul Content available !"
+msgstr ""
+
+#: pnadminapi.php:450 pnadminapi.php:496
+msgid "There is no page to delete !"
+msgstr ""
+
+#: pnadminapi.php:454
+msgid "There are no Pages of module Pages in Modul MUTransport available !"
+msgstr ""
+
+#: pnadminapi.php:457
+msgid " page of Pages in MUTransport deleted !"
+msgid_plural " pages of Pages in MUTransport deleted !"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:500
+msgid "There are no Pages of module Content in Modul MUTransport available !"
+msgstr ""
+
+#: pnadminapi.php:503
+msgid " page of Content in MUTransport deleted !"
+msgid_plural " pages of Content in MUTransport deleted !"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:646 pnadminapi.php:742
+msgid "There is still one Page with this Permalink Url!"
+msgstr ""
+
+#: pnadminapi.php:660
+msgid " (A copy)"
+msgstr ""
+
+#: pnadminapi.php:749
+msgid "Sorry ! No Page selected!"
+msgstr ""
+
+#: pnadminapi.php:751
+msgid " page of Pages transported"
+msgid_plural " pages of Pages transported"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:751
+msgid " and "
+msgstr ""
+
+#: pnadminapi.php:751
+msgid " page of Content copied !"
+msgid_plural " pages of Content copied !"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:769
+msgid "Modules"
+msgstr ""
+
+#: pnadminapi.php:773
+msgid "Pages"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:8
+msgid "List of Modules"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:9
+msgid "Get and update Pages of Modul"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:10
+msgid "Delete Pages of Modul"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:14
+msgid "not availabale"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:36
+msgid "Name"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:46
+msgid "Status"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:51
+#: pntemplates/MUTransport_admin_page_view.htm:71
+msgid "Options"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:94
+msgid "No Modules"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:4
+#: pntemplates/MUTransport_admin_modifyconfig.htm:5
+msgid "Settings"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:10
+msgid ""
+"The two options are different ! The option 1 is a transport option, the "
+"option 2 is a copy option !  "
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:11
+msgid "General settings"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:13
+msgid "1. Enable transport Pages to Content"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:21
+msgid "2. Enable copy Content to Content"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:30
+msgid "Save"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:31
+#: pntemplates/MUTransport_init_delete.htm:11
+#: pntemplates/MUTransport_init_delete.htm:12
+msgid "Cancel"
+msgstr ""
+
+#: pntemplates/MUTransport_init_step3.htm:3
+msgid "Last step"
+msgstr ""
+
+#: pntemplates/MUTransport_init_step3.htm:4
+msgid "Finish the installation of modul ?"
+msgstr ""
+
+#: pntemplates/MUTransport_init_step3.htm:5
+#: pntemplates/MUTransport_init_delete.htm:3
+msgid "Thank you for using MUTransport"
+msgstr ""
+
+#: pntemplates/MUTransport_init_step3.htm:7
+#: pntemplates/MUTransport_init_delete.htm:6
+#: pntemplates/MUTransport_init_delete.htm:7
+msgid "Continue"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_header.htm:6
+msgid "The Modul MUTransport"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:3
+msgid "Installation of MUTransport"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:6
+msgid "Features of MUTransport"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:7
+msgid "MUTransport is a modul for transporting content !"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:8
+msgid "transport from modul Pages to Content"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:9
+msgid ""
+"Have an overwiew about the pages in Pages and transport them, if you wish !"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:10
+msgid "copy from modul Content to Content"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:11
+msgid ""
+"Have an overwiew about the pages in Content and copy them, if you wish !"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:14
+#: pntemplates/MUTransport_init_interactive.htm:15
+msgid "Continue the installation"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:7
+msgid "List of Pages"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:8
+msgid "not transported"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:23
+msgid "Modul"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:32
+msgid "Page Id in Modul"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:41
+msgid "Title"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:50
+msgid "Content"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:59
+msgid "Number of Characters"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:68
+msgid "Status of transport"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:103
+msgid " Times"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:112
+msgid "No Pages"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:117
+msgid "Number of Copies"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:135
+#: pntemplates/MUTransport_admin_page_view.htm:137
+msgid "Transport"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:139
+msgid "Reset"
+msgstr ""

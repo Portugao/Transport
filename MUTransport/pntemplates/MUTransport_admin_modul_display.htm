@@ -1,0 +1,50 @@
+<!--[* purpose of this template: display template for admin area *]-->
+
+<!--[include file="MUTransport_admin_header.htm"]-->
+
+<div class="pn-admincontainer">
+<div class="pn-adminpageicon"><!--[pnimg modname="core" src="demo.gif" set="icons/large" alt=_DETAILS altml=true]--></div>
+
+<!--[pnpagesetvar name="title" value=$modul.name]-->
+<h2><!--[$modul.name|pnmodcallhooks|pnvarprephtmldisplay]--></h2>
+
+<div style="float: right; margin: 0 1em; padding: .5em; border: 1px solid #666">
+<h3>Pages</h3>
+<ul>
+<li>Page 1</li>
+<li>Page 2</li>
+<li>Page 3</li>
+<li>...</li>
+</ul>
+</div>
+
+<dl id="MUTransport_body">
+    <dt><!--[pnml name="_MUTRANSPORT_MODUL_MODULID"]--></dt>
+    <dd><!--[$modul.modulid|default:""]-->
+</dd>
+    <dt><!--[pnml name="_MUTRANSPORT_MODUL_STATE"]--></dt>
+    <dd><!--[$modul.state|default:""]-->
+</dd>
+</dl>
+
+<p>
+    <!--[securityutil_checkpermission_block component="MUTransport::" instance=".*" level="ACCESS_EDIT"]-->
+        <a href="<!--[pnmodurl modname="MUTransport" type="admin" func="edit" ot="modul" modulid=$modul.modulid]-->" title="<!--[pnml name="_EDIT"]-->">
+            <!--[pnimg src="xedit.gif" modname="core" set="icons/extrasmall" alt=_EDIT altml=true title=_EDIT titleml=true]-->
+            <!--[pnml name="_EDIT"]-->
+        </a>
+    <!--[/securityutil_checkpermission_block]-->
+    <a href="<!--[pnmodurl modname="MUTransport" type="admin" func="view" ot="modul"]-->" title="<!--[pnml name="_MUTRANSPORT_BACKTOLIST"]-->">
+        <!--[pnimg src="agt_back.gif" modname="core" set="icons/extrasmall" alt=_BACK altml=true title=_MUTRANSPORT_BACKTOLIST titleml=true]-->
+        <!--[pnml name="_MUTRANSPORT_BACKTOLIST"]-->
+    </a>
+</p>
+
+<!--[pnmodurl modname="MUTransport" type="admin" func="display" modulid=$modul.modulid assign="returnurl"]-->
+<!--[pnmodcallhooks hookobject="item" hookaction="display" hookid="modulid" module="MUTransport" returnurl=$returnurl]-->
+
+</div>
+
+<br style="clear: right" />
+
+<!--[include file="MUTransport_admin_footer.htm"]-->
