@@ -59,14 +59,13 @@ function MUTransport_init()
  */
 function MUTransport_upgrade($oldversion)
 {
-/*
+
     // Upgrade dependent on old version number
     switch ($oldversion){
-    case '1.00':
-            MUTransport_createTables_101();
-        break;
+    case '1.0':
+            
     }
-*/
+
 
     // Update successful
     return true;

@@ -40,6 +40,60 @@ function MUTransport_adminapi_check($args)
     
     $modulescolumn = $pntable['modules_column'];
     $mutransportcolumn = $pntable['mutransport_modul_column'];
+    
+/* -------- Start of Part for Modul News-------------*/
+
+    
+    // get data from modul modul
+    $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("News") . "'";  
+    $question = DBUtil::selectObjectArray('modules', $where);
+    // get data from MUTransport modul    
+    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("News") . "'";
+    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
+    
+    // get state of the modul 'News'
+    
+    $status = $question[0][state];
+        
+    if ($status == 1)
+    $status = __('not installed',$dom);
+    
+    if($status == 2)
+    $status = __('inactive',$dom);
+    
+    if($status == 3)
+    $status = __('active',$dom);
+    
+    if($status == 4)
+    $status = __('files failed',$dom);
+    
+    if($status == 5)
+    $status = __('update available',$dom);
+    
+    if(!$status)
+    $status = __('not available',$dom);    
+    
+    if(is_array($question2))  {
+    
+    // build the Array with the checked field
+    $obj = array('state' => $status);
+
+    // submit the UPDATE 
+    DBUtil::updateObject ($obj, 'mutransport_modul', $where2);
+   
+    }    
+    if ($question2 == false)
+    {
+    $obj = array ('modulid'  => '',
+                  'name' => 'News',
+                  'state'  => $status);
+    
+    // submit the INSERT
+    DBUtil::insertObject ($obj, 'mutransport_modul', 'modulid');
+    
+    }
+    
+/* -------- End of Part for Modul News-------------*/
 
 /* -------- Start of Part for Modul Pages-------------*/
 
@@ -63,6 +117,9 @@ function MUTransport_adminapi_check($args)
     
     if($status == 3)
     $status = __('active',$dom);
+    
+    if($status == 4)
+    $status = __('files failed',$dom);
     
     if($status == 5)
     $status = __('update available',$dom);
@@ -91,6 +148,60 @@ function MUTransport_adminapi_check($args)
     }
     
 /* -------- End of Part for Modul Pages-------------*/
+
+/* -------- Start of Part for Modul PagEd -------------*/
+
+    // get data from modul modul
+    $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("PagEd") . "'";  
+    $question = DBUtil::selectObjectArray('modules', $where);
+    // get data from MUTransport modul    
+    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("PagEd") . "'";
+    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
+    
+    // get state of the modul 'Pages'
+    
+    $status = $question[0][state];
+        
+    if ($status == 1)
+    $status = __('not installed',$dom);
+    
+    if($status == 2)
+    $status = __('inactive',$dom);
+    
+    if($status == 3)
+    $status = __('active',$dom);
+    
+    if($status == 4)
+    $status = __('files failed',$dom);
+    
+    if($status == 5)
+    $status = __('update available',$dom);
+    
+    if(!$status)
+    $status = __('not available',$dom);    
+    
+    if(is_array($question2))  {
+    
+    // build the Array with the checked field
+    $obj = array('state' => $status);
+
+    // submit the UPDATE 
+    DBUtil::updateObject ($obj, 'mutransport_modul', $where2);
+   
+    }    
+    if ($question2 == false)
+    {
+    $obj = array ('modulid'  => '',
+                  'name' => 'PagEd',
+                  'state'  => $status);
+    
+    // submit the INSERT
+    DBUtil::insertObject ($obj, 'mutransport_modul', 'modulid');
+    
+    }
+
+/* -------- End of Part for Modul PagEd-------------*/
+
 /* -------- Start of Part for Modul Content-------------*/
 
 
@@ -114,6 +225,9 @@ function MUTransport_adminapi_check($args)
     
     if($status == 3)
     $status = __('active',$dom);
+    
+    if($status == 4)
+    $status = __('files failed',$dom);
     
     if($status == 5)
     $status = __('update available',$dom);
@@ -165,17 +279,125 @@ function MUTransport_adminapi_read($args)
     $dom = ZLanguage::getModuleDomain('MUTransport');
 
 
-
-    // get tables of modul Pages and modul Content
-    
+    // get tables of modul Pages, PagEd and modul Content
+  
+    pnModDBInfoLoad('News');
     pnModDBInfoLoad('pages');
+    pnModDBInfoLoad('PagEd');
     pnModDBInfoLoad('Content');
+     
     $pntable = pnDBGetTables();
     
     // get the name and id of modul
     
     $name = FormUtil::getPassedValue('name');
     $modulid = FormUtil::getPassedValue('id');
+    
+//---------------Start of Part for the modul "News" -----------------------
+                           
+    if ($name == 'News') {
+    
+    $newsscolumn = $pntable['news_column'];
+    $mutransportpagecolumn = $pntable['mutransport_page_column'];
+    
+    // ask the DB for Pages in News
+    // call API Func getall of the modul News
+
+    $items = pnModAPIFunc('News', 'user', 'getall',
+                          array('startnum'     => $startnum,
+                                'numitems'     => $itemsperpage,
+                                'status'       => 0,
+                                'hideonindex'  => $args['hideonindex'],
+                                'filterbydate' => true,
+                                'category'     => isset($catFilter) ? $catFilter : null,
+                                'catregistry'  => isset($catregistry) ? $catregistry : null));
+                                
+    $countquestion = count($items);
+    
+    // ask the DB for existing Pages of News in MUTransport
+
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";    
+    $search = DBUtil::selectObjectArray('mutransport_page' , $where);
+    
+        
+    // put the pageid's of existing Pages in MUTransport in an array
+    $search_id = array();
+    foreach ($search as $wert => $value) {
+    if ($modulid == $value[modulid])
+    $search_id[] = $value[pageid];
+    }
+    
+    // put the new existing Pages in News to MUTransport    
+    if ($countquestion > 0)  {
+ 
+    // build the array
+    $result = array();
+    $result2 = array();
+
+      foreach ($items as $item => $value2) {
+      
+    // put the page into the array, if not existing
+    if (!in_array($value2['sid'], $search_id))
+    {    
+      $count1 = strlen($value2[hometext]);
+      $count2 = strlen($value2[bodytext]);
+      $count = $count1 + $count2;
+      $subtext = substr($value2[hometext],0,50).'.....';
+    
+      $result[] = array(
+                      'id'                => '',
+                      'pageid'            =>  $value2['sid'],
+                      'title'             =>  $value2['title'],
+                      'text'              =>  $subtext,
+                      'number_characters' =>  $count,
+                      'transport'         =>  '',
+                      'modulid'           =>  $modulid,
+                       );
+    } // if
+    else
+    {
+      $count1 = strlen($value2[hometext]);
+      $count2 = strlen($value2[bodytext]);
+      $count = $count1 + $count2;
+      $subtext = substr($value2[hometext],0,50).'.....';
+      $result2[] = (array('pageid' => $value2['sid'],
+                        'title' => $value2['title'],
+                        'text'  => $subtext,
+                        'number_characters' => $count));
+    
+    } // else
+    } // foreach
+    
+    $countresult1 = count($result);
+    $countresult2 = count($result2);
+
+
+    // submit the INSERT if result existing
+    if($countresult1 > 0)  { 
+      DBUtil::insertObjectArray ($result, 'mutransport_page');
+    }
+
+    // submit the update if result2 existing
+    if ($countresult2 > 0) {
+      for ($i=0; $i<$countresult2; $i++)  {
+      $result2_obj = $result2[$i];
+      $id = $result2[$i][pageid];
+      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      DBUtil::updateObject ($result2_obj, 'mutransport_page', $where2);      
+      }
+    }
+    if($countresult1 > 0 || $countresult2 > 0)
+      return LogUtil::registerStatus(__('Done! ',$dom) .$countresult1 ._n(' page of Module News add to MUTransport ',' pages of Module News add to MUTransport ',$countresult1,$dom). __(' and ', $dom) . $countresult2 . _n(' page of Module News in MUTransport updated ',' pages of Module News in MUTransport updated ',$countresult2,$dom));         
+    } // if ($countquestion > 0)
+    else
+    { 
+      return LogUtil::registerError(__('No pages in Module News available !',$dom));
+    }
+    
+    } //if ($name == 'News')
+    
+//--------------- End of Part for the modul "News" -----------------------   
+
 //---------------Start of Part for the modul "Pages" -----------------------
                            
     if ($name == 'Pages') {
@@ -265,6 +487,120 @@ function MUTransport_adminapi_read($args)
     } //if ($name == 'Pages')
     
 //--------------- End of Part for the modul "Pages" -----------------------
+
+//---------------Start of Part for the modul "PagEd" -----------------------
+
+    if ($name == 'PagEd') {
+    
+    $paged_titles_column = $pntable['paged_titles_column'];
+    $paged_content_column = $pntable['paged_content_column'];
+    $mutransportpagecolumn = $pntable['mutransport_page_column'];
+    
+    // ask the DB for Pages in PagEd
+    $sql = "SELECT * FROM sena_paged_titles";
+    $question = DBUtil::executeSQL($sql);
+    $obj = DBUtil::marshallObjects($question, $paged_titles_column);
+    $countquestion = count($obj);
+
+    
+    // ask the DB for existing Pages of PagEd in MUTransport
+
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+    $search = DBUtil::selectObjectArray('mutransport_page', $where);
+    
+    // put the pageid's of existing Pages in MUTransport in an array
+    $search_id = array();
+    foreach ($search as $wert2 => $value2) {
+    if ($modulid == $value2[modulid])
+    $search_id[] = $value2[pageid];    
+    }
+    // work with the existing Pages in PagEd
+    if ($countquestion > 0)
+    {
+ 
+    // build the array
+    $result = array();
+    foreach ($obj as $wert => $value)  {
+    // put the page into the array, if not existing in MUTransport   
+    // get the content of the page in Modul PagEd
+    
+    $sql2 = "SELECT * FROM sena_paged_content WHERE page_id = '" . pnVarPrepForStore($value['page_id']) . "'";
+    $question2 = DBUtil::executeSQL($sql2);
+    $obj2 = DBUtil::marshallObjects($question2, $paged_content_column);
+        
+//    $where2 = "WHERE $paged_content_column[page_id] = '" . pnVarPrepForStore($value[page_id]) . "'";
+//    $question2 = DBUtil::selectObjectArray('paged_content', $where2);
+    // if content for the page in PagEd is available
+    if ($obj2){
+    $text = '';
+    foreach ($obj2 as $wert3 => $value3) {
+    
+    if ($value3['text'] != '') {
+    $text .= $value3['text'];
+    }       
+    }
+    $count = strlen($text);
+    $subtext = substr($text,0,50).'.....';
+    } // if
+    
+    else
+    {
+    $subtext = __('Attention ! There is no content for this page !',$dom);
+    $count = 0;
+    }
+/*    if (!in_array($value['sena_page_id'], $search_id))
+    {  */
+    $result[] = (array(
+                    'id'  => '',
+                    'pageid'       =>  $value['page_id'],
+                    'title'        =>  $value[sena_title],
+                    'text'         =>  $subtext,
+                    'number_characters'=>  $count,
+                    'transport'        =>  '0',
+                    'modulid'      =>  $modulid,
+                       ));
+/*    } // if
+    else
+    {
+    $result2[] = (array('pageid' => $value['sena_page_id'],
+                      'title' => $value['sena_title'],
+                      'text'  => $subtext,
+                      'number_characters' => $count
+    
+                       ));
+    }   */
+    } // foreach ($obj as $wert => $value)
+    
+    $countresult1 = count($result);
+    $countresult2 = count($result2);
+
+
+    // submit the INSERT if result existing
+    if($countresult1 > 0) 
+    DBUtil::insertObjectArray ($result, 'mutransport_page');
+
+    if($countresult2 > 0)  {
+      $count = count($result2);      
+      for ($i=0; $i<$count; $i++)  {
+      $result2_obj = $result2[$i];
+      $id = $result2[$i][pageid];
+      $where3 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      DBUtil::updateObject ($result2_obj, 'mutransport_page', $where3);
+
+      }    
+    } // if($countresult2 > 0)
+    
+    if($countresult1 > 0 || $countresult2 > 0)
+      return LogUtil::registerStatus(__('Done! ',$dom) .$countresult1 . _n(' page of Module PagEd add to MUTransport ',' pages of Module PagEd add to MUTransport ',$countresult1,$dom). __(' and ', $dom) . $countresult2 . _n(' page of Module Content in MUTransport updated ',' pages of Module Content in MUTransport updated ',$countresult2,$dom));  
+    } // if ($countquestion) > 0
+      else
+      {
+      return LogUtil::registerError(__('No pages in modul PagEd available !',$dom));
+      }
+    } // if ($name == 'PagEd')
+
+
+//--------------- End of Part for the modul "PagEd" -----------------------
 
 //--------------- Start of Part for the modul "Content" -----------------------
 
@@ -371,7 +707,7 @@ function MUTransport_adminapi_read($args)
     
     if($countresult1 > 0 || $countresult2 > 0)
       return LogUtil::registerStatus(__('Done! ',$dom) .$countresult1 . _n(' page of Module Content add to MUTransport ',' pages of Module Content add to MUTransport ',$countresult1,$dom). __(' and ', $dom) . $countresult2 . _n(' page of Module Content in MUTransport updated ',' pages of Module Content in MUTransport updated ',$countresult2,$dom));  
-    } // if ($question)
+    } // if ($countquestion) > 0
       else
       {
       return LogUtil::registerError(__('No pages in modul Content available !',$dom));
@@ -403,6 +739,7 @@ function MUTransport_adminapi_delete($args)
 
     // take tables of modul Pages and modul Content
     
+    pnModDBInfoLoad('News');    
     pnModDBInfoLoad('pages');
     pnModDBInfoLoad('Content');
     $pntable = pnDBGetTables();
@@ -411,6 +748,55 @@ function MUTransport_adminapi_delete($args)
     
     $name = FormUtil::getPassedValue('name');
     $modulid = FormUtil::getPassedValue('id');
+    
+ //---------------Start of Part for the modul "News" -----------------------
+
+    if ($name == 'News') {    
+        $pagescolumn = $pntable['news_column'];
+        $mutransportpagecolumn = $pntable['mutransport_page_column'];
+    
+        // ask the DB for Pages in Pages
+
+        $question = DBUtil::selectObjectArray('news');
+        $countquestion = count($question);
+        // ask the DB for existing Pages of Pages in MUTransport
+    
+        $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+        $search = DBUtil::selectObjectArray('mutransport_page', $where);
+        $countsearch = count($search);
+        
+        $diff = $countsearch - $countquestion;
+        
+        // put the pageid's of existing Pages in Pages in an array
+        $question_id = array();
+        foreach ($question as $wert => $value)  {
+        $question_id[] = $value['sid'];
+        }
+        
+        if($countsearch > 0) {
+          if($countquestion < $countsearch)  {  
+            // delete Pages from MUtransport not existing in Pages
+            foreach ($search as $wert => $value)  {
+                if (!in_array($value[pageid], $question_id)) {
+                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+                    $ok = DBUtil::deleteWhere ('mutransport_page', $where2);
+ 
+                } // if
+            } // foreach
+          } // if($countquestion < $countsearch)
+          else {
+            return LogUtil::registerError(__('There is no page to delete !',$dom));
+          } 
+        } // if($countsearch > 0)
+        else  {
+          return LogUtil::registerError(__('There are no Pages of module News in Modul MUTransport available !',$dom));
+        }
+    if($diff > 0) 
+    return LogUtil::registerStatus(__('Done! ',$dom) . $diff . _n(' page of News in MUTransport deleted !',' pages of News in MUTransport deleted !',$diff, $dom));
+    } // if ($name == 'News') 
+ 
+ //--------------- End of Part for the modul "News" -----------------------    
+    
  //---------------Start of Part for the modul "Pages" -----------------------
     
     if ($name == 'Pages') {    
@@ -527,7 +913,8 @@ function MUTransport_adminapi_delete($args)
     $dom = ZLanguage::getModuleDomain('MUTransport'); 
 
 // take tableinfos of the modules Pages and Content
-   
+
+    pnModDBInfoLoad('News');   
     pnModDBInfoLoad('content');
     pnModDBInfoLoad('pages');
     $pntable = pnDBGetTables();
@@ -535,7 +922,8 @@ function MUTransport_adminapi_delete($args)
     // take columns of tables
     $mutransportcolumn = $pntable['mutransport_page_column'];
     $contentpagecolumn = $pntable['content_page_column'];
-    $contentcontentcolumn = $pntable['content_content_column'];    
+    $contentcontentcolumn = $pntable['content_content_column'];
+    $newscolumn = $pntable['news_column'];    
     $pagescolumn = $pntable['pages_column'];
     $column   = $pntables['mutransport_page_column'];
     
@@ -551,7 +939,106 @@ function MUTransport_adminapi_delete($args)
       foreach ($_POST['yes'] as $post => $value)  {
       $yes = explode(".",$value);
       $id = $yes[0];
-      $modul = $yes[1];  
+      $modul = $yes[1]; 
+      
+      
+/*-------------------------------MODUL NEWS-------------------------------*/
+
+/* -------------         Transport to Content      ------------------------*/
+    
+    if ($modul == 'News') {
+    
+      // Get page from the DB
+      $where = "WHERE $newscolumn[sid] = '" . pnVarPrepForStore($id) . "'";     
+      $question_page = DBUtil::selectObject('news', $where);
+      $count_question_page = count($question_page);    
+        
+    // prepare the selected pages from modul news for transport to modul content
+    // if there is a page in News
+
+      $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($question_page['title']) . "'";
+      $check = DBUtil::selectObject('content_page', $where);
+    
+      // prepare the page
+    
+      if (!$check)  {  
+        /*    $controlstring = '<table>';
+        $contentcontrol = stripos ($value['content'], $controlstring );
+        if ($contentcontrol === false)  { */ 
+           
+        $page = array('page'  =>  array('title' => $question_page['title'],
+                                    'urlname' => '',
+                                    'layout' => 'column1',
+                                    'categoryId' => '',
+
+                                    ),
+                      'pageId'  => '',
+                      'location' => '',);
+    
+        $ok1 = pnModAPIFunc('content', 'page', 'newPage',$page);
+        $counter = $counter + 1;
+        // update the state of transport for the original Page
+        if ($ok1) {
+        $where = "WHERE $mutransportcolumn[pageid] = '" . pnVarPrepForStore($id) . "'";
+        $old = DBUtil::selectObject('mutransport_page', $where);
+        $transport = $old[transport];
+        $transport = $transport + 1;
+        $obj = array ('transport' => $transport);
+        DBUtil::updateObject ($obj,'mutransport_page', $where);
+ 
+        } 
+         
+        // prepare the content    
+        // get the page_id of the even inserted Page
+    
+        $field = 'page_id';
+        $relation_id = DBUtil::getInsertID('content_page', $field);
+
+        // build the array for the content for the transport into Content
+        
+        // first put hometext and bodytext to one text
+        
+        $newstext = __('Hometext', $dom) . '<br /><br/>' . $question_page[hometext] . '<br /><br/>' . __('Bodytext', $dom) . '<br /><br/>' . $question_page[bodytext];
+                                               
+        $data = array (
+                        'text' => $newstext,
+                        'inputType' => 'text',                  
+                      );                              
+    
+        $content = array( 'id' => '',
+                          'pageId'  => $relation_id,
+                          'contentAreaIndex' => '',
+                          'position' => '',
+                          'addVersion' => '',
+                          'content'  =>  array('module'  => 'content',
+                                               'type' => 'html',
+                                               'data'  => $data,
+                                               'stylePosition' => 'none',
+                                               'styleWidth' => 'wauto',
+                                               'styleClass' => '',
+                                               'obj_status'  => 'A',
+                                               'cr_date'  => '',
+                                               'cr_uid'  =>  '',
+                                               'lu_date' =>  '',
+                                               'lu_uid'  =>  '',
+                                              )); 
+                                    
+        // call newContent method of Content modul                                   
+        pnModAPIFunc('content', 'content', 'newContent',$content);
+       
+        /*      }
+        else if ($contentcontrol !== false and $_POST['parts'] > 1) 
+       {
+        $warning  = __('Attention! The Content of this Page contains a html Table. It is not partable !', $dom);
+        return $warning;
+       }  */
+
+    } // if if (!$check)
+    else
+    {
+      return LogUtil::registerError(__('There is still one Page with this Permalink Url!', $dom));                           
+    }                
+    } //  if ($modul == 'News') 
          
 /*-------------------------------MODUL PAGES-------------------------------*/
 
