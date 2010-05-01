@@ -35,6 +35,10 @@ function MUTransport_init()
     if (!DBUtil::createTable('mutransport_page')) {
         return false;
     }
+    // create the cms table
+    if (!DBUtil::createTable('mutransport_cms_content')) {
+        return false;
+    }
 
 
 
@@ -63,6 +67,10 @@ function MUTransport_upgrade($oldversion)
     // Upgrade dependent on old version number
     switch ($oldversion){
     case '1.0':
+    // set folder for images to null
+    pnModSetVar('MUTransport', 'pagestocontent', 1);
+    pnModSetVar('MUTransport', 'contenttocontent', 1);
+    pnModSetVar('MUTransport', 'image_path', 'Bilder');
             
     }
 
@@ -89,6 +97,10 @@ function MUTransport_delete()
         return false;
     }
 
+    if (!DBUtil::dropTable('mutransport_cms_content')) {
+        return false;
+    }
+
 
 
     // remove all module vars
@@ -112,7 +124,8 @@ function MUTransport_defaultdata()
     // ensure that tables are cleared
     if (
         !DBUtil::deleteWhere('mutransport_modul', '1=1') || 
-        !DBUtil::deleteWhere('mutransport_page', '1=1')) {
+        !DBUtil::deleteWhere('mutransport_page', '1=1') ||
+        !DBUtil::deleteWhere('mutransport_cms_content', '1=1')) {
         return false;
     }
 

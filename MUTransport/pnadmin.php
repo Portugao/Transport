@@ -385,21 +385,27 @@ function MUTransport_admin_updateconfig()
 
     $pagestocontent = FormUtil::getPassedValue('pagestocontent');
     $contenttocontent = FormUtil::getPassedValue('contenttocontent');
+    $image_path = FormUtil::getPassedValue('image_path');
 
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError(pnModURL('MUTransport','admin','main'));
     }
 
     if (!isset($pagestocontent) || !is_numeric($pagestocontent)) {
-        $cpagestocontent = 0;
+        $pagestocontent = 0;
     }
     
     if (!isset($contenttocontent) || !is_numeric($contenttocontent)) {
         $contenttocontent = 0;
-    }    
+    } 
+    
+    if (!isset($image_path) || !is_numeric($image_path)) {
+        $image_path = '';
+    }       
 
     pnModSetVar('MUTransport', 'pagestocontent', $pagestocontent);
     pnModSetVar('MUTransport', 'contenttocontent', $contenttocontent);
+    pnModSetVar('MUTransport', 'image_path', $image_path);
 
     // Let any other modules know that the modules configuration has been updated
     // pnModCallHooks('module','updateconfig','MUTransport', array('module' => 'MUTransport'));  neu 29.12.2009

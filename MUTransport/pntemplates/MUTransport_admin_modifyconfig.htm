@@ -11,7 +11,7 @@
                 <legend><!--[gt text="General settings"]--></legend>
                 <div class="z-formrow">                                  
                     <label for="MUTransport_pagestocontent"><!--[gt text="1. Enable transport Pages to Content"]--></label>
-                    <!--[if $pages_to_content eq 1]-->
+                    <!--[if $pagestocontent eq 1]-->
                     <input id="MUTransport_pagestocontent" name="pagestocontent" type="checkbox" value="1" checked="checked" />
                     <!--[else]-->
                     <input id="MUTransport_pagestocontent" name="pagestocontent" type="checkbox" value="1" />
@@ -19,16 +19,24 @@
                 </div>
                 <div class="z-formrow">
                     <label for="MUTransport_contenttocontent"><!--[gt text="2. Enable copy Content to Content"]--></label>
-                    <!--[if $content_to_content eq 1]-->
-                    <input id="MUTransport_contenttocontent" name="collapseable" type="checkbox" value="1" checked="checked" />
+                    <!--[if $contenttocontent eq 0]-->
+                    <input id="MUTransport_contenttocontent" name="contenttocontent" type="checkbox" value="1" checked="checked" />
                     <!--[else]-->
-                    <input id="MUTransport_contenttocontent" name="collapseable" type="checkbox" value="1" />
+                    <input id="MUTransport_contenttocontent" name="contenttocontent" type="checkbox" value="1" />
+                    <!--[/if]-->
+                </div>
+                <div class="z-formrow">
+                    <label for="MUTransport_imagepath"><!--[gt text="3. The image path for PagEd"]--></label>
+                    <!--[if $image_path]-->
+                    <input id="MUTransport_imagepath" name="image_path" type="text" value="$image_path" size="20" />
+                    <!--[else]-->
+                    <input id="MUTransport_imagepath" name="image_path" type="text" value="" size="20" />
                     <!--[/if]-->
                 </div>
             </fieldset>
             <div class="z-formbuttons">
                 <!--[pnbutton src=button_ok.gif set=icons/small __alt="Save" __title="Save"]-->
-                <a href="<!--[pnmodurl modname=MUTransport type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"]--></a>
+                <a href="<!--[pnmodurl modname=MUTransport type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"]--></a><input type="submit" value="send">
             </div>
         </div>
     </form>

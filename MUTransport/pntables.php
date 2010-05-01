@@ -116,7 +116,7 @@ function MUTransport_pntables()
     // DEBUG: object extension aspect starts
 
 
-    $pntable['mutransport_page_primary_key_column'] = 'pageid';
+    $pntable['mutransport_page_primary_key_column'] = 'id';
     // disable categorization services
     $pntable['mutransport_page_db_extra_enable_categorization'] = false;
 
@@ -128,6 +128,50 @@ function MUTransport_pntables()
 
     // disable logging services
     $pntable['mutransport_page_db_extra_enable_logging'] = false;
+
+    // DEBUG: object extension aspect ends
+    
+// tables for other cms    
+    /*
+     * definitions for content table
+     */
+
+    // set the table name combined with prefix
+    $pntable['mutransport_cms_content'] = DBUtil::getLimitedTablename('mutransport_cms_content');
+
+    // set the column names
+    $columns = array(
+        'id'  => 'pn_id',
+        'content' => 'pn_content',
+        'number_characters' => 'pn_number_characters');
+        
+    $pntable['mutransport_cms_content_column'] = $columns;
+
+    // set the data dictionary for the table columns
+
+
+
+    $columnDef = array(
+        'id'  => "I AUTO PRIMARY",
+        'content' => "C(50) NOTNULL DEFAULT ''",
+        'number_characters' => "I(4) NOTNULL DEFAULT '0'");
+    $pntable['mutransport_cms_content_column_def'] = $columnDef;
+
+    // DEBUG: object extension aspect starts
+
+
+    $pntable['mutransport_cms_content_primary_key_column'] = 'id';
+    // disable categorization services
+    $pntable['mutransport_cms_content_db_extra_enable_categorization'] = false;
+
+    // enable attribution services
+    $pntable['mutransport_cms_content_db_extra_enable_attribution'] = true;
+
+    // disable meta data
+    $pntable['mutransport_cms_content_extra_enable_meta'] = false;
+
+    // disable logging services
+    $pntable['mutransport_cms_content_extra_enable_logging'] = false;
 
     // DEBUG: object extension aspect ends
 
