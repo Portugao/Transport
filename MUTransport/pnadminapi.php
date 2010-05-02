@@ -38,10 +38,13 @@ function MUTransport_adminapi_check($args)
     pnModDBInfoLoad('modules');
     $pntable = pnDBGetTables();
     
+    
+    
     // get columnname infos of the modules 'modules' and 'MUTransport'
     
     $modulescolumn = $pntable['modules_column'];
     $mutransportcolumn = $pntable['mutransport_modul_column'];
+    $mutransportpagecolumn = $pntable['mutransport_page_column']; 
     
 /* -------- Start of Part for Modul News-------------*/
 
@@ -56,6 +59,7 @@ function MUTransport_adminapi_check($args)
     // get state of the modul 'News'
     
     $status = $question[0][state];
+    $id = $question2[0][modulid];
         
     if ($status == 1)
     $status = __('not installed',$dom);
@@ -74,7 +78,10 @@ function MUTransport_adminapi_check($args)
     
     if(!$status)
     $status = __('not available',$dom);    
-    
+
+    // if News enabled
+    if(pnModGetVar('MUTransport', 'newstocontent') == 1) {
+        
     if(is_array($question2))  {
     
     // build the Array with the checked field
@@ -94,6 +101,17 @@ function MUTransport_adminapi_check($args)
     DBUtil::insertObject ($obj, 'mutransport_modul', 'modulid');
     
     }
+    }
+    else
+    {
+    if(is_array($question2)) {
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    DBUtil::deleteWhere('mutransport_page', $where);    
+    $where2 = "WHERE $mutransportcolumn[name] = 'News'";
+    DBUtil::deleteWhere('mutransport_modul', $where2);
+    }
+    
+    }
     
 /* -------- End of Part for Modul News-------------*/
 
@@ -110,6 +128,7 @@ function MUTransport_adminapi_check($args)
     // get state of the modul 'Pages'
     
     $status = $question[0][state];
+    $id = $question2[0][modulid];
         
     if ($status == 1)
     $status = __('not installed',$dom);
@@ -127,7 +146,10 @@ function MUTransport_adminapi_check($args)
     $status = __('update available',$dom);
     
     if(!$status)
-    $status = __('not available',$dom);    
+    $status = __('not available',$dom);
+    
+    // if Pages enabled
+    if(pnModGetVar('MUTransport', 'pagestocontent') == 1) {    
     
     if(is_array($question2))  {
     
@@ -148,6 +170,17 @@ function MUTransport_adminapi_check($args)
     DBUtil::insertObject ($obj, 'mutransport_modul', 'modulid');
     
     }
+    }
+    else
+    {
+    if(is_array($question2)) {
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    DBUtil::deleteWhere('mutransport_page', $where);    
+    $where2 = "WHERE $mutransportcolumn[name] = 'Pages'";
+    DBUtil::deleteWhere('mutransport_modul', $where2);
+    }
+    
+    }
     
 /* -------- End of Part for Modul Pages-------------*/
 
@@ -163,6 +196,7 @@ function MUTransport_adminapi_check($args)
     // get state of the modul 'PagEd'
     
     $status = $question[0][state];
+    $id = $question2[0][modulid];
         
     if ($status == 1)
     $status = __('not installed',$dom);
@@ -180,7 +214,10 @@ function MUTransport_adminapi_check($args)
     $status = __('update available',$dom);
     
     if(!$status)
-    $status = __('not available',$dom);    
+    $status = __('not available',$dom);
+
+    // if PagEd enabled    
+    if(pnModGetVar('MUTransport', 'pagedtocontent') == 1) {    
     
     if(is_array($question2))  {
     
@@ -201,6 +238,17 @@ function MUTransport_adminapi_check($args)
     DBUtil::insertObject ($obj, 'mutransport_modul', 'modulid');
     
     }
+    }
+    else
+    {
+    if(is_array($question2)) {
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    DBUtil::deleteWhere('mutransport_page', $where);    
+    $where2 = "WHERE $mutransportcolumn[name] = 'PagEd'";
+    DBUtil::deleteWhere('mutransport_modul', $where2);
+    }
+    
+    }
 
 /* -------- End of Part for Modul PagEd-------------*/
 
@@ -218,7 +266,8 @@ function MUTransport_adminapi_check($args)
     // get state of the modul 'content'
     
     $status = $question[0][state];
-        
+    $id = $question2[0][modulid];
+            
     if ($status == 1)
     $status = __('not installed',$dom);
     
@@ -235,7 +284,10 @@ function MUTransport_adminapi_check($args)
     $status = __('update available',$dom);
     
     if(!$status)
-    $status = __('not available',$dom);       
+    $status = __('not available',$dom);
+    
+    // if Content enabled    
+    if(pnModGetVar('MUTransport', 'contenttocontent') == 1) {        
     
     if(is_array($question2))  {
     
@@ -247,13 +299,24 @@ function MUTransport_adminapi_check($args)
    
     }    
     if ($question2 == false)
-    {
+    {                                 
     $obj = array ('modulid'  => '',
                   'name' => 'content',
                   'state'  => $status);
     
     // submit the INSERT
     DBUtil::insertObject ($obj, 'mutransport_modul', 'modulid');
+    
+    }
+    }
+    else
+    {
+    if(is_array($question2)) {
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    DBUtil::deleteWhere('mutransport_page', $where);    
+    $where2 = "WHERE $mutransportcolumn[name] = 'content'";
+    DBUtil::deleteWhere('mutransport_modul', $where2);
+    }
     
     }    
     
@@ -1083,9 +1146,13 @@ function MUTransport_adminapi_delete($args)
         // build the array for the content for the transport into Content
         
         // first put hometext and bodytext to one text
+        // if bodytext not empty
         
-        $newstext = __('Hometext', $dom) . '<br /><br/>' . $question_page[hometext] . '<br /><br/>' . __('Bodytext', $dom) . '<br /><br/>' . $question_page[bodytext];
-                                               
+        if($question_page[bodytext] != '')
+        $newstext = $question_page[hometext] . '<br /><br/>' . $question_page[bodytext];
+        else
+        $newstext = $question_page[hometext];
+                                             
         $data = array (
                         'text' => $newstext,
                         'inputType' => 'text',                  
@@ -1213,15 +1280,31 @@ function MUTransport_adminapi_delete($args)
         
         foreach($question_content as $wert2 => $value2) {
         
+        if(pnModGetVar('MUTransport', 'image_path') != '') {
         if($value2[image] != '') {
+        $image_path = pnModGetVar('MUTransport', 'image_path');
         $image = $value2[image];
-        
-        
+        $exist = strpos($image,"/");
+        if($exist) {
+        $image = strrchr($image, "/");
+        $image = str_replace("/","",$image);
+        }                
+        $img = "<img style='float:right' src='$image_path/$image'>";
+        $text = $img . $value2[text];
         }
-                                               
+        else
+        {
+        $text = $value2[text];
+        }
+        }
+        else
+        {
+        $text = $value2[text];
+        }
+                                                       
         $data = array (
-                        'text' => $value2[text],
-                        'inputType' => 'text',                  
+                        'text' => $text,
+                        'inputType' => 'html',                  
                       );                              
     
         $content = array( 'id' => '',

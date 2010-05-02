@@ -383,35 +383,45 @@ function MUTransport_admin_updateconfig()
         return LogUtil::registerPermissionError();
     }
 
-    $pagestocontent = FormUtil::getPassedValue('pagestocontent');
-    $contenttocontent = FormUtil::getPassedValue('contenttocontent');
-    $image_path = FormUtil::getPassedValue('image_path');
 
-    if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('MUTransport','admin','main'));
+    $dom = ZLanguage::getModuleDomain('MUTransport');    
+    
+    $newstocontent = (int)FormUtil::getPassedValue('newstocontent');
+    $pagestocontent = (int)FormUtil::getPassedValue('pagestocontent');
+    $pagedtocontent = (int)FormUtil::getPassedValue('pagedtocontent');
+    $contenttocontent = (int)FormUtil::getPassedValue('contenttocontent');
+    $image_path = (string)FormUtil::getPassedValue('image_path');  
+    
+    if (!isset($newstocontent) || !is_numeric($newstocontent)) {
+        $newstocontent = 0;
     }
-
+    
     if (!isset($pagestocontent) || !is_numeric($pagestocontent)) {
         $pagestocontent = 0;
+    }
+    
+    if (!isset($pagedtocontent) || !is_numeric($pagedtocontent)) {
+        $pagedtocontent = 0;
     }
     
     if (!isset($contenttocontent) || !is_numeric($contenttocontent)) {
         $contenttocontent = 0;
     } 
     
-    if (!isset($image_path) || !is_numeric($image_path)) {
+    if (!isset($image_path) || !is_string($image_path)) {
         $image_path = '';
     }       
-
+    pnModSetVar('MUTransport', 'newstocontent', $newstocontent);
     pnModSetVar('MUTransport', 'pagestocontent', $pagestocontent);
+    pnModSetVar('MUTransport', 'pagedtocontent', $pagedtocontent);
     pnModSetVar('MUTransport', 'contenttocontent', $contenttocontent);
     pnModSetVar('MUTransport', 'image_path', $image_path);
 
     // Let any other modules know that the modules configuration has been updated
     // pnModCallHooks('module','updateconfig','MUTransport', array('module' => 'MUTransport'));  neu 29.12.2009
-
+    pnModCallHooks('module', 'updateconfig', 'MUTransport', array('module' => 'MUTransport'));
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(pnModURL('MUTransport', 'admin', 'main'));
+    return pnRedirect(pnModURL('MUTransport', 'admin', 'modifyconfig'));
 }
