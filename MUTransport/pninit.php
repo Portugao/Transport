@@ -44,11 +44,12 @@ function MUTransport_init()
 
     // set up all our module vars with initial values
     
-    pnModSetVar('MUTransport', 'newstocontent', 1);
-    pnModSetVar('MUTransport', 'pagestocontent', 1);
-    pnModSetVar('MUTransport', 'pagedtocontent', 1);   
-    pnModSetVar('MUTransport', 'contenttocontent', 1);
+    pnModSetVar('MUTransport', 'newstocontent', 0);
+    pnModSetVar('MUTransport', 'pagestocontent', 0);
+    pnModSetVar('MUTransport', 'pagedtocontent', 0);   
+    pnModSetVar('MUTransport', 'contenttocontent', 0);
     pnModSetVar('MUTransport', 'image_path', '');
+    pnModSetVar('MUTransport', 'text_format', 'text');
 
     // create the default data for MUTransport
     MUTransport_defaultdata();
@@ -74,11 +75,12 @@ function MUTransport_upgrade($oldversion)
     switch ($oldversion){
     case '1.0':
     // set folder for images to null
-    pnModSetVar('MUTransport', 'newstocontent', 1);
+    pnModSetVar('MUTransport', 'newstocontent', 0);
     pnModSetVar('MUTransport', 'pagestocontent', 1);
-    pnModSetVar('MUTransport', 'pagedtocontent', 1);   
+    pnModSetVar('MUTransport', 'pagedtocontent', 0);   
     pnModSetVar('MUTransport', 'contenttocontent', 1);
     pnModSetVar('MUTransport', 'image_path', '');
+    pnModSetVar('MUTransport', 'text_format', 'text');
             
     }
 
@@ -105,9 +107,9 @@ function MUTransport_delete()
         return false;
     }
 
-    if (!DBUtil::dropTable('mutransport_cms_content')) {
+/*    if (!DBUtil::dropTable('mutransport_cms_content')) {
         return false;
-    }
+    }    uese later */
 
 
 
@@ -132,8 +134,8 @@ function MUTransport_defaultdata()
     // ensure that tables are cleared
     if (
         !DBUtil::deleteWhere('mutransport_modul', '1=1') || 
-        !DBUtil::deleteWhere('mutransport_page', '1=1') ||
-        !DBUtil::deleteWhere('mutransport_cms_content', '1=1')) {
+        !DBUtil::deleteWhere('mutransport_page', '1=1')/* ||
+        !DBUtil::deleteWhere('mutransport_cms_content', '1=1')*/) {
         return false;
     }
 

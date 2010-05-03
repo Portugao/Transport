@@ -19,3 +19,17 @@ div.linktabs {
 #number {
   margin-right: 25px;
 }
+
+.mutransport_form {
+  width:100px;
+
+}
+
+.mutransport_selected {
+  background-color:#ffcc99;
+}
+
+.mutransport_warning {
+ font-size:1.4em;
+ color:red;
+}

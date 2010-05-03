@@ -558,7 +558,8 @@ function MUTransport_adminapi_read($args)
 //---------------Start of Part for the modul "PagEd" -----------------------
 
     if ($name == 'PagEd') {
-    
+
+    // get the prefix if one exists    
     $prefix = pnConfigGetVar("prefix");
     if($prefix != '')
     $prefix = $prefix.'_';
@@ -604,9 +605,7 @@ function MUTransport_adminapi_read($args)
     $question2 = DBUtil::executeSQL($sql2);
     $obj2 = DBUtil::marshallObjects($question2, $columns2);
         
-//    $where2 = "WHERE $paged_content_column[page_id] = '" . pnVarPrepForStore($value[page_id]) . "'";
-//    $question2 = DBUtil::selectObjectArray('paged_content', $where2);
-    // if content for the page in PagEd is available
+    // if content is available for this page, build the array for input or update
     if ($obj2){
     $text = '';
     foreach ($obj2 as $wert3 => $value3) {
@@ -618,12 +617,13 @@ function MUTransport_adminapi_read($args)
     $count = strlen($text);
     $subtext = substr($text,0,50).'.....';
     } // if
-    
+    // no content
     else
     {
     $subtext = __('Attention ! There is no content for this page !',$dom);
     $count = 0;
     }
+    // 
     if (!in_array($value['page_id'], $search_id))
     {
     $result[] = (array(
@@ -667,7 +667,7 @@ function MUTransport_adminapi_read($args)
     } // if($countresult2 > 0)
     
     if($countresult1 > 0 || $countresult2 > 0)
-      return LogUtil::registerStatus(__('Done! ',$dom) .$countresult1 . _n(' page of Module PagEd add to MUTransport ',' pages of Module PagEd add to MUTransport ',$countresult1,$dom). __(' and ', $dom) . $countresult2 . _n(' page of Module Content in MUTransport updated ',' pages of Module Content in MUTransport updated ',$countresult2,$dom));  
+      return LogUtil::registerStatus(__('Done! ',$dom) .$countresult1 . _n(' page of Module PagEd add to MUTransport ',' pages of Module PagEd add to MUTransport ',$countresult1,$dom). __(' and ', $dom) . $countresult2 . _n(' page of Module PagEd in MUTransport updated ',' pages of Module PagEd in MUTransport updated ',$countresult2,$dom));  
     } // if ($countquestion) > 0
       else
       {
@@ -1082,6 +1082,9 @@ function MUTransport_adminapi_delete($args)
     $counter2 = 0; // counter for Pages of Content
     $counter3 = 0; // counter for Pages of News
     $counter4 = 0; // counter for Pages of PagEd
+    
+    // get format for transport
+    $format = pnModGetVar('MUTransport', 'text_format');
      
     
     if (isset($_POST['yes'])) {
@@ -1155,7 +1158,7 @@ function MUTransport_adminapi_delete($args)
                                              
         $data = array (
                         'text' => $newstext,
-                        'inputType' => 'text',                  
+                        'inputType' => $format,                  
                       );                              
     
         $content = array( 'id' => '',
@@ -1200,6 +1203,8 @@ function MUTransport_adminapi_delete($args)
 
     if ($modul == 'PagEd') {
 
+
+      // get the prefix if one exists
       $prefix = pnConfigGetVar("prefix");
       if($prefix != '')
       $prefix = $prefix.'_';
@@ -1214,14 +1219,6 @@ function MUTransport_adminapi_delete($args)
       $question = DBUtil::executeSQL($sql);
       $question_page = DBUtil::marshallObjects($question, $columns);
       $count_question_page = count($question_page);
-      
-      $prefix = pnConfigGetVar("prefix");
-      if($prefix != '')
-      $prefix = $prefix.'_';
-      else
-      $prefix = '';
-      $pagedtitles = $prefix.'paged_titles';
-      $pagedcontent = $prefix.'paged_content';
       
       // prepare the selected page from modul paged for transport to modul content
       // if there is a page in PagEd
@@ -1304,7 +1301,7 @@ function MUTransport_adminapi_delete($args)
                                                        
         $data = array (
                         'text' => $text,
-                        'inputType' => 'html',                  
+                        'inputType' => $format,                  
                       );                              
     
         $content = array( 'id' => '',
@@ -1459,7 +1456,7 @@ function MUTransport_adminapi_delete($args)
                                                
         $data = array (
                         'text' => $question_page[content],
-                        'inputType' => 'text',                  
+                        'inputType' => $format,                  
                       );                              
     
         $content = array( 'id' => '',

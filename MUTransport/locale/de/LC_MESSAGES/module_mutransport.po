@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MUTransport 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-15 09:59+0000\n"
+"POT-Creation-Date: 2010-05-03 19:34+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mike <kontakt@mu-t-beratung.de>\n"
 "Language-Team: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: pnadmin.php:408
+#: pnadmin.php:429
 msgid "Done! Saved module configuration."
 msgstr "Erledigt ! Modulkonfiguration gespeichert !"
 
@@ -30,199 +30,314 @@ msgstr "Inhalte von Modul zu Modul transportieren."
 msgid "mutransport"
 msgstr "mutransport"
 
-#: pnadminapi.php:59
-#: pnadminapi.php:110
-#: pntemplates/MUTransport_admin_modul_view.htm:13
+#: pnadminapi.php:65
+#: pnadminapi.php:134
+#: pnadminapi.php:202
+#: pnadminapi.php:272
+#: pntemplates/MUTransport_admin_modul_view.htm:14
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: pnadminapi.php:62
-#: pnadminapi.php:113
-#: pntemplates/MUTransport_admin_modul_view.htm:12
+#: pnadminapi.php:68
+#: pnadminapi.php:137
+#: pnadminapi.php:205
+#: pnadminapi.php:275
+#: pntemplates/MUTransport_admin_modul_view.htm:13
 msgid "inactive"
 msgstr "inaktiv"
 
-#: pnadminapi.php:65
-#: pnadminapi.php:116
-#: pntemplates/MUTransport_admin_modul_view.htm:11
+#: pnadminapi.php:71
+#: pnadminapi.php:140
+#: pnadminapi.php:208
+#: pnadminapi.php:278
+#: pntemplates/MUTransport_admin_modul_view.htm:12
 msgid "active"
 msgstr "aktiv"
 
-#: pnadminapi.php:68
-#: pnadminapi.php:119
+#: pnadminapi.php:74
+#: pnadminapi.php:143
+#: pnadminapi.php:211
+#: pnadminapi.php:281
+msgid "files failed"
+msgstr "keine Dateien vorhanden"
+
+#: pnadminapi.php:77
+#: pnadminapi.php:146
+#: pnadminapi.php:214
+#: pnadminapi.php:284
 msgid "update available"
 msgstr "update verfügbar"
 
-#: pnadminapi.php:71
-#: pnadminapi.php:122
+#: pnadminapi.php:80
+#: pnadminapi.php:149
+#: pnadminapi.php:217
+#: pnadminapi.php:287
 msgid "not available"
 msgstr "nicht vorhanden"
 
-#: pnadminapi.php:258
-#: pnadminapi.php:373
 #: pnadminapi.php:457
-#: pnadminapi.php:503
-#: pnadminapi.php:751
+#: pnadminapi.php:547
+#: pnadminapi.php:670
+#: pnadminapi.php:785
+#: pnadminapi.php:882
+#: pnadminapi.php:930
+#: pnadminapi.php:989
+#: pnadminapi.php:1035
+#: pnadminapi.php:1598
 msgid "Done! "
 msgstr "Erledigt ! "
 
-#: pnadminapi.php:258
+#: pnadminapi.php:457
+msgid " page of Module News add to MUTransport "
+msgid_plural " pages of Module News add to MUTransport "
+msgstr[0] " Seite des Moduls News zu MUTransport hinzugefügt "
+msgstr[1] " Seiten des Moduls News zu MUTransport hinzugefügt "
+
+#: pnadminapi.php:457
+#: pnadminapi.php:547
+#: pnadminapi.php:670
+#: pnadminapi.php:785
+#: pnadminapi.php:1598
+msgid " and "
+msgstr " und "
+
+#: pnadminapi.php:457
+msgid " page of Module News in MUTransport updated "
+msgid_plural " pages of Module News in MUTransport updated "
+msgstr[0] " Seite des Moduls News in MUtransport aktualisiert "
+msgstr[1] " Seiten des Moduls News in MUTransport aktualisiert "
+
+#: pnadminapi.php:461
+msgid "No pages in Module News available !"
+msgstr "Keine Seiten in News vorhanden !"
+
+#: pnadminapi.php:547
 msgid " page of Module Pages add to MUTransport "
 msgid_plural " pages of Module Pages add to MUTransport "
 msgstr[0] " Seite des Moduls Pages zu MUTransport hinzugefügt "
 msgstr[1] " Seiten des Moduls Pages zu MUTransport hinzugefügt "
 
-#: pnadminapi.php:258
+#: pnadminapi.php:547
 msgid " page of Module Pages in MUTransport updated "
 msgid_plural " pages of Module Pages in MUTransport updated "
 msgstr[0] " Seite des Moduls Pages in MUtransport aktualisiert "
 msgstr[1] " Seiten des Moduls Pages in MUTransport aktualisiert "
 
-#: pnadminapi.php:262
+#: pnadminapi.php:551
 msgid "No pages in Module Pages available !"
 msgstr "Keine Seiten in Pages vorhanden !"
 
-#: pnadminapi.php:327
+#: pnadminapi.php:623
+#: pnadminapi.php:739
 msgid "Attention ! There is no content for this page !"
 msgstr "Achtung ! Keine Inhalte für diese Seite !"
 
-#: pnadminapi.php:373
+#: pnadminapi.php:670
+msgid " page of Module PagEd add to MUTransport "
+msgid_plural " pages of Module PagEd add to MUTransport "
+msgstr[0] " Seite des Moduls PagEd zu MUTransport hinzugefügt "
+msgstr[1] " Seiten des Moduls PagEd zu MUTransport hinzugefügt "
+
+#: pnadminapi.php:670
+msgid " page of Module PagEd in MUTransport updated "
+msgid_plural " pages of Module PagEd in MUTransport updated "
+msgstr[0] " Seite des Moduls PagEd in MUtransport aktualisiert "
+msgstr[1] " Seiten des Moduls PagEd in MUTransport aktualisiert "
+
+#: pnadminapi.php:674
+msgid "No pages in modul PagEd available !"
+msgstr "Keine Seiten in PagEd vorhanden !"
+
+#: pnadminapi.php:785
 msgid " page of Module Content add to MUTransport "
 msgid_plural " pages of Module Content add to MUTransport "
 msgstr[0] " Seite des Moduls Content zu MUTransport hinzugefügt "
 msgstr[1] " Seiten des Moduls Content zu MUTransport hinzugefügt "
 
-#: pnadminapi.php:373
+#: pnadminapi.php:785
 msgid " page of Module Content in MUTransport updated "
 msgid_plural " pages of Module Content in MUTransport updated "
 msgstr[0] " Seite des Moduls Content in MUTransport aktualisiert "
 msgstr[1] " Seiten des Moduls Content in MUTransport aktualisiert "
 
-#: pnadminapi.php:377
+#: pnadminapi.php:789
 msgid "No pages in modul Content available !"
 msgstr "Keine Seiten in Content vorhanden !"
 
-#: pnadminapi.php:450
-#: pnadminapi.php:496
+#: pnadminapi.php:875
+#: pnadminapi.php:923
+#: pnadminapi.php:982
+#: pnadminapi.php:1028
 msgid "There is no page to delete !"
 msgstr "Keine Seite zum löschen vorhanden !"
 
-#: pnadminapi.php:454
+#: pnadminapi.php:879
+msgid "There are no Pages of module News in Modul MUTransport available !"
+msgstr "Keine Seiten des Moduls News in MUTransport vorhanden !"
+
+#: pnadminapi.php:882
+msgid " page of News in MUTransport deleted !"
+msgid_plural " pages of News in MUTransport deleted !"
+msgstr[0] " Seite des Moduls News in MUTransport gelöscht !"
+msgstr[1] "  Seiten des Moduls News in MUTransport gelöscht !"
+
+#: pnadminapi.php:927
 msgid "There are no Pages of module Pages in Modul MUTransport available !"
 msgstr "Keine Seiten des Moduls Pages in MUtransport vorhanden !"
 
-#: pnadminapi.php:457
+#: pnadminapi.php:930
 msgid " page of Pages in MUTransport deleted !"
 msgid_plural " pages of Pages in MUTransport deleted !"
 msgstr[0] " Seite des Moduls Pages in MUTransport gelöscht !"
 msgstr[1] "  Seiten des Moduls Pages in MUTransport gelöscht !"
 
-#: pnadminapi.php:500
+#: pnadminapi.php:986
+msgid "There are no Pages of module PagEd in Modul MUTransport available !"
+msgstr "Keine Seiten des Moduls PagEd in MUtransport vorhanden !"
+
+#: pnadminapi.php:989
+msgid " page of PagEd in MUTransport deleted !"
+msgid_plural " pages of PagEd in MUTransport deleted !"
+msgstr[0] " Seite des Moduls PagEd in MUTransport gelöscht !"
+msgstr[1] "  Seiten des Moduls PagEd in MUTransport gelöscht !"
+
+#: pnadminapi.php:1032
 msgid "There are no Pages of module Content in Modul MUTransport available !"
 msgstr "Keine Seiten des Moduls Content in MUtransport vorhanden !"
 
-#: pnadminapi.php:503
+#: pnadminapi.php:1035
 msgid " page of Content in MUTransport deleted !"
 msgid_plural " pages of Content in MUTransport deleted !"
 msgstr[0] " Seite des Moduls Content in MUTransport gelöscht !"
 msgstr[1] " Seiten des Moduls Content in MUTransport gelöscht !"
 
-#: pnadminapi.php:646
-#: pnadminapi.php:742
+#: pnadminapi.php:1195
+#: pnadminapi.php:1397
+#: pnadminapi.php:1493
+#: pnadminapi.php:1589
 msgid "There is still one Page with this Permalink Url!"
 msgstr "Es gibt bereits eine Seite mit dieser Permalink Url !"
 
-#: pnadminapi.php:660
+#: pnadminapi.php:1507
 msgid " (A copy)"
 msgstr " (Eine Kopie)"
 
-#: pnadminapi.php:749
+#: pnadminapi.php:1596
 msgid "Sorry ! No Page selected!"
 msgstr "Sorry ! Keine Seite ausgewählt !"
 
-#: pnadminapi.php:751
+#: pnadminapi.php:1598
 msgid " page of Pages transported"
 msgid_plural " pages of Pages transported"
 msgstr[0] " Seite des Moduls Pages transportiert"
 msgstr[1] " Seiten des Moduls Pages transportiert"
 
-#: pnadminapi.php:751
-msgid " and "
-msgstr " und "
-
-#: pnadminapi.php:751
+#: pnadminapi.php:1598
 msgid " page of Content copied !"
 msgid_plural " pages of Content copied !"
 msgstr[0] " Seite des Moduls Content kopiert !"
 msgstr[1] " Seiten des Moduls Content kopiert !"
 
-#: pnadminapi.php:769
+#: pnadminapi.php:1598
+msgid " page of News transported"
+msgid_plural " pages of News transported"
+msgstr[0] " Seite des Moduls News transportiert"
+msgstr[1] " Seiten des Moduls News transportiert"
+
+#: pnadminapi.php:1598
+msgid " page of PagEd transported"
+msgid_plural " pages of PagEd transported"
+msgstr[0] " Seite des Moduls PagEd transportiert"
+msgstr[1] " Seiten des Moduls PagEd transportiert"
+
+#: pnadminapi.php:1616
 msgid "Modules"
 msgstr "Module"
 
-#: pnadminapi.php:773
+#: pnadminapi.php:1620
 msgid "Pages"
 msgstr "Seiten"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:8
+#: pnadminapi.php:1628
+#: pntemplates/MUTransport_admin_modifyconfig.htm:5
+#: pntemplates/MUTransport_admin_modifyconfig.htm:6
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: pntemplates/MUTransport_admin_modul_view.htm:9
 msgid "List of Modules"
 msgstr "Modulliste"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:9
+#: pntemplates/MUTransport_admin_modul_view.htm:10
 msgid "Get and update Pages of Modul"
 msgstr "Seiten des Moduls holen bzw. aktualisieren"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:10
+#: pntemplates/MUTransport_admin_modul_view.htm:11
 msgid "Delete Pages of Modul"
 msgstr "Seiten des Moduls löschen"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:14
+#: pntemplates/MUTransport_admin_modul_view.htm:15
 msgid "not availabale"
 msgstr "nicht vorhanden"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:36
+#: pntemplates/MUTransport_admin_modul_view.htm:37
 msgid "Name"
 msgstr "Name"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:46
+#: pntemplates/MUTransport_admin_modul_view.htm:47
 msgid "Status"
 msgstr "Status"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:51
+#: pntemplates/MUTransport_admin_modul_view.htm:52
 #: pntemplates/MUTransport_admin_page_view.htm:71
 msgid "Options"
 msgstr "Optionen"
 
-#: pntemplates/MUTransport_admin_modul_view.htm:94
+#: pntemplates/MUTransport_admin_modul_view.htm:95
 msgid "No Modules"
 msgstr "Keine Module"
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:4
-#: pntemplates/MUTransport_admin_modifyconfig.htm:5
-msgid "Settings"
-msgstr "Einstellungen"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:7
+msgid "Attention ! Disable a module will delete the pages of the module in page view and the module in the module view !"
+msgstr "Achtung ! Das Deaktivieren eines Moduls löscht seine Seiten in der Seitenübersicht und das Modul in der Modulübersicht !"
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:10
-msgid "The two options are different ! The option 1 is a transport option, the option 2 is a copy option !  "
-msgstr "Die Optionen sind unterschiedlich ! Option 1 ist eine Transportoption, Option 2 eine Kopieroption !"
-
-#: pntemplates/MUTransport_admin_modifyconfig.htm:11
+#: pntemplates/MUTransport_admin_modifyconfig.htm:12
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:13
-msgid "1. Enable transport Pages to Content"
-msgstr "1. Transport von Pages zu Content aktivieren"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:14
+msgid "1. Enable transport News to Content"
+msgstr "1. Transport von News zu Content aktivieren"
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:21
-msgid "2. Enable copy Content to Content"
-msgstr "1. Kopieren innerhalb Content aktivieren"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:22
+msgid "2. Enable transport Pages to Content"
+msgstr "2. Transport von Pages zu Content aktivieren"
 
 #: pntemplates/MUTransport_admin_modifyconfig.htm:30
+msgid "3. Enable transport PagEd to Content"
+msgstr "3. Transport von PagEd zu Content aktivieren"
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:38
+msgid "4. Enable copy Content to Content"
+msgstr "4. Kopieren innerhalb Content aktivieren"
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:46
+msgid "5. The image path for PagEd"
+msgstr "5. Der Pfad der Bilder für PagEd"
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:55
+msgid "5. Format of transport for News, Pages and PagEd "
+msgstr "6. Format des Transports für News, Pages und PagEd"
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:55
+msgid "active "
+msgstr "aktiv"
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:78
 msgid "Save"
 msgstr "Sichern"
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:31
+#: pntemplates/MUTransport_admin_modifyconfig.htm:79
 #: pntemplates/MUTransport_init_delete.htm:11
 #: pntemplates/MUTransport_init_delete.htm:12
 msgid "Cancel"
@@ -264,23 +379,47 @@ msgid "MUTransport is a modul for transporting content !"
 msgstr "MUTransport ist ein Modul zum Transportieren von Inhalten"
 
 #: pntemplates/MUTransport_init_interactive.htm:8
+msgid "transport from modul News to Content"
+msgstr "transportieren von News zu Content"
+
+#: pntemplates/MUTransport_init_interactive.htm:9
+msgid "Have an overwiew about the pages in News and transport them, if you wish !"
+msgstr "Habe einen Überblick über die Seiten in News und transportiere sie, wenn Du möchtest !"
+
+#: pntemplates/MUTransport_init_interactive.htm:10
 msgid "transport from modul Pages to Content"
 msgstr "transportieren von Pages zu Content"
 
-#: pntemplates/MUTransport_init_interactive.htm:9
+#: pntemplates/MUTransport_init_interactive.htm:11
 msgid "Have an overwiew about the pages in Pages and transport them, if you wish !"
 msgstr "Habe einen Überblick über die Seiten in Pages und transportiere sie, wenn Du möchtest !"
 
-#: pntemplates/MUTransport_init_interactive.htm:10
+#: pntemplates/MUTransport_init_interactive.htm:12
+msgid "transport from modul PagEd to Content"
+msgstr "transportieren von PagEd zu Content"
+
+#: pntemplates/MUTransport_init_interactive.htm:13
+msgid "Have an overwiew about the pages in PagEd and transport them, if you wish !"
+msgstr "Habe einen Überblick über die Seiten in PagEd und transportiere sie, wenn Du möchtest !"
+
+#: pntemplates/MUTransport_init_interactive.htm:14
 msgid "copy from modul Content to Content"
 msgstr "kopieren von Content zu Content"
 
-#: pntemplates/MUTransport_init_interactive.htm:11
+#: pntemplates/MUTransport_init_interactive.htm:15
 msgid "Have an overwiew about the pages in Content and copy them, if you wish !"
 msgstr "Habe einen Überblick über die Seiten in Content und kopiere sie, wenn Du möchtest !"
 
-#: pntemplates/MUTransport_init_interactive.htm:14
-#: pntemplates/MUTransport_init_interactive.htm:15
+#: pntemplates/MUTransport_init_interactive.htm:16
+msgid "Make some settings"
+msgstr "Allgemeine Einstellungen"
+
+#: pntemplates/MUTransport_init_interactive.htm:17
+msgid "enable and disable modules, set a path for PagEd import and choose text or html format !"
+msgstr "aktiviere und deaktiviere Module, setze einen Pfad für den Bildtransport von PagEd und wähle als Format text oder html."
+
+#: pntemplates/MUTransport_init_interactive.htm:20
+#: pntemplates/MUTransport_init_interactive.htm:21
 msgid "Continue the installation"
 msgstr "Installation fortsetzen"
 
@@ -336,4 +475,11 @@ msgstr "Transport"
 #: pntemplates/MUTransport_admin_page_view.htm:139
 msgid "Reset"
 msgstr "Zurücksetzen"
+
+#~ msgid ""
+#~ "The two options are different ! The option 1 is a transport option, the "
+#~ "option 2 is a copy option !  "
+#~ msgstr ""
+#~ "Die Optionen sind unterschiedlich ! Option 1 ist eine Transportoption, "
+#~ "Option 2 eine Kopieroption !"
 

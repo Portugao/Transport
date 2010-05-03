@@ -390,7 +390,8 @@ function MUTransport_admin_updateconfig()
     $pagestocontent = (int)FormUtil::getPassedValue('pagestocontent');
     $pagedtocontent = (int)FormUtil::getPassedValue('pagedtocontent');
     $contenttocontent = (int)FormUtil::getPassedValue('contenttocontent');
-    $image_path = (string)FormUtil::getPassedValue('image_path');  
+    $image_path = (string)FormUtil::getPassedValue('image_path');
+    $text_format = (string)FormUtil::getPassedValue('text_format');  
     
     if (!isset($newstocontent) || !is_numeric($newstocontent)) {
         $newstocontent = 0;
@@ -410,18 +411,22 @@ function MUTransport_admin_updateconfig()
     
     if (!isset($image_path) || !is_string($image_path)) {
         $image_path = '';
-    }       
+    }    
+    if (!isset($text_format) || !is_string($text_format)) {
+        $text_format = 'text';       
+    } 
+          
     pnModSetVar('MUTransport', 'newstocontent', $newstocontent);
     pnModSetVar('MUTransport', 'pagestocontent', $pagestocontent);
     pnModSetVar('MUTransport', 'pagedtocontent', $pagedtocontent);
     pnModSetVar('MUTransport', 'contenttocontent', $contenttocontent);
     pnModSetVar('MUTransport', 'image_path', $image_path);
+    pnModSetVar('MUTransport', 'text_format', $text_format);
 
     // Let any other modules know that the modules configuration has been updated
     // pnModCallHooks('module','updateconfig','MUTransport', array('module' => 'MUTransport'));  neu 29.12.2009
-    pnModCallHooks('module', 'updateconfig', 'MUTransport', array('module' => 'MUTransport'));
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(pnModURL('MUTransport', 'admin', 'modifyconfig'));
+    return pnRedirect(pnModURL('MUTransport', 'admin', 'main'));
 }
