@@ -1595,7 +1595,7 @@ function MUTransport_adminapi_delete($args)
   else  {
     return LogUtil::registerError(__('Sorry ! No Page selected!', $dom));
   } 
-  return LogUtil::registerStatus(__('Done! ', $dom) . $counter . _n(' page of Pages transported',' pages of Pages transported',$counter, $dom) . __(' and ', $dom) . $counter2 . _n(' page of Content copied !',' pages of Content copied !',$counter2, $dom)) . __(' and ', $dom) . $counter3 . _n(' page of News transported',' pages of News transported',$counter3, $dom) . __(' and ', $dom) . $counter4 . _n(' page of PagEd transported',' pages of PagEd transported',$counter4, $dom);
+  return LogUtil::registerStatus(__('Done! ', $dom) . $counter . _n(' page of Pages transported',' pages of Pages transported',$counter, $dom) .  __(' and ', $dom) . $counter3 . _n(' page of News transported',' pages of News transported',$counter3, $dom) . __(' and ', $dom) . $counter4 . _n(' page of PagEd transported',' pages of PagEd transported',$counter4, $dom) . __(' and ', $dom) . $counter2 . _n(' page of Content copied !',' pages of Content copied !',$counter2, $dom) );
 }
 
 
