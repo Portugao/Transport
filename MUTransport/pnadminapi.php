@@ -1450,7 +1450,12 @@ function MUTransport_adminapi_delete($args)
         // get the page_id of the even inserted Page
     
         $field = 'page_id';
+//        $orderby = "ORDER BY page_id DESC";
+//        $where2 ='';
         $relation_id = DBUtil::getInsertID('content_page', $field);
+        
+//        $relation_id_array = DBUtil::selectFieldArray('content_page',$field,$where2,$orderby);
+//        $relation_id = $relation_id_array[0];
 
         // build the array for the content for the transport into Content
                                                
