@@ -1073,6 +1073,8 @@ function MUTransport_adminapi_delete($args)
     $newscolumn = $pntable['news_column'];    
     $pagescolumn = $pntable['pages_column'];
     $column   = $pntables['mutransport_page_column'];
+
+// get numer of selected copis for module content
     
     $number = FormUtil::getPassedValue('number');
     
@@ -1090,7 +1092,7 @@ function MUTransport_adminapi_delete($args)
     if (isset($_POST['yes'])) {
       foreach ($_POST['yes'] as $post => $value)  {
       $yes = explode(".",$value);
-      $id = $yes[0];
+      $id = (int) $yes[0];
       $modul = $yes[1]; 
       
       
@@ -1143,8 +1145,8 @@ function MUTransport_adminapi_delete($args)
         // prepare the content    
         // get the page_id of the even inserted Page
     
-        $field = 'page_id';
-        $relation_id = DBUtil::getInsertID('content_page', $field);
+        $field = 'id';
+        $relation_id = DBUtil::selectFieldMax('content_page', $field);
 
         // build the array for the content for the transport into Content
         
@@ -1259,8 +1261,8 @@ function MUTransport_adminapi_delete($args)
         // prepare the content    
         // get the page_id of the even inserted Page
     
-        $field = 'page_id';
-        $relation_id = DBUtil::getInsertID('content_page', $field);
+        $field = 'id';
+        $relation_id = DBUtil::selectFieldMax('content_page', $field);
         
 
         
@@ -1449,13 +1451,8 @@ function MUTransport_adminapi_delete($args)
         // prepare the content    
         // get the page_id of the even inserted Page
     
-        $field = 'page_id';
-//        $orderby = "ORDER BY page_id DESC";
-//        $where2 ='';
-        $relation_id = DBUtil::getInsertID('content_page', $field);
-        
-//        $relation_id_array = DBUtil::selectFieldArray('content_page',$field,$where2,$orderby);
-//        $relation_id = $relation_id_array[0];
+        $field = 'id';
+        $relation_id = DBUtil::selectFieldMax('content_page', $field);
 
         // build the array for the content for the transport into Content
                                                
@@ -1542,8 +1539,8 @@ function MUTransport_adminapi_delete($args)
           // take the content for the even copied page    
           // get the page_id of the even inserted Page
     
-          $field = 'page_id';
-          $relation_id = DBUtil::getInsertID('content_page', $field);
+        $field = 'id';
+        $relation_id = DBUtil::selectFieldMax('content_page', $field);
     
           // take the content for the page
     
