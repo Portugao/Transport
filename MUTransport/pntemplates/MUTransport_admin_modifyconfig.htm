@@ -3,7 +3,8 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon"><!--[pnimg modname=core src=configure.gif set=icons/large __alt='Settings' ]--></div>
     <h2><!--[gt text="Settings"]--></h2>
-    <div class="mutransport_warning"><!--[gt text="Attention ! Disable a module will delete the pages of the module in page view and the module in the module view !"]--></div>
+    <div class="mutransport_warning"><!--[gt text="Attention ! Disable a module will delete the pages of the module in page view and the module in the module view !"]--><br />
+    <!--[gt text="PagEd will only be deleted, if you disable both of the options for this module !"]--></div>
     <form class="z-form" action="<!--[pnmodurl modname='MUTransport' type='admin' func='updateconfig']-->" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="Blocks"]-->" />
@@ -31,6 +32,14 @@
                     <input id="MUTransport_pagedtocontent" name="pagedtocontent" type="checkbox" value="1" checked="checked" />
                     <!--[else]-->
                     <input id="MUTransport_pagedtocontent" name="pagedtocontent" type="checkbox" value="1" />
+                    <!--[/if]-->
+                </div>
+                <div class="z-formrow">                                  
+                    <label for="MUTransport_pagedtonews"><!--[gt text="3. Enable transport PagEd to News"]--></label>
+                    <!--[if $pagedtonews eq 1]-->
+                    <input id="MUTransport_pagedtonews" name="pagedtonews" type="checkbox" value="1" checked="checked" />
+                    <!--[else]-->
+                    <input id="MUTransport_pagedtonews" name="pagedtonews" type="checkbox" value="1" />
                     <!--[/if]-->
                 </div>
                 <div class="z-formrow">

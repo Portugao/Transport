@@ -46,7 +46,8 @@ function MUTransport_init()
     
     pnModSetVar('MUTransport', 'newstocontent', 0);
     pnModSetVar('MUTransport', 'pagestocontent', 0);
-    pnModSetVar('MUTransport', 'pagedtocontent', 0);   
+    pnModSetVar('MUTransport', 'pagedtocontent', 0);
+    pnModSetVar('MUTransport', 'pagedtonews', 0);    
     pnModSetVar('MUTransport', 'contenttocontent', 0);
     pnModSetVar('MUTransport', 'image_path', '');
     pnModSetVar('MUTransport', 'text_format', 'text');
@@ -74,13 +75,17 @@ function MUTransport_upgrade($oldversion)
     // Upgrade dependent on old version number
     switch ($oldversion){
     case '1.0':
-    // set folder for images to null
+    // set new modvars
     pnModSetVar('MUTransport', 'newstocontent', 0);
     pnModSetVar('MUTransport', 'pagestocontent', 1);
     pnModSetVar('MUTransport', 'pagedtocontent', 0);   
     pnModSetVar('MUTransport', 'contenttocontent', 1);
     pnModSetVar('MUTransport', 'image_path', '');
     pnModSetVar('MUTransport', 'text_format', 'text');
+    
+    case '1.2':
+    // set new modvar
+    pnModSetVar('MUTransport', 'pagedtonews', 0);   
             
     }
 

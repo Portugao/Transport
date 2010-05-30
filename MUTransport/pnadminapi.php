@@ -149,7 +149,7 @@ function MUTransport_adminapi_check($args)
     $status = __('not available',$dom);
     
     // if Pages enabled
-    if(pnModGetVar('MUTransport', 'pagestocontent') == 1) {    
+    if(pnModGetVar('MUTransport', 'pagestocontent') == 1)  {    
     
     if(is_array($question2))  {
     
@@ -217,7 +217,7 @@ function MUTransport_adminapi_check($args)
     $status = __('not available',$dom);
 
     // if PagEd enabled    
-    if(pnModGetVar('MUTransport', 'pagedtocontent') == 1) {    
+    if(pnModGetVar('MUTransport', 'pagedtocontent') == 1 || pnModGetVar('MUTransport', 'pagedtonews') == 1) {    
     
     if(is_array($question2))  {
     
@@ -1050,6 +1050,8 @@ function MUTransport_adminapi_delete($args)
 
  function MUTransport_adminapi_transport($args)
 {
+
+    Loader::LoadClass('MUTransportHelp', 'modules/MUTransport/classes/');
 // DEBUG: permission check aspect starts
     if (!SecurityUtil::checkPermission('MUTransport::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError(pnModURL('MUTransport', 'user', 'main'));
@@ -1074,20 +1076,23 @@ function MUTransport_adminapi_delete($args)
     $pagescolumn = $pntable['pages_column'];
     $column   = $pntables['mutransport_page_column'];
 
-// get numer of selected copis for module content
+    // get number of selected copies for module content
     
     $number = FormUtil::getPassedValue('number');
     
-    // set counter
-      
+    // get settings for transport
+
+    $tocontent = pnModGetVar('MUTransport', 'pagedtocontent');
+    $tonews = pnModGetVar('MUTransport', 'pagedtonews');
+    
+    // get format for transport
+    $format = pnModGetVar('MUTransport', 'text_format'); 
+       
+    // set counter      
     $counter = 0; // counter for Pages of Pages
     $counter2 = 0; // counter for Pages of Content
     $counter3 = 0; // counter for Pages of News
-    $counter4 = 0; // counter for Pages of PagEd
-    
-    // get format for transport
-    $format = pnModGetVar('MUTransport', 'text_format');
-     
+    $counter4 = 0; // counter for Pages of PagEd     
     
     if (isset($_POST['yes'])) {
       foreach ($_POST['yes'] as $post => $value)  {
@@ -1115,10 +1120,7 @@ function MUTransport_adminapi_delete($args)
     
       // prepare the page
     
-      if (!$check)  {  
-        /*    $controlstring = '<table>';
-        $contentcontrol = stripos ($value['content'], $controlstring );
-        if ($contentcontrol === false)  { */ 
+      if (!$check)  {   
            
         $page = array('page'  =>  array('title' => $question_page['title'],
                                     'urlname' => '',
@@ -1132,21 +1134,14 @@ function MUTransport_adminapi_delete($args)
         $ok1 = pnModAPIFunc('content', 'page', 'newPage',$page);
         $counter3 = $counter3 + 1;
         // update the state of transport for the original Page
-        if ($ok1) {
-        $where = "WHERE $mutransportcolumn[pageid] = '" . pnVarPrepForStore($id) . "'";
-        $old = DBUtil::selectObject('mutransport_page', $where);
-        $transport = $old[transport];
-        $transport = $transport + 1;
-        $obj = array ('transport' => $transport);
-        DBUtil::updateObject ($obj,'mutransport_page', $where);
- 
+        if ($ok1) {        
+        MUTransportHelp::updateTransport($mutransportcolumn[pageid],$id); 
         } 
          
         // prepare the content    
         // get the page_id of the even inserted Page
     
-        $field = 'id';
-        $relation_id = DBUtil::selectFieldMax('content_page', $field);
+        $relation_id = MUTransportHelp::getIdFromContent('id');
 
         // build the array for the content for the transport into Content
         
@@ -1157,39 +1152,9 @@ function MUTransport_adminapi_delete($args)
         $newstext = $question_page[hometext] . '<br /><br/>' . $question_page[bodytext];
         else
         $newstext = $question_page[hometext];
-                                             
-        $data = array (
-                        'text' => $newstext,
-                        'inputType' => $format,                  
-                      );                              
+        
+        MUTransportHelp::buildArrayForContent($newstext, $format, $relation_id, 'html');
     
-        $content = array( 'id' => '',
-                          'pageId'  => $relation_id,
-                          'contentAreaIndex' => '',
-                          'position' => '',
-                          'addVersion' => '',
-                          'content'  =>  array('module'  => 'content',
-                                               'type' => 'html',
-                                               'data'  => $data,
-                                               'stylePosition' => 'none',
-                                               'styleWidth' => 'wauto',
-                                               'styleClass' => '',
-                                               'obj_status'  => 'A',
-                                               'cr_date'  => '',
-                                               'cr_uid'  =>  '',
-                                               'lu_date' =>  '',
-                                               'lu_uid'  =>  '',
-                                              )); 
-                                    
-        // call newContent method of Content modul                                   
-        pnModAPIFunc('content', 'content', 'newContent',$content);
-       
-        /*      }
-        else if ($contentcontrol !== false and $_POST['parts'] > 1) 
-       {
-        $warning  = __('Attention! The Content of this Page contains a html Table. It is not partable !', $dom);
-        return $warning;
-       }  */
 
     } // if (!$check)
     else
@@ -1201,7 +1166,7 @@ function MUTransport_adminapi_delete($args)
 
 /*-------------------------------MODUL PAGED-------------------------------*/
 
-/* -------------         Transport to Content      ------------------------*/
+/* -------------         Transport of PagEd  ------------------------*/
 
     if ($modul == 'PagEd') {
 
@@ -1222,19 +1187,22 @@ function MUTransport_adminapi_delete($args)
       $question_page = DBUtil::marshallObjects($question, $columns);
       $count_question_page = count($question_page);
       
-      // prepare the selected page from modul paged for transport to modul content
-      // if there is a page in PagEd
+      // prepare the selected page from modul paged 
+      // if there is a page in PagEd                    
       
       foreach($question_page as $wert => $value) {
+      // ckeck content for page with given title
       $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($value['title']) . "'";
       $check = DBUtil::selectObject('content_page', $where);
+      // ckeck news for page with given title
+      $where2 = "WHERE $newscolumn[title] = '" . pnVarPrepForStore($value['title']) . "'";
+      $check2 = DBUtil::selectObject('news', $where2);
       
-      // prepare the page
-    
-      if (!$check)  {  
-        /*    $controlstring = '<table>';
-        $contentcontrol = stripos ($value['content'], $controlstring );
-        if ($contentcontrol === false)  { */ 
+         
+      if (!$check)  {
+      
+        // for transport to content
+        if($tocontent === 1) {        
            
         $page = array('page'  =>  array('title' => $value['title'],
                                     'urlname' => '',
@@ -1246,40 +1214,40 @@ function MUTransport_adminapi_delete($args)
                       'location' => '',);
     
         $ok1 = pnModAPIFunc('content', 'page', 'newPage',$page);
-        $counter4 = $counter4 + 1;
+        
         // update the state of transport for the original Page
         if ($ok1) {
-        $where = "WHERE $mutransportcolumn[pageid] = '" . pnVarPrepForStore($id) . "'";
-        $old = DBUtil::selectObject('mutransport_page', $where);
-        $transport = $old[transport];
-        $transport = $transport + 1;
-        $obj = array ('transport' => $transport);
-        DBUtil::updateObject ($obj,'mutransport_page', $where);
- 
+        MUTransportHelp::updateTransport($mutransportcolumn[pageid],$id);  
         }
         
         // prepare the content    
         // get the page_id of the even inserted Page
-    
-        $field = 'id';
-        $relation_id = DBUtil::selectFieldMax('content_page', $field);
         
-
-        
-        // take the content for the page
+        $relation_id = MUTransportHelp::getIdFromContent('id');
+                
+        // take the content for the page from PagEd
         
         $sql2 = "SELECT page_id, section, subtitle, image, imagetext, text FROM $pagedcontent WHERE page_id = '" . pnVarPrepForStore($id) . "' ORDER BY section DESC";
         $columns2 = array('page_id', 'section', 'subtitle', 'image', 'imagetext', 'text');
         $question2 = DBUtil::executeSQL($sql2);
         $question_content = DBUtil::marshallObjects($question2, $columns2);
+        $count_question_content = count($question_content);
+        
         
         // build the array for the content for the transport into Content
-        // 
-        
+        //         
         
         foreach($question_content as $wert2 => $value2) {
         
+        // ckeck the image path, if not empty check for image
+        // else do nothing and take only the text
+        
         if(pnModGetVar('MUTransport', 'image_path') != '') {
+        
+        // if there is an image build the image path and html code
+        // and put before the text
+        // else do nothing with the existing text        
+        
         if($value2[image] != '') {
         $image_path = pnModGetVar('MUTransport', 'image_path');
         $image = $value2[image];
@@ -1300,105 +1268,55 @@ function MUTransport_adminapi_delete($args)
         {
         $text = $value2[text];
         }
-                                                       
-        $data = array (
-                        'text' => $text,
-                        'inputType' => $format,                  
-                      );                              
-    
-        $content = array( 'id' => '',
-                          'pageId'  => $relation_id,
-                          'contentAreaIndex' => '',
-                          'position' => '',
-                          'addVersion' => '',
-                          'content'  =>  array('module'  => 'content',
-                                               'type' => 'html',
-                                               'data'  => $data,
-                                               'stylePosition' => 'none',
-                                               'styleWidth' => 'wauto',
-                                               'styleClass' => '',
-                                               'obj_status'  => 'A',
-                                               'cr_date'  => '',
-                                               'cr_uid'  =>  '',
-                                               'lu_date' =>  '',
-                                               'lu_uid'  =>  '',
-                                              )); 
-                                    
-        // call newContent method of Content modul                                   
-        pnModAPIFunc('content', 'content', 'newContent',$content);
+        
+        
+        // for each chapter found in PagEd generate a textblock
+        
+        MUTransportHelp::buildArrayForContent($text, $format, $relation_id, 'html');
+        
+        // if subtitle generate a header
         
         if($value2[subtitle] != '') {
-        $data = array (
-                        'text' => $value2[subtitle],
-                        'inputType' => 'text',                  
-                      );                              
-    
-        $content = array( 'id' => '',
-                          'pageId'  => $relation_id,
-                          'contentAreaIndex' => '',
-                          'position' => '0',
-                          'addVersion' => '',
-                          'content'  =>  array('module'  => 'content',
-                                               'type' => 'heading',
-                                               'data'  => $data,
-                                               'stylePosition' => 'none',
-                                               'styleWidth' => 'wauto',
-                                               'styleClass' => '',
-                                               'obj_status'  => 'A',
-                                               'cr_date'  => '',
-                                               'cr_uid'  =>  '',
-                                               'lu_date' =>  '',
-                                               'lu_uid'  =>  '',
-                                              ));           
-          // call newContent method of Content modul                                   
-          pnModAPIFunc('content', 'content', 'newContent',$content);        
+        
+        MUTransportHelp::buildArrayForContent($value2[subtitle], 'text', $relation_id, 'heading');
+   
         }
         
-        }
+        } // foreach($question_content as $wert2 => $value2)
 
-        //         
+        // if there is a description of the page generate a header         
         
         if($value[ingress] != '') {
-        $data = array (
-                        'text' => $value[ingress],
-                        'inputType' => 'text',                  
-                      );                              
-    
-        $content = array( 'id' => '',
-                          'pageId'  => $relation_id,
-                          'contentAreaIndex' => '',
-                          'position' => '0',
-                          'addVersion' => '',
-                          'content'  =>  array('module'  => 'content',
-                                               'type' => 'heading',
-                                               'data'  => $data,
-                                               'stylePosition' => 'none',
-                                               'styleWidth' => 'wauto',
-                                               'styleClass' => '',
-                                               'obj_status'  => 'A',
-                                               'cr_date'  => '',
-                                               'cr_uid'  =>  '',
-                                               'lu_date' =>  '',
-                                               'lu_uid'  =>  '',
-                                              ));           
-          // call newContent method of Content modul                                   
-          pnModAPIFunc('content', 'content', 'newContent',$content);        
+        
+        MUTransportHelp::buildArrayForContent($value[ingress], 'text', $relation_id, 'heading');
+ 
         }
         
-        /*      }
-        else if ($contentcontrol !== false and $_POST['parts'] > 1) 
-       {
-        $warning  = __('Attention! The Content of this Page contains a html Table. It is not partable !', $dom);
-        return $warning;
-       }  */
+       
+      } // if($tocontent)
+      
+      // for transport to news
+      if($tonews == 1) {
 
+        $ok2 = MUTransportHelp::generateInputForNews($value[title], $pagedcontent, 'PagEd', $id, 6, $value[ingress]);     
+              
+        if($ok2) {
+        MUTransportHelp::updateTransport($mutransportcolumn[pageid],$id);
+        }
+      
+      } // if($tonews)
+      
+      if($ok1 || $ok2) {
+        $counter4 = $counter4 + 1;
+      }  
     } // if (!$check)
     
     else
     {
       return LogUtil::registerError(__('There is still one Page with this Permalink Url!', $dom));                           
     }
-    }      
+    } // foreach($question_page as $wert => $value)
+          
     } // if ($modul == 'PagEd')
 
          
@@ -1439,55 +1357,22 @@ function MUTransport_adminapi_delete($args)
         $counter = $counter + 1;
         // update the state of transport for the original Page
         if ($ok1) {
-        $where = "WHERE $mutransportcolumn[pageid] = '" . pnVarPrepForStore($id) . "'";
-        $old = DBUtil::selectObject('mutransport_page', $where);
-        $transport = $old[transport];
-        $transport = $transport + 1;
-        $obj = array ('transport' => $transport);
-        DBUtil::updateObject ($obj,'mutransport_page', $where);
+        MUTransportHelp::updateTransport($mutransportcolumn[pageid],$id); 
  
         } 
          
         // prepare the content    
         // get the page_id of the even inserted Page
+        
+        $relation_id = MUTransportHelp::getIdFromContent('id');
     
-        $field = 'id';
-        $relation_id = DBUtil::selectFieldMax('content_page', $field);
+//        $field = 'id';
+//        $relation_id = DBUtil::selectFieldMax('content_page', $field);
 
         // build the array for the content for the transport into Content
-                                               
-        $data = array (
-                        'text' => $question_page[content],
-                        'inputType' => $format,                  
-                      );                              
-    
-        $content = array( 'id' => '',
-                          'pageId'  => $relation_id,
-                          'contentAreaIndex' => '',
-                          'position' => '',
-                          'addVersion' => '',
-                          'content'  =>  array('module'  => 'content',
-                                               'type' => 'html',
-                                               'data'  => $data,
-                                               'stylePosition' => 'none',
-                                               'styleWidth' => 'wauto',
-                                               'styleClass' => '',
-                                               'obj_status'  => 'A',
-                                               'cr_date'  => '',
-                                               'cr_uid'  =>  '',
-                                               'lu_date' =>  '',
-                                               'lu_uid'  =>  '',
-                                              )); 
-                                    
-        // call newContent method of Content modul                                   
-        pnModAPIFunc('content', 'content', 'newContent',$content);
-       
-        /*      }
-        else if ($contentcontrol !== false and $_POST['parts'] > 1) 
-       {
-        $warning  = __('Attention! The Content of this Page contains a html Table. It is not partable !', $dom);
-        return $warning;
-       }  */
+        
+        MUTransportHelp::buildArrayForContent($question_page[content], $format, $relation_id, 'html');
+
 
     } // if if (!$check)
     else
@@ -1539,8 +1424,7 @@ function MUTransport_adminapi_delete($args)
           // take the content for the even copied page    
           // get the page_id of the even inserted Page
     
-        $field = 'id';
-        $relation_id = DBUtil::selectFieldMax('content_page', $field);
+        $relation_id = MUTransportHelp::getIdFromContent('id');
     
           // take the content for the page
     

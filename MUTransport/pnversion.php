@@ -18,7 +18,7 @@ $dom = ZLanguage::getModuleDomain('MUTransport');
 $modversion['name']           = 'MUTransport';
 $modversion['displayname']    = __("MUTransport", $dom);
 $modversion['description']    = __("Transport of Content from module to module.", $dom);
-$modversion['version']        = '1.2';
+$modversion['version']        = '1.3';
 $modversion['url'] = __('mutransport', $dom);
 // permission schema
 $modversion['securityschema'] = array('MUTransport::' => '::');

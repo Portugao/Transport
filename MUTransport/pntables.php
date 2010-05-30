@@ -136,7 +136,7 @@ function MUTransport_pntables()
      * definitions for content table
      */
 
-    // set the table name combined with prefix
+/*    // set the table name combined with prefix
     $pntable['mutransport_cms_content'] = DBUtil::getLimitedTablename('mutransport_cms_content');
 
     // set the column names
@@ -173,7 +173,7 @@ function MUTransport_pntables()
     // disable logging services
     $pntable['mutransport_cms_content_extra_enable_logging'] = false;
 
-    // DEBUG: object extension aspect ends
+    // DEBUG: object extension aspect ends     */
 
     // return table data
     return $pntable;

@@ -389,6 +389,7 @@ function MUTransport_admin_updateconfig()
     $newstocontent = (int)FormUtil::getPassedValue('newstocontent');
     $pagestocontent = (int)FormUtil::getPassedValue('pagestocontent');
     $pagedtocontent = (int)FormUtil::getPassedValue('pagedtocontent');
+    $pagedtonews = (int)FormUtil::getPassedValue('pagedtonews');
     $contenttocontent = (int)FormUtil::getPassedValue('contenttocontent');
     $image_path = (string)FormUtil::getPassedValue('image_path');
     $text_format = (string)FormUtil::getPassedValue('text_format');  
@@ -405,6 +406,10 @@ function MUTransport_admin_updateconfig()
         $pagedtocontent = 0;
     }
     
+    if (!isset($pagedtonews) || !is_numeric($pagedtonews)) {
+        $pagedtonews = 0;
+    }
+    
     if (!isset($contenttocontent) || !is_numeric($contenttocontent)) {
         $contenttocontent = 0;
     } 
@@ -419,6 +424,7 @@ function MUTransport_admin_updateconfig()
     pnModSetVar('MUTransport', 'newstocontent', $newstocontent);
     pnModSetVar('MUTransport', 'pagestocontent', $pagestocontent);
     pnModSetVar('MUTransport', 'pagedtocontent', $pagedtocontent);
+    pnModSetVar('MUTransport', 'pagedtonews', $pagedtonews);
     pnModSetVar('MUTransport', 'contenttocontent', $contenttocontent);
     pnModSetVar('MUTransport', 'image_path', $image_path);
     pnModSetVar('MUTransport', 'text_format', $text_format);
