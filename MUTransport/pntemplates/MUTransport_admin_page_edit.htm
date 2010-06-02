@@ -3,15 +3,15 @@
 <!--[include file="MUTransport_admin_header.htm"]-->
 
 <!--[pnml name="_MUTRANSPORT_PAGE" assign="itemname"]-->
-<!--[if $mode == "edit"]-->    
-    <!--[pnml name="_MODIFYITEM" i=$itemname assign="templateTitle"]-->
-    <!--[assign var="adminpageicon" value="edit.gif"]-->
+<!--[if $mode == "edit"]-->
+<!--[pnml name="_MODIFYITEM" i=$itemname assign="templateTitle"]-->
+<!--[assign var="adminpageicon" value="edit.gif"]-->
 <!--[elseif $mode == "create"]-->
-    <!--[pnml name="_CREATEITEM" i=$itemname assign="templateTitle"]-->
-    <!--[assign var="adminpageicon" value="filenew.gif"]-->
+<!--[pnml name="_CREATEITEM" i=$itemname assign="templateTitle"]-->
+<!--[assign var="adminpageicon" value="filenew.gif"]-->
 <!--[else]-->
-    <!--[pnml name="_MODIFYITEM" i=$itemname assign="templateTitle"]-->
-    <!--[assign var="adminpageicon" value="edit.gif"]-->
+<!--[pnml name="_MODIFYITEM" i=$itemname assign="templateTitle"]-->
+<!--[assign var="adminpageicon" value="edit.gif"]-->
 <!--[/if]-->
 
 <div class="pn-admincontainer">
@@ -21,125 +21,81 @@
 
 
 
-<!--[pnform]-->
+<!--[pnform]--> <!--[* add validation summary and a <div> element for styling the form *]-->
+<!--[mutransportFormFrame]--> <!--[*pnformvalidationsummary*]-->
 
 
+<fieldset><legend><!--[pnml name="_CONTENT"]--></legend>
+<div class="pn-adminformrow"><!--[pnformlabel for="title" text="_MUTRANSPORT_PAGE_TITLE_LABEL"]-->
 
-    <!--[* add validation summary and a <div> element for styling the form *]-->
-    <!--[mutransportFormFrame]-->
-    <!--[*pnformvalidationsummary*]-->
-
-
-    <fieldset>
-    <legend><!--[pnml name="_CONTENT"]--></legend>
-        <div class="pn-adminformrow">
-            <!--[pnformlabel for="title" text="_MUTRANSPORT_PAGE_TITLE_LABEL"]-->
-
-    <!--[if $mode == "create"]-->
-        <!--[assign var="inputValue" value=""]-->
-    <!--[else]-->
-        <!--[assign var="inputValue" value=$page.title]-->
-    <!--[/if]-->
-    <!--[pnml name="_MUTRANSPORT_PAGE_TITLE_TOOLTIP" assign="inputToolTip"]-->
+<!--[if $mode == "create"]--> <!--[assign var="inputValue" value=""]-->
+<!--[else]--> <!--[assign var="inputValue" value=$page.title]--> <!--[/if]-->
+<!--[pnml name="_MUTRANSPORT_PAGE_TITLE_TOOLTIP" assign="inputToolTip"]-->
 <!--[pnformtextinput id="title" mandatory=true text=$inputValue toolTip=$inputToolTip textMode="singleline" maxLength=50]-->
 
 <br />
-            <!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_TITLE_LABELHELP"]-->
-        </div>
-        <div class="pn-adminformrow">
-            <!--[pnformlabel for="text" text="_MUTRANSPORT_PAGE_TEXT_LABEL"]-->
+<!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_TITLE_LABELHELP"]--></div>
+<div class="pn-adminformrow"><!--[pnformlabel for="text" text="_MUTRANSPORT_PAGE_TEXT_LABEL"]-->
 
-    <!--[if $mode == "create"]-->
-        <!--[assign var="inputValue" value=""]-->
-    <!--[else]-->
-        <!--[assign var="inputValue" value=$page.text]-->
-    <!--[/if]-->
-    <!--[pnml name="_MUTRANSPORT_PAGE_TEXT_TOOLTIP" assign="inputToolTip"]-->
+<!--[if $mode == "create"]--> <!--[assign var="inputValue" value=""]-->
+<!--[else]--> <!--[assign var="inputValue" value=$page.text]--> <!--[/if]-->
+<!--[pnml name="_MUTRANSPORT_PAGE_TEXT_TOOLTIP" assign="inputToolTip"]-->
 <!--[pnformtextinput id="text" mandatory=true text=$inputValue toolTip=$inputToolTip textMode="multiline" rows="8" cols="50"]-->
 
 <br />
-            <!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_TEXT_LABELHELP"]-->
-        </div>
-        <div class="pn-adminformrow">
-            <!--[pnformlabel for="number_characters" text="_MUTRANSPORT_PAGE_NUMBER_CHARACTERS_LABEL"]-->
+<!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_TEXT_LABELHELP"]--></div>
+<div class="pn-adminformrow"><!--[pnformlabel for="number_characters" text="_MUTRANSPORT_PAGE_NUMBER_CHARACTERS_LABEL"]-->
 
-    <!--[if $mode == "create"]-->
-        <!--[assign var="inputValue" value=""]-->
-    <!--[else]-->
-        <!--[assign var="inputValue" value=$page.number_characters]-->
-    <!--[/if]-->
-    <!--[pnml name="_MUTRANSPORT_PAGE_NUMBER_CHARACTERS_TOOLTIP" assign="inputToolTip"]-->
+<!--[if $mode == "create"]--> <!--[assign var="inputValue" value=""]-->
+<!--[else]--> <!--[assign var="inputValue" value=$page.number_characters]-->
+<!--[/if]--> <!--[pnml name="_MUTRANSPORT_PAGE_NUMBER_CHARACTERS_TOOLTIP" assign="inputToolTip"]-->
 <!--[pnformintinput id="number_characters" mandatory=true text=$inputValue toolTip=$inputToolTip maxLength=5]-->
 
 <br />
-            <!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_NUMBER_CHARACTERS_LABELHELP"]-->
-        </div>
-        <div class="pn-adminformrow">
-            <!--[pnformlabel for="transport" text="_MUTRANSPORT_PAGE_TRANSPORT_LABEL"]-->
+<!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_NUMBER_CHARACTERS_LABELHELP"]-->
+</div>
+<div class="pn-adminformrow"><!--[pnformlabel for="transport" text="_MUTRANSPORT_PAGE_TRANSPORT_LABEL"]-->
 
-    <!--[if $mode == "create"]-->
-        <!--[assign var="inputValue" value=""]-->
-    <!--[else]-->
-        <!--[assign var="inputValue" value=$page.transport]-->
-    <!--[/if]-->
-    <!--[pnml name="_MUTRANSPORT_PAGE_TRANSPORT_TOOLTIP" assign="inputToolTip"]-->
+<!--[if $mode == "create"]--> <!--[assign var="inputValue" value=""]-->
+<!--[else]--> <!--[assign var="inputValue" value=$page.transport]--> <!--[/if]-->
+<!--[pnml name="_MUTRANSPORT_PAGE_TRANSPORT_TOOLTIP" assign="inputToolTip"]-->
 <!--[pnformtextinput id="transport" mandatory=true text=$inputValue toolTip=$inputToolTip textMode="singleline" maxLength=100]-->
 
 <br />
-            <!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_TRANSPORT_LABELHELP"]-->
-        </div>
-        <div class="pn-adminformrow">
-            <!--[pnformlabel for="modulid" text="_MUTRANSPORT_PAGE_MODULID_LABEL"]-->
+<!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_TRANSPORT_LABELHELP"]-->
+</div>
+<div class="pn-adminformrow"><!--[pnformlabel for="modulid" text="_MUTRANSPORT_PAGE_MODULID_LABEL"]-->
 
-    <!--[if $mode == "create"]-->
-        <!--[assign var="inputValue" value=""]-->
-    <!--[else]-->
-        <!--[assign var="inputValue" value=$page.modulid]-->
-    <!--[/if]-->
-    <!--[pnml name="_MUTRANSPORT_PAGE_MODULID_TOOLTIP" assign="inputToolTip"]-->
+<!--[if $mode == "create"]--> <!--[assign var="inputValue" value=""]-->
+<!--[else]--> <!--[assign var="inputValue" value=$page.modulid]--> <!--[/if]-->
+<!--[pnml name="_MUTRANSPORT_PAGE_MODULID_TOOLTIP" assign="inputToolTip"]-->
 <!--[pnformintinput id="modulid" mandatory=true text=$inputValue toolTip=$inputToolTip maxLength=8]-->
 
 
 
 <br />
-            <!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_MODULID_LABELHELP"]-->
-        </div>
-
-    </fieldset>
-
-    <fieldset>
-        <legend><!--[pnml name="_HOOKS"]--></legend>
-        <!--[if $mode == "edit"]-->
-            <!--[pnmodcallhooks hookobject="item" hookaction="modify" module="MUTransport" hookid="page`$pageid`"]-->
-        <!--[elseif $mode == "create"]-->
-            <!--[pnmodcallhooks hookobject="item" hookaction="new" module="MUTransport"]-->
-        <!--[else]-->
-            <!--[pnmodcallhooks hookobject="item" hookaction="modify" module="MUTransport" hookid="page`$pageid`"]-->
-        <!--[/if]-->
-    </fieldset>
-
-    <!--[pnml name="_MUTRANSPORT_PAGE" assign="itemname"]-->
-    <!--[pnml name="_CREATEITEM" i=$itemname assign="createTitle"]-->
-    <!--[pnml name="_UPDATEITEM" i=$itemname assign="updateTitle"]-->
-    <!--[pnml name="_DELETEITEM" i=$itemname assign="deleteTitle"]-->
-    <!--[pnml name="_CONFIRMDELETEITEM" i=$itemname assign="deleteConfirmMsg"]-->
-
-    <!--[* add extra div for button styling *]-->
-    <!--[mutransportButtons]-->
-
-    <!--[if $mode == "edit"]-->
-        <!--[pnformbutton commandName="update" text=$updateTitle]-->
-        <!--[pnformbutton commandName="delete" text=$deleteTitle confirmMessage=$deleteConfirmMsg]-->
-    <!--[elseif $mode == "create"]-->
-        <!--[pnformbutton commandName="create" text=$createTitle]-->
-    <!--[else]-->
-        <!--[pnformbutton commandName="update" text="_OK"]-->
-    <!--[/if]-->
-        <!--[pnformbutton commandName="cancel" text="_CANCEL"]-->
-    <!--[/mutransportButtons]-->
-
-  <!--[/mutransportFormFrame]-->
-<!--[/pnform]-->
-
+<!--[mutransportLabelHelp text="_MUTRANSPORT_PAGE_MODULID_LABELHELP"]-->
 </div>
+
+</fieldset>
+
+<fieldset><legend><!--[pnml name="_HOOKS"]--></legend> <!--[if $mode == "edit"]-->
+<!--[pnmodcallhooks hookobject="item" hookaction="modify" module="MUTransport" hookid="page`$pageid`"]-->
+<!--[elseif $mode == "create"]--> <!--[pnmodcallhooks hookobject="item" hookaction="new" module="MUTransport"]-->
+<!--[else]--> <!--[pnmodcallhooks hookobject="item" hookaction="modify" module="MUTransport" hookid="page`$pageid`"]-->
+<!--[/if]--></fieldset>
+
+<!--[pnml name="_MUTRANSPORT_PAGE" assign="itemname"]--> <!--[pnml name="_CREATEITEM" i=$itemname assign="createTitle"]-->
+<!--[pnml name="_UPDATEITEM" i=$itemname assign="updateTitle"]--> <!--[pnml name="_DELETEITEM" i=$itemname assign="deleteTitle"]-->
+<!--[pnml name="_CONFIRMDELETEITEM" i=$itemname assign="deleteConfirmMsg"]-->
+
+<!--[* add extra div for button styling *]--> <!--[mutransportButtons]-->
+
+<!--[if $mode == "edit"]--> <!--[pnformbutton commandName="update" text=$updateTitle]-->
+<!--[pnformbutton commandName="delete" text=$deleteTitle confirmMessage=$deleteConfirmMsg]-->
+<!--[elseif $mode == "create"]--> <!--[pnformbutton commandName="create" text=$createTitle]-->
+<!--[else]--> <!--[pnformbutton commandName="update" text="_OK"]--> <!--[/if]-->
+<!--[pnformbutton commandName="cancel" text="_CANCEL"]--> <!--[/mutransportButtons]-->
+
+<!--[/mutransportFormFrame]--> <!--[/pnform]--></div>
 

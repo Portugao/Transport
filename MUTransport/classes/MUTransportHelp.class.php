@@ -45,14 +45,38 @@ class MUTransportHelp
       $obj = array ('transport' => $transport); 
       DBUtil::updateObject ($obj,'mutransport_page', $where);
     }
+    
+    
+/*--------------FUNCTIONS FOR TRANSPORT TO CONTENT OF OTHER MODULES THAN CONTENT--------*/    
+/**
+ *  This function is for build the array
+ *  for the page and put it into the db
+ *   
+ *  @param $title           the old and new title 
+ *
+ */
+     function buildArrayForPage($title) {
+ 
+      $page = array('page'  =>  array('title' => $title,
+                                    'urlname' => '',
+                                     'layout' => 'column1',
+                                 'categoryId' => '',
+
+                                    ),
+                      'pageId'  => '',
+                      'location' => '',);
+    
+      pnModAPIFunc('content', 'page', 'newPage',$page);
+      return true;
+      }   
 
 /**
- *  This function ist for build the array
+ *  This function is for build the array
  *  for the content and put it into the db
  *  
  *@param $text              the found text
  *@param $format            the format for transport of text, 'text' or 'html'
- *@param $realtion_id       the last id in content
+ *@param $relation_id       the last id in content
  *@param $type              the input type. 'html' or 'heading'   
  *   
  */
@@ -84,20 +108,21 @@ class MUTransportHelp
           // call newContent method of Content modul                                   
           pnModAPIFunc('content', 'content', 'newContent',$content);           
     }
+
+/*----------------FUNCTIONS FOR NEWS MODULE-------------------------------------*/
     
 /**
- * This function is for generate the input to news and input it into db
+ * This function is for generate the input to news and put it into db
  * 
  * @param $title                 the right column for the title
- * @param $table                 the table in the module with the content
- * @param $modul                 the modul for content transport
- * @param $id                    the id of the page
- * @param $action                the action that is wished  
+ * @param $action                the action that is wished
+ * @param $result                the sesult of the select
+ * @param $count                 the number of the content-items    
  * @return true      
  */
  
-   function generateInputForNews($title, $table, $modul, $id, $action, $heading) {
-      
+   function generateInputForNews($title, $header, $result, $count, $action) {
+   
       $args['title'] = $title;
       $args['hometextcontenttype'] = 1;
       $args['bodytextcontenttype'] = 1;
@@ -108,17 +133,10 @@ class MUTransportHelp
       $args['disallowcomments'] = 0;
       $args['hometext'] = '';
       $args['bodytext'] = '';      
-      
-      if($modul == 'PagEd') {
-      $sql = "SELECT page_id, section, subtitle, image, imagetext, text FROM $table WHERE page_id = '" . pnVarPrepForStore($id) . "' ORDER BY section ASC";
-      $columns = array('page_id', 'section', 'subtitle', 'image', 'imagetext', 'text');
-      $question = DBUtil::executeSQL($sql);
-      $question_content = DBUtil::marshallObjects($question, $columns);
-      $count_question_content = count($question_content);
        
       $text2 = '';
             
-        foreach($question_content as $wert2 => $value2) {
+        foreach($result as $wert2 => $value2) {
         
         // ckeck the image path, if not empty check for image
         // else do nothing and take only the text
@@ -150,8 +168,8 @@ class MUTransportHelp
         $text = $value2[text];
         }
         
-        if($heading != '' && $wert2 == 0) {
-        $text = '<h3>'. $heading . '</h3>' . $text;
+        if($header != '' && $wert2 == 0) {
+        $text = '<h3>'. $header . '</h3>' . $text;
         }
         
         if($value2[subtitle] != '') {
@@ -159,12 +177,12 @@ class MUTransportHelp
         }
               
 
-          if($count_question_content == 1) {
+          if($count == 1) {
             $args['hometext'] = $text;
             $args['bodytext'] = '';
           }
 
-          if($count_question_content > 1) {
+          if($count > 1) {
           if($wert2 == 0) {
           $text2 = $text2 . $text . '<br /><br />';
           $args['hometext'] = $text2;
@@ -176,11 +194,8 @@ class MUTransportHelp
           }               
         }
         }
-        }
-
-      // call create method of News modul        
-      pnModApiFunc('News', 'user', 'create', $args);
-      
-      return true;      
-   }          
-}
+         // call create method of News modul        
+         pnModApiFunc('News', 'user', 'create', $args);        
+         return true; 
+        }     
+}          

@@ -1,90 +1,97 @@
 <!--[*  $Id: MUTransport_admin_modifyconfig.htm 2009-12-29 09:23:00 MU $  *]-->
+<!--[if $news_state eq 4]-->
+<!--[gt text='waiting' assign='newsstate']-->
+<!--[/if]-->
+<!--[if $news_state eq 6]-->
+<!--[gt text='draft' assign='newsstate']-->
+<!--[/if]-->
 <!--[include file="MUTransport_admin_header.htm"]-->
 <div class="z-admincontainer">
-    <div class="z-adminpageicon"><!--[pnimg modname=core src=configure.gif set=icons/large __alt='Settings' ]--></div>
-    <h2><!--[gt text="Settings"]--></h2>
-    <div class="mutransport_warning"><!--[gt text="Attention ! Disable a module will delete the pages of the module in page view and the module in the module view !"]--><br />
-    <!--[gt text="PagEd will only be deleted, if you disable both of the options for this module !"]--></div>
-    <form class="z-form" action="<!--[pnmodurl modname='MUTransport' type='admin' func='updateconfig']-->" method="post" enctype="application/x-www-form-urlencoded">
-        <div>
-            <input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="Blocks"]-->" />
-            <fieldset>
-                <legend><!--[gt text="General settings"]--></legend>
-                <div class="z-formrow">                                  
-                    <label for="MUTransport_newstocontent"><!--[gt text="1. Enable transport News to Content"]--></label>
-                    <!--[if $newstocontent eq 1]-->
-                    <input id="MUTransport_newstocontent" name="newstocontent" type="checkbox" value="1" checked="checked" />
-                    <!--[else]-->
-                    <input id="MUTransport_newstocontent" name="newstocontent" type="checkbox" value="1" />
-                    <!--[/if]-->
-                </div>
-                <div class="z-formrow">                                  
-                    <label for="MUTransport_pagestocontent"><!--[gt text="2. Enable transport Pages to Content"]--></label>
-                    <!--[if $pagestocontent eq 1]-->
-                    <input id="MUTransport_pagestocontent" name="pagestocontent" type="checkbox" value="1" checked="checked" />
-                    <!--[else]-->
-                    <input id="MUTransport_pagestocontent" name="pagestocontent" type="checkbox" value="1" />
-                    <!--[/if]-->
-                </div>
-                <div class="z-formrow">                                  
-                    <label for="MUTransport_pagedtocontent"><!--[gt text="3. Enable transport PagEd to Content"]--></label>
-                    <!--[if $pagedtocontent eq 1]-->
-                    <input id="MUTransport_pagedtocontent" name="pagedtocontent" type="checkbox" value="1" checked="checked" />
-                    <!--[else]-->
-                    <input id="MUTransport_pagedtocontent" name="pagedtocontent" type="checkbox" value="1" />
-                    <!--[/if]-->
-                </div>
-                <div class="z-formrow">                                  
-                    <label for="MUTransport_pagedtonews"><!--[gt text="3. Enable transport PagEd to News"]--></label>
-                    <!--[if $pagedtonews eq 1]-->
-                    <input id="MUTransport_pagedtonews" name="pagedtonews" type="checkbox" value="1" checked="checked" />
-                    <!--[else]-->
-                    <input id="MUTransport_pagedtonews" name="pagedtonews" type="checkbox" value="1" />
-                    <!--[/if]-->
-                </div>
-                <div class="z-formrow">
-                    <label for="MUTransport_contenttocontent"><!--[gt text="4. Enable copy Content to Content"]--></label>
-                    <!--[if $contenttocontent eq 1]-->
-                    <input id="MUTransport_contenttocontent" name="contenttocontent" type="checkbox" value="1" checked="checked" />
-                    <!--[else]-->
-                    <input id="MUTransport_contenttocontent" name="contenttocontent" type="checkbox" value="1" />
-                    <!--[/if]-->
-                </div>
-                <div class="z-formrow">
-                    <label for="MUTransport_imagepath"><!--[gt text="5. The image path for PagEd"]--></label>
-                    <!--[if $image_path]-->
-                    <input id="MUTransport_imagepath" class="mutransport_form" name="image_path" type="text" value="<!--[$image_path]-->" size="20" />
-                    <!--[else]-->
-                    <input id="MUTransport_imagepath" class="mutransport_form" name="image_path" type="text" value="" size="20" />
-                    <!--[/if]-->
-                </div>                
-                <div class="z-formrow">                		
-                    <label for="MUTransport_textformat" id="MUTransport_textformat"><!--[gt text="5. Format of transport for News, Pages and PagEd "]-->( <!--[$text_format]--> <!--[gt text="active "]--> )</label>
-                    <!--[if $text_format]-->                 
-                    <select class="mutransport_form" name="text_format" size="1">
-                        <!--[if $text_format eq 'text']-->
-				        <option class="mutransport_selected" selected value="text" >text</option>
- 				        <option value="html">html</option>                       
-                        <!--[/if]-->				        
-                        <!--[if $text_format eq 'html']-->
-				        <option value="text">text</option>
- 				        <option class="mutransport_selected" selected value="html">html</option>
-                        <!--[/if]-->                          
-                        </select> 
-                    <!--[else]-->
-                    <select class="mutransport_form" name="text_format" size="1">
-				        <option value="">please select</option> 
-				        <option value="text">text</option>
- 				        <option value="html">html</option>                                        
-                        </select>                    
-                    <!--[/if]-->               
-                </div> 
-            </fieldset>
-            <div class="z-formbuttons">
-                <!--[pnbutton src=button_ok.gif set=icons/small __alt="Save" __title="Save"]-->
-                <a href="<!--[pnmodurl modname=MUTransport type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"]--></a>
-            </div>
-        </div>
-    </form>
+<div class="z-adminpageicon"><!--[pnimg modname=core src=configure.gif set=icons/large __alt='Settings' ]--></div>
+<h2><!--[gt text="Settings"]--></h2>
+<div class="mutransport_warning"><!--[gt text="Attention ! Disable a module will delete the pages of the module in page view and the module in the module view !"]--><br />
+<!--[gt text="PagEd will only be deleted, if you disable both of the options for this module !"]--></div>
+<form class="z-form" action="<!--[pnmodurl modname='MUTransport' type='admin' func='updateconfig']-->"
+method="post" enctype="application/x-www-form-urlencoded">
+<div><input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="Blocks"]-->"
+/>
+<fieldset><legend><!--[gt text="General settings"]--></legend>
+<div class="z-formrow"><label for="MUTransport_newstocontent"><!--[gt text="1. Enable transport News to Content"]--></label>
+<!--[if $newstocontent eq 1]--> <input id="MUTransport_newstocontent"
+	name="newstocontent" type="checkbox" value="1" checked="checked" /> <!--[else]-->
+<input id="MUTransport_newstocontent" name="newstocontent"
+	type="checkbox" value="1" /> <!--[/if]--></div>
+<div class="z-formrow"><label for="MUTransport_pagestocontent"><!--[gt text="2. Enable transport Pages to Content"]--></label>
+<!--[if $pagestocontent eq 1]--> <input id="MUTransport_pagestocontent"
+	name="pagestocontent" type="checkbox" value="1" checked="checked" /> <!--[else]-->
+<input id="MUTransport_pagestocontent" name="pagestocontent"
+	type="checkbox" value="1" /> <!--[/if]--></div>
+<div class="z-formrow"><label for="MUTransport_pagedtocontent"><!--[gt text="3. Enable transport PagEd to Content"]--></label>
+<!--[if $pagedtocontent eq 1]--> <input id="MUTransport_pagedtocontent"
+	name="pagedtocontent" type="checkbox" value="1" checked="checked" /> <!--[else]-->
+<input id="MUTransport_pagedtocontent" name="pagedtocontent"
+	type="checkbox" value="1" /> <!--[/if]--></div>
+<div class="z-formrow"><label for="MUTransport_pagedtonews"><!--[gt text="4. Enable transport PagEd to News"]--></label>
+<!--[if $pagedtonews eq 1]--> <input id="MUTransport_pagedtonews"
+	name="pagedtonews" type="checkbox" value="1" checked="checked" /> <!--[else]-->
+<input id="MUTransport_pagedtonews" name="pagedtonews" type="checkbox"
+	value="1" /> <!--[/if]--></div>
+<div class="z-formrow"><label for="MUTransport_contenttocontent"><!--[gt text="5. Enable copy Content to Content"]--></label>
+<!--[if $contenttocontent eq 1]--> <input
+	id="MUTransport_contenttocontent" name="contenttocontent"
+	type="checkbox" value="1" checked="checked" /> <!--[else]--> <input
+	id="MUTransport_contenttocontent" name="contenttocontent"
+	type="checkbox" value="1" /> <!--[/if]--></div>
+<div class="z-formrow"><label for="MUTransport_textformat"
+	id="MUTransport_textformat"><!--[gt text="6. Format of transport for News, Pages and PagEd "]-->(
+<!--[$text_format]--> <!--[gt text="active "]--> )</label> <!--[if $text_format]-->
+<select class="mutransport_form" name="text_format" size="1">
+	<!--[if $text_format eq 'text']-->
+	<option class="mutransport_selected" selected value="text">text</option>
+	<option value="html">html</option>
+	<!--[/if]-->
+	<!--[if $text_format eq 'html']-->
+	<option value="text">text</option>
+	<option class="mutransport_selected" selected value="html">html</option>
+	<!--[/if]-->
+</select> <!--[else]--> <select class="mutransport_form" name="text_format"
+	size="1">
+	<option value=""><!--[gt text="please select"]--></option>
+	<option value="text">text</option>
+	<option value="html">html</option>
+</select> <!--[/if]--></div>
+
+</fieldset>
+<fieldset><legend><!--[gt text="Specific settings for PagEd"]--></legend>
+<div class="z-formrow"><label for="MUTransport_imagepath"><!--[gt text="7. The image path for PagEd"]--></label>
+<!--[if $image_path]--> <input id="MUTransport_imagepath"
+	class="mutransport_form" name="image_path" type="text" value="<!--[$image_path]-->"
+size="20" /> <!--[else]--> <input id="MUTransport_imagepath"
+	class="mutransport_form" name="image_path" type="text" value=""
+	size="20" /> <!--[/if]--></div>
+<div class="z-formrow"><label for="MUTransport_state"
+	id="MUTransport_state"><!--[gt text="8. The state you wish for transport to News "]-->(
+<!--[$newsstate]--> <!--[gt text="active "]--> )</label> <!--[if $news_state]-->
+<select class="mutransport_form" name="news_state" size="1">
+	<!--[if $news_state eq 4]-->
+	<option class="mutransport_selected" selected value="4"><!--[gt text="waiting"]--></option>
+	<option value="6"><!--[gt text="draft"]--></option>
+	<!--[/if]-->
+	<!--[if $news_state eq 6]-->
+	<option value="4"><!--[gt text="waiting"]--></option>
+	<option class="mutransport_selected" selected value="6"><!--[gt text="draft"]--></option>
+	<!--[/if]-->
+</select> <!--[else]--> <select class="mutransport_form" name="news_state"
+	size="1">
+	<option value=""><!--[gt text="please select"]--></option>
+	<option value="4"><!--[gt text="waiting"]--></option>
+	<option value="6"><!--[gt text="draft"]--></option>
+</select> <!--[/if]--></div>
+</fieldset>
+<div class="z-formbuttons"><!--[pnbutton src=button_ok.gif set=icons/small __alt="Save" __title="Save"]-->
+<a href="<!--[pnmodurl modname=MUTransport type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"]--></a>
+</div>
+</div>
+</form>
 </div>
 <!--[include file="MUTransport_admin_footer.htm"]-->

@@ -150,13 +150,18 @@ function MUTransport_admin_view($args)
     
     $modulescolumn = $pntable['modules_column'];
     $mutransportcolumn = $pntable['mutransport_modul_column'];
-    // get data from modul modul
+    // get data from modul content
     $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("content") . "'";  
     $question = DBUtil::selectObjectArray('modules', $where);
     $status = $question[0][state];
     
+    $where2 = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("News") . "'";  
+    $question2 = DBUtil::selectObjectArray('modules', $where2);
+    $status2 = $question2[0][state];
+    
     // assign the state of content to rule the page view
     $render->assign('statuscontent', $status);
+    $render->assign('statusnews', $status2);
     
     $render->clear_cache('MUTransport_admin_modul_view.htm');                          
 
@@ -392,7 +397,8 @@ function MUTransport_admin_updateconfig()
     $pagedtonews = (int)FormUtil::getPassedValue('pagedtonews');
     $contenttocontent = (int)FormUtil::getPassedValue('contenttocontent');
     $image_path = (string)FormUtil::getPassedValue('image_path');
-    $text_format = (string)FormUtil::getPassedValue('text_format');  
+    $text_format = (string)FormUtil::getPassedValue('text_format');
+    $news_state = (string)FormUtil::getPassedValue('news_state');  
     
     if (!isset($newstocontent) || !is_numeric($newstocontent)) {
         $newstocontent = 0;
@@ -419,7 +425,10 @@ function MUTransport_admin_updateconfig()
     }    
     if (!isset($text_format) || !is_string($text_format)) {
         $text_format = 'text';       
-    } 
+    }
+    if (!isset($news_state) || !is_numeric($news_state)) {
+        $news_state = 4;       
+    }  
           
     pnModSetVar('MUTransport', 'newstocontent', $newstocontent);
     pnModSetVar('MUTransport', 'pagestocontent', $pagestocontent);
@@ -428,6 +437,7 @@ function MUTransport_admin_updateconfig()
     pnModSetVar('MUTransport', 'contenttocontent', $contenttocontent);
     pnModSetVar('MUTransport', 'image_path', $image_path);
     pnModSetVar('MUTransport', 'text_format', $text_format);
+    pnModSetVar('MUTransport', 'news_state', $news_state);
 
     // Let any other modules know that the modules configuration has been updated
     // pnModCallHooks('module','updateconfig','MUTransport', array('module' => 'MUTransport'));  neu 29.12.2009

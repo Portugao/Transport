@@ -74,7 +74,6 @@ class FilterUtil_Plugin_serialized extends FilterUtil_OpCommon
             $op = "";
             $value = "%".serialize($field) . serialize($value)."%";
             break;
-        case ""
         }
     }
 }

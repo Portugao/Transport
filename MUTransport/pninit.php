@@ -51,6 +51,7 @@ function MUTransport_init()
     pnModSetVar('MUTransport', 'contenttocontent', 0);
     pnModSetVar('MUTransport', 'image_path', '');
     pnModSetVar('MUTransport', 'text_format', 'text');
+    pnModSetVar('MUTransport', 'news_state', 4);
 
     // create the default data for MUTransport
     MUTransport_defaultdata();
@@ -82,11 +83,12 @@ function MUTransport_upgrade($oldversion)
     pnModSetVar('MUTransport', 'contenttocontent', 1);
     pnModSetVar('MUTransport', 'image_path', '');
     pnModSetVar('MUTransport', 'text_format', 'text');
+
     
     case '1.2':
     // set new modvar
     pnModSetVar('MUTransport', 'pagedtonews', 0);   
-            
+    pnModSetVar('MUTransport', 'news_state', 4);            
     }
 
 
