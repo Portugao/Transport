@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MUTransport 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-02 13:16+0000\n"
+"POT-Creation-Date: 2010-06-03 08:39+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mike <kontakt@mu-t-beratung.de>\n"
 "Language-Team: \n"
@@ -79,11 +79,11 @@ msgstr "nicht vorhanden"
 #: pnadminapi.php:547
 #: pnadminapi.php:670
 #: pnadminapi.php:785
-#: pnadminapi.php:882
-#: pnadminapi.php:930
-#: pnadminapi.php:989
-#: pnadminapi.php:1035
-#: pnadminapi.php:1453
+#: pnadminapi.php:883
+#: pnadminapi.php:931
+#: pnadminapi.php:990
+#: pnadminapi.php:1036
+#: pnadminapi.php:1478
 msgid "Done! "
 msgstr "Erledigt ! "
 
@@ -97,7 +97,7 @@ msgstr[1] " Seiten des Moduls News zu MUTransport hinzugefügt "
 #: pnadminapi.php:547
 #: pnadminapi.php:670
 #: pnadminapi.php:785
-#: pnadminapi.php:1453
+#: pnadminapi.php:1478
 msgid " and "
 msgstr " und "
 
@@ -164,101 +164,117 @@ msgstr[1] " Seiten des Moduls Content in MUTransport aktualisiert "
 msgid "No pages in modul Content available !"
 msgstr "Keine Seiten in Content vorhanden !"
 
-#: pnadminapi.php:875
-#: pnadminapi.php:923
-#: pnadminapi.php:982
-#: pnadminapi.php:1028
+#: pnadminapi.php:876
+#: pnadminapi.php:924
+#: pnadminapi.php:983
+#: pnadminapi.php:1029
 msgid "There is no page to delete !"
 msgstr "Keine Seite zum löschen vorhanden !"
 
-#: pnadminapi.php:879
+#: pnadminapi.php:880
 msgid "There are no Pages of module News in Modul MUTransport available !"
 msgstr "Keine Seiten des Moduls News in MUTransport vorhanden !"
 
-#: pnadminapi.php:882
+#: pnadminapi.php:883
 msgid " page of News in MUTransport deleted !"
 msgid_plural " pages of News in MUTransport deleted !"
 msgstr[0] " Seite des Moduls News in MUTransport gelöscht !"
 msgstr[1] "  Seiten des Moduls News in MUTransport gelöscht !"
 
-#: pnadminapi.php:927
+#: pnadminapi.php:928
 msgid "There are no Pages of module Pages in Modul MUTransport available !"
 msgstr "Keine Seiten des Moduls Pages in MUtransport vorhanden !"
 
-#: pnadminapi.php:930
+#: pnadminapi.php:931
 msgid " page of Pages in MUTransport deleted !"
 msgid_plural " pages of Pages in MUTransport deleted !"
 msgstr[0] " Seite des Moduls Pages in MUTransport gelöscht !"
 msgstr[1] "  Seiten des Moduls Pages in MUTransport gelöscht !"
 
-#: pnadminapi.php:986
+#: pnadminapi.php:987
 msgid "There are no Pages of module PagEd in Modul MUTransport available !"
 msgstr "Keine Seiten des Moduls PagEd in MUtransport vorhanden !"
 
-#: pnadminapi.php:989
+#: pnadminapi.php:990
 msgid " page of PagEd in MUTransport deleted !"
 msgid_plural " pages of PagEd in MUTransport deleted !"
 msgstr[0] " Seite des Moduls PagEd in MUTransport gelöscht !"
 msgstr[1] "  Seiten des Moduls PagEd in MUTransport gelöscht !"
 
-#: pnadminapi.php:1032
+#: pnadminapi.php:1033
 msgid "There are no Pages of module Content in Modul MUTransport available !"
 msgstr "Keine Seiten des Moduls Content in MUtransport vorhanden !"
 
-#: pnadminapi.php:1035
+#: pnadminapi.php:1036
 msgid " page of Content in MUTransport deleted !"
 msgid_plural " pages of Content in MUTransport deleted !"
 msgstr[0] " Seite des Moduls Content in MUTransport gelöscht !"
 msgstr[1] " Seiten des Moduls Content in MUTransport gelöscht !"
 
-#: pnadminapi.php:1154
-#: pnadminapi.php:1299
-#: pnadminapi.php:1349
-#: pnadminapi.php:1444
+#: pnadminapi.php:1156
+msgid "This page does not exist in News anymore !"
+msgstr "Diese Seite existiert in News nicht mehr !"
+
+#: pnadminapi.php:1162
+#: pnadminapi.php:1313
+#: pnadminapi.php:1368
+#: pnadminapi.php:1469
 msgid "There is still one Page with this Permalink Url!"
 msgstr "Es gibt bereits eine Seite mit dieser Permalink Url !"
 
+#: pnadminapi.php:1307
+msgid "This page does not exist in PagEd anymore !"
+msgstr "Diese Seite existiert in PagEd nicht mehr !"
+
 #: pnadminapi.php:1363
+msgid "This page does not exist in Pages anymore !"
+msgstr "Diese Seite existiert in Pages nicht mehr !"
+
+#: pnadminapi.php:1382
 msgid " (A copy)"
 msgstr " (Eine Kopie)"
 
-#: pnadminapi.php:1451
+#: pnadminapi.php:1465
+msgid "This page does not exist in Content anymore !"
+msgstr "Diese Seite existiert in Content nicht mehr !"
+
+#: pnadminapi.php:1476
 msgid "Sorry ! No Page selected!"
 msgstr "Sorry ! Keine Seite ausgewählt !"
 
-#: pnadminapi.php:1453
+#: pnadminapi.php:1478
 msgid " page of Pages transported"
 msgid_plural " pages of Pages transported"
 msgstr[0] " Seite des Moduls Pages transportiert"
 msgstr[1] " Seiten des Moduls Pages transportiert"
 
-#: pnadminapi.php:1453
+#: pnadminapi.php:1478
 msgid " page of News transported"
 msgid_plural " pages of News transported"
 msgstr[0] " Seite des Moduls News transportiert"
 msgstr[1] " Seiten des Moduls News transportiert"
 
-#: pnadminapi.php:1453
+#: pnadminapi.php:1478
 msgid " page of PagEd transported"
 msgid_plural " pages of PagEd transported"
 msgstr[0] " Seite des Moduls PagEd transportiert"
 msgstr[1] " Seiten des Moduls PagEd transportiert"
 
-#: pnadminapi.php:1453
+#: pnadminapi.php:1478
 msgid " page of Content copied !"
 msgid_plural " pages of Content copied !"
 msgstr[0] " Seite des Moduls Content kopiert !"
 msgstr[1] " Seiten des Moduls Content kopiert !"
 
-#: pnadminapi.php:1471
+#: pnadminapi.php:1496
 msgid "Modules"
 msgstr "Module"
 
-#: pnadminapi.php:1475
+#: pnadminapi.php:1500
 msgid "Pages"
 msgstr "Seiten"
 
-#: pnadminapi.php:1483
+#: pnadminapi.php:1508
 #: pntemplates/MUTransport_admin_modifyconfig.htm:10
 #: pntemplates/MUTransport_admin_modifyconfig.htm:11
 msgid "Settings"

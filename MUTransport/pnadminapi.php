@@ -373,7 +373,7 @@ function MUTransport_adminapi_read($args)
     $items = pnModAPIFunc('News', 'user', 'getall',
                           array('startnum'     => $startnum,
                                 'numitems'     => $itemsperpage,
-                                'status'       => 0,
+                                'status'       => $args['status'],
                                 'hideonindex'  => $args['hideonindex'],
                                 'filterbydate' => true,
                                 'category'     => isset($catFilter) ? $catFilter : null,
@@ -846,6 +846,7 @@ function MUTransport_adminapi_delete($args)
 
         $question = DBUtil::selectObjectArray('news');
         $countquestion = count($question);
+        
         // ask the DB for existing Pages of News in MUTransport
     
         $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
@@ -854,7 +855,7 @@ function MUTransport_adminapi_delete($args)
         
         $diff = $countsearch - $countquestion;
         
-        // put the pageid's of existing Pages in Pages in an array
+        // put the pageid's of existing Pages in News in an array
         $question_id = array();
         foreach ($question as $wert => $value)  {
         $question_id[] = $value['sid'];
@@ -862,7 +863,7 @@ function MUTransport_adminapi_delete($args)
         
         if($countsearch > 0) {
           if($countquestion < $countsearch)  {  
-            // delete Pages from MUtransport not existing in Pages
+            // delete Pages from MUTransport not existing in News
             foreach ($search as $wert => $value)  {
                 if (!in_array($value[pageid], $question_id)) {
                     $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
@@ -1120,7 +1121,8 @@ function MUTransport_adminapi_delete($args)
     
       // prepare the page
     
-      if (!$check)  {   
+      if (!$check)  {
+      	if($question_page) {   
     
         // build the page and put it into the db
         $ok1 = MUTransportHelp::buildArrayForPage($question_page['title']);
@@ -1147,6 +1149,12 @@ function MUTransport_adminapi_delete($args)
         $newstext = $question_page[hometext];
         
         MUTransportHelp::buildArrayForContent($newstext, $format, $relation_id, 'html');
+        
+      	}
+      	else
+      	{
+      		return LogUtil::registerError(__('This page does not exist in News anymore !', $dom));
+      	}
     
     } // if (!$check)
     else
@@ -1191,6 +1199,7 @@ function MUTransport_adminapi_delete($args)
       
          
       if (!$check || !$check2)  {
+      	if($question_page) {
       
         // for transport to content
         if($tocontent === 1) { 
@@ -1291,6 +1300,11 @@ function MUTransport_adminapi_delete($args)
       
       if($ok1 || $ok2) {
         $counter4 = $counter4 + 1;
+      }
+      } // if($question_page)
+      else
+      {
+      	return LogUtil::registerError(__('This page does not exist in PagEd anymore !', $dom));
       }  
     } // if (!$check)
     
@@ -1322,7 +1336,8 @@ function MUTransport_adminapi_delete($args)
     
       // prepare the page
     
-      if (!$check)  {  
+      if (!$check)  {
+      	if($question_page) {  
         
         $ok1 = MUTransportHelp::buildArrayForPage($question_page['title']);      
 
@@ -1342,8 +1357,12 @@ function MUTransport_adminapi_delete($args)
         
         MUTransportHelp::buildArrayForContent($question_page[content], $format, $relation_id, 'html');
 
-
-    } // if if (!$check)
+      	} // if($question_page)
+      	else
+      	{
+      		LogUtil::registerError(__('This page does not exist in Pages anymore !', $dom)); 
+      	}
+    } // if (!$check)
     else
     {
       return LogUtil::registerError(__('There is still one Page with this Permalink Url!', $dom));                           
@@ -1369,6 +1388,8 @@ function MUTransport_adminapi_delete($args)
             
       // start to copy
       if(!$check) {
+      	if($question_content) {
+      		
           $where = "WHERE $mutransportcolumn[pageid] = '" . pnVarPrepForStore($id) . "'";
           $old = DBUtil::selectObject('mutransport_page', $where);
           $transport = $old[transport];    
@@ -1438,7 +1459,11 @@ function MUTransport_adminapi_delete($args)
           $obj = array ('transport' => $transport);
           if(is_array($obj))
               DBUtil::updateObject ($obj,'mutransport_page', $where);
-  
+      	}
+      	else
+      	{
+      		return LogUtil::registerError(__('This page does not exist in Content anymore !', $dom)); 
+      	}
       } // if (!$check)
       else  {
         return LogUtil::registerError(__('There is still one Page with this Permalink Url!', $dom));                           
