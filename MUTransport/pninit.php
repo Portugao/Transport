@@ -35,10 +35,19 @@ function MUTransport_init()
     if (!DBUtil::createTable('mutransport_page')) {
         return false;
     }
-/*    // create the cms table
-    if (!DBUtil::createTable('mutransport_cms_content')) {
+    // create the cms table
+    if (!DBUtil::createTable('mutransport_cms')) {
         return false;
-    }  later use */
+    }
+    // create the cmscontent table
+    if (!DBUtil::createTable('mutransport_cmscontent')) {
+        return false;
+    }
+    // create the user table
+    if (!DBUtil::createTable('mutransport_user')) {
+        return false;
+    }      
+ 
 
 
 
@@ -52,6 +61,10 @@ function MUTransport_init()
     pnModSetVar('MUTransport', 'image_path', '');
     pnModSetVar('MUTransport', 'text_format', 'text');
     pnModSetVar('MUTransport', 'news_state', 4);
+    pnModSetVar('MUTransport', 'wordpress', 0);
+    pnModSetVar('MUTransport', 'wordpress_db', '');
+    pnModSetVar('MUTransport', 'wordpress_prefix', '');
+    pnModSetVar('MUTransport', 'ezcomments', 0);
 
     // create the default data for MUTransport
     MUTransport_defaultdata();
@@ -88,7 +101,16 @@ function MUTransport_upgrade($oldversion)
     case '1.2':
     // set new modvar
     pnModSetVar('MUTransport', 'pagedtonews', 0);   
-    pnModSetVar('MUTransport', 'news_state', 4);            
+    pnModSetVar('MUTransport', 'news_state', 4);
+    
+    case '1.2.5':
+    // set new modvar
+    pnModSetVar('MUTransport', 'wordpress', 0);
+    pnModSetVar('MUTransport', 'wordpress_db', '');
+    pnModSetVar('MUTransport', 'wordpress_prefix', '');
+    pnModSetVar('MUTransport', 'ezcomments', 0);
+    $sql = "";
+    createTable('MUTransport_cms', $sql );            
     }
 
 
@@ -114,9 +136,17 @@ function MUTransport_delete()
         return false;
     }
 
-/*    if (!DBUtil::dropTable('mutransport_cms_content')) {
+    if (!DBUtil::dropTable('mutransport_cms')) {
         return false;
-    }    uese later */
+    }
+    
+    if (!DBUtil::dropTable('mutransport_cmscontent')) {
+        return false;
+    }
+    
+    if (!DBUtil::dropTable('mutransport_user')) {
+        return false;
+    }
 
 
 
@@ -141,8 +171,10 @@ function MUTransport_defaultdata()
     // ensure that tables are cleared
     if (
         !DBUtil::deleteWhere('mutransport_modul', '1=1') || 
-        !DBUtil::deleteWhere('mutransport_page', '1=1')/* ||
-        !DBUtil::deleteWhere('mutransport_cms_content', '1=1')*/) {
+        !DBUtil::deleteWhere('mutransport_page', '1=1') ||
+        !DBUtil::deleteWhere('mutransport_cms', '1=1')||
+        !DBUtil::deleteWhere('mutransport_cmscontent', '1=1')||
+        !DBUtil::deleteWhere('mutransport_user', '1=1')) {
         return false;
     }
 

@@ -89,6 +89,9 @@ function MUTransport_admin_view($args)
         switch($objectType) {
             case 'modul': $sort = 'name'; break;
             case 'page': $sort = 'pageId'; break;
+            case 'cms': $sort = 'name'; break;
+            case 'cmscontent': $sort = 'contentId'; break;
+            case 'user': $sort = 'userid'; break;
             default: $sort = 'name';
         }
     }
@@ -150,7 +153,7 @@ function MUTransport_admin_view($args)
     
     $modulescolumn = $pntable['modules_column'];
     $mutransportcolumn = $pntable['mutransport_modul_column'];
-    // get data from modul content
+    // get data from module content
     $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("content") . "'";  
     $question = DBUtil::selectObjectArray('modules', $where);
     $status = $question[0][state];
@@ -303,7 +306,7 @@ function MUTransport_admin_pagedelete($args)
 
     $dom = ZLanguage::getModuleDomain('MUTransport');
     
-    //call adminapi_read
+    //call adminapi_delete
     
     pnModAPIFunc('MUTransport', 'admin', 'delete');
     
@@ -330,7 +333,13 @@ function MUTransport_admin_pagedelete($args)
     
     //call adminapi_transport    
     pnModAPIFunc('MUTransport', 'admin', 'transport');
+    if($modul == 'wordpress') {
+    	
+    	$obj = array('ot'	=> 'cmscontent');
+    }
+    else  {
     $obj = array ('ot'  => 'page');
+    }
     return pnRedirect(pnModURL('mutransport', 'admin', 'view', $obj));
 
 }
@@ -398,7 +407,11 @@ function MUTransport_admin_updateconfig()
     $contenttocontent = (int)FormUtil::getPassedValue('contenttocontent');
     $image_path = (string)FormUtil::getPassedValue('image_path');
     $text_format = (string)FormUtil::getPassedValue('text_format');
-    $news_state = (string)FormUtil::getPassedValue('news_state');  
+    $news_state = (string)FormUtil::getPassedValue('news_state');
+    $wordpress = (int)FormUtil::getPassedValue('wordpress');
+    $wordpress_db = (string)FormUtil::getPassedValue('wordpress_db');
+    $wordpress_prefix = (string)FormUtil::getPassedValue('wordpress_prefix');
+    $wordpress_ezcomments = (int)FormUtil::getPassedValue('wordpress_ezcomments');    
     
     if (!isset($newstocontent) || !is_numeric($newstocontent)) {
         $newstocontent = 0;
@@ -428,7 +441,19 @@ function MUTransport_admin_updateconfig()
     }
     if (!isset($news_state) || !is_numeric($news_state)) {
         $news_state = 4;       
+    }
+    if (!isset($wordpress) || !is_numeric($wordpress)) {
+        $wordpress = 0;       
+    }
+    if (!isset($wordpress_db) || !is_string($wordpress_db)) {
+        $wordpress_db = '';       
     }  
+    if (!isset($wordpress_prefix) || !is_string($wordpress_prefix)) {
+        $wordpress_prefix = '';       
+    }
+    if (!isset($wordpress_ezcomments) || !is_numeric($wordpress_ezcomments)) {
+        $wordpress_ezcomments = 0;       
+    }       
           
     pnModSetVar('MUTransport', 'newstocontent', $newstocontent);
     pnModSetVar('MUTransport', 'pagestocontent', $pagestocontent);
@@ -438,6 +463,11 @@ function MUTransport_admin_updateconfig()
     pnModSetVar('MUTransport', 'image_path', $image_path);
     pnModSetVar('MUTransport', 'text_format', $text_format);
     pnModSetVar('MUTransport', 'news_state', $news_state);
+    pnModSetVar('MUTransport', 'wordpress', $wordpress);
+    pnModSetVar('MUTransport', 'wordpress_db', $wordpress_db);
+    pnModSetVar('MUTransport', 'wordpress_prefix', $wordpress_prefix);
+    pnModSetVar('MUTransport', 'wordpress_ezcomments', $wordpress_ezcomments);
+
 
     // Let any other modules know that the modules configuration has been updated
     // pnModCallHooks('module','updateconfig','MUTransport', array('module' => 'MUTransport'));  neu 29.12.2009

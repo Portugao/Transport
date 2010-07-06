@@ -23,5 +23,8 @@ function MUTransport_getObjectTypes()
     $allowedObjectTypes = array();
     $allowedObjectTypes[] = 'modul';
     $allowedObjectTypes[] = 'page';
+    $allowedObjectTypes[] = 'cms';
+    $allowedObjectTypes[] = 'cmscontent';
+    $allowedObjectTypes[] = 'user';
     return $allowedObjectTypes;
 }

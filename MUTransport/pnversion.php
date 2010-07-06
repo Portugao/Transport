@@ -18,7 +18,7 @@ $dom = ZLanguage::getModuleDomain('MUTransport');
 $modversion['name']           = 'MUTransport';
 $modversion['displayname']    = __("MUTransport", $dom);
 $modversion['description']    = __("Transport of Content from module to module.", $dom);
-$modversion['version']        = '1.2.5';
+$modversion['version']        = '1.3.0';
 $modversion['url'] = __('mutransport', $dom);
 // permission schema
 $modversion['securityschema'] = array('MUTransport::' => '::');
@@ -27,7 +27,7 @@ $modversion['securityschema'] = array('MUTransport::' => '::');
 // file with credit information
 //$modversion['credits']        = 'pndocs/credits.txt';
 // help file
-$modversion['help']           = 'pndocs/readme.pdf';
+$modversion['help']           = 'pndocs/manual.pdf';
 // changelog file
 $modversion['changelog']      = 'pndocs/changelog.txt';
 // file with license information

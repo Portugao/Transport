@@ -15,6 +15,8 @@
 method="post" enctype="application/x-www-form-urlencoded">
 <div><input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="Blocks"]-->"
 />
+<div id="mutransport_modules">
+<fieldset><legend><!--[gt text="For modules"]--></legend>
 <fieldset><legend><!--[gt text="General settings"]--></legend>
 <div class="z-formrow"><label for="MUTransport_newstocontent"><!--[gt text="1. Enable transport News to Content"]--></label>
 <!--[if $newstocontent eq 1]--> <input id="MUTransport_newstocontent"
@@ -88,6 +90,35 @@ size="20" /> <!--[else]--> <input id="MUTransport_imagepath"
 	<option value="6"><!--[gt text="draft"]--></option>
 </select> <!--[/if]--></div>
 </fieldset>
+</fieldset></div>
+<div id="mutransport_cms">
+<fieldset><legend><!--[gt text="For CMS"]--></legend>
+<fieldset><legend><!--[gt text="General settings"]--></legend>
+<div class="z-formrow"><label for="MUTransport_newstocontent"><!--[gt text="1. Enable transport wordpress to Zikula"]--></label>
+<!--[if $wordpress eq 1]--> <input id="MUTransport_wordpress"
+	name="wordpress" type="checkbox" value="1" checked="checked" /> <!--[else]-->
+<input id="MUTransport_wordpress" name="wordpress"
+	type="checkbox" value="1" /> <!--[/if]--></div>
+</fieldset>
+<fieldset><legend><!--[gt text="Specific settings for wordpress"]--></legend>
+<div class="z-formrow"><label for="MUTransport_db"><!--[gt text="2. The name of the DB in the config"]--></label>
+<!--[if $wordpress_db]--> <input id="MUTransport_db"
+	class="mutransport_form" name="wordpress_db" type="text" value="<!--[$wordpress_db]-->"
+size="20" /> <!--[else]--> <input id="MUTransport_db"
+	class="mutransport_form" name="wordpress_db" type="text" value=""
+	size="20" /> <!--[/if]-->
+<div class="z-formrow"><label for="MUTransport_db"><!--[gt text="3. The prefix of the wordpress database"]--></label>
+<!--[if $wordpress_prefix]--> <input id="MUTransport_prefix"
+	class="mutransport_form" name="wordpress_prefix" type="text" value="<!--[$wordpress_prefix]-->"
+size="20" /> <!--[else]--> <input id="MUTransport_prefix"
+	class="mutransport_form" name="wordpress_prefix" type="text" value=""
+	size="20" /> <!--[/if]-->
+<div class="z-formrow"><label for="MUTransport_ezcomments"><!--[gt text="4. Enable the transport of comments"]--></label>
+<!--[if $wordpress_ezcomments eq 1]--> <input id="MUTransport_ezcomments"
+	class="mutransport_form" name="wordpress_ezcomments" type="checkbox" value="1" checked="checked" /> <!--[else]--> <input id="MUTransport_ezcomments"
+	class="mutransport_form" name="wordpress_ezcomments" type="checkbox" value="1"/> <!--[/if]--></div>
+</fieldset>
+</fieldset></div>
 <div class="z-formbuttons"><!--[pnbutton src=button_ok.gif set=icons/small __alt="Save" __title="Save"]-->
 <a href="<!--[pnmodurl modname=MUTransport type=admin func=view]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"]--></a>
 </div>

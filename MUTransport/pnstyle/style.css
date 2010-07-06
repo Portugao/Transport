@@ -31,3 +31,13 @@ div.linktabs {
 	font-size: 1.4em;
 	color: red;
 }
+
+#mutransport_modules {
+  float: left;
+  width: 45%;
+  }
+  
+#mutransport_cms {
+  float: right;
+  width: 45%;
+  }
