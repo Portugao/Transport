@@ -239,13 +239,19 @@ class MUTransportHelp
  * This function is for generate the input to news and put it into db
  * 
  * @param $title                 the correct column for the title
- * @param $action                the action that is wished
- * @param $result                the result of the select
- * @param $count                 the number of the content-items    
+ * @param $header				 the header of an chapter
+ * @param $result                the result of the select, may be an array or an normal var
+ * @param $count                 the number of the content-items, 0 if result is no array
+ * @from $from					 the date of the posting  
  * @return true      
  */
  
-   function generateInputForNews($title, $header, $result, $count, $action) {
+   function generateInputForNews($title, $author, $header, $result, $count, $from) {
+   	
+   $pntable = pnDBGetTables();	
+   $newscolumn = $pntable['news_column'];
+   	
+   $action = pnModGetVar('MUTransport', 'news_state');
    
    $args['title'] = $title;
    $args['hometextcontenttype'] = 1;
@@ -253,13 +259,14 @@ class MUTransportHelp
    $args['notes'] = '';
    $args['action'] = $action;
    $args['format_type'] = '';
-   $args['hideonindex'] = 0;
-   $args['disallowcomments'] = 0;
+   $args['hideonindex'] = 1;
+   $args['disallowcomments'] = 1;
    $args['hometext'] = '';
-   $args['bodytext'] = '';      
+   $args['bodytext'] = '';     
        
    $text2 = '';
-            
+   // the module we wish to tranport has several content
+   if(is_array($result)) {        
    foreach($result as $wert2 => $value2) {
         
    // ckeck the image path, if not empty check for image
@@ -318,9 +325,34 @@ class MUTransportHelp
         }               
       }
     }
+    } // if(is_array($result))
+    // the module witch we want to transport has no several contents
+    else {
+      $result = str_replace("\n","<br>",$result);
+      if((strlen($result) > 400)) {
+  	
+        $args['hometext'] = substr($result,0,200);
+        $args['bodytext'] = substr($result,201);  	     	
+      }
+      else {
+        $args['hometext'] = $result;	     	
+      }	 	
+    }
     // call create method of News modul        
-    pnModApiFunc('News', 'user', 'create', $args);        
-    return true; 
+    $relation_id = pnModApiFunc('News', 'user', 'create', $args);
+    
+ //   if($relation_id) {
+      // get the correct format of posting time for putting in news
+
+      $obj = array ('from'	=> $from,
+      				'contributor' => $author);
+      // get the last id of News
+      $relation_id = MUTransportHelp::getIdFromNews('sid');
+      $where = "WHERE $newscolumn[sid] = '" . pnVarPrepForStore($relation_id) . "'";
+      DBUtil::updateObject ($obj, 'news', $where);
+//      }  
+            
+    return true;   
     }
         
 /*----------------FUNCTIONS FOR EZCOMMENTS MODULE-------------------------------------*/
@@ -332,17 +364,18 @@ class MUTransportHelp
 * @param $mod					the module for that the comment is
 * @param $pageid				the page for that the comment is
 * @param $comment				the comment content
-* @param $uid					the id of the user, who submitted the comment, optional
-* @param $owneruid				unclear, but must be 0
+* @param $owneruid				unclear, but must be, 0 TODO
+* @param $anonname				the username of the wordpress user, who posted the comment
  */
  
-   function generateInputForEZComments($mod,$pageid, $comment, $uid, $owneruid ) {
+   function generateInputForEZComments($mod,$pageid, $comment, $owneruid, $anonname ) {
    	
    	$args = array('mod'			=> $mod,
    			      'objectid'	=> $pageid,
    			      'comment'		=> $comment,
    			      'owneruid'	=> $owneruid,
-   			      'uid'			=> $uid);
+   			      'uid'			=> 0,
+   			      'anonname'	=> $anonname);
    			      
     // call create method of module EZComments        
     pnModApiFunc('EZComments', 'user', 'create', $args);        

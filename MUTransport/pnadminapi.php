@@ -1513,8 +1513,8 @@ function MUTransport_adminapi_delete($args) {
       $pagedcontent = $prefix.'paged_content';
 
       // Get page from the DB
-      $sql = "SELECT page_id, title, ingress, unix_timestamp FROM $pagedtitles WHERE page_id = '" . pnVarPrepForStore($id) . "'";
-      $columns = array('page_id', 'title', 'ingress', 'unix_timestamp');
+      $sql = "SELECT page_id, title, ingress, unix_timestamp, page_author FROM $pagedtitles WHERE page_id = '" . pnVarPrepForStore($id) . "'";
+      $columns = array('page_id', 'title', 'ingress', 'unix_timestamp', 'page_author');
       $question = DBUtil::executeSQL($sql);
       $question_page = DBUtil::marshallObjects($question, $columns);
       $count_question_page = count($question_page);
@@ -1535,7 +1535,7 @@ function MUTransport_adminapi_delete($args) {
       	if($question_page) {
       
         // for transport to content
-        if($tocontent === 1) { 
+        if($tocontent == 1) { 
         
         // build the page and put it into the db
         $ok1 = MUTransportHelp::buildArrayForContentPage($value['title']);       
@@ -1552,7 +1552,10 @@ function MUTransport_adminapi_delete($args) {
                 
         // take the content for the page from PagEd
         
-        $sql2 = "SELECT page_id, section, subtitle, image, imagetext, text FROM $pagedcontent WHERE page_id = '" . pnVarPrepForStore($id) . "' ORDER BY section DESC";
+        $sql2 = "SELECT page_id, section, subtitle, image, imagetext, text
+        		 FROM $pagedcontent
+        		 WHERE page_id = '" . pnVarPrepForStore($id) . "' ORDER BY section DESC";
+        		
         $columns2 = array('page_id', 'section', 'subtitle', 'image', 'imagetext', 'text');
         $question2 = DBUtil::executeSQL($sql2);
         $question_content = DBUtil::marshallObjects($question2, $columns2);
@@ -1616,26 +1619,15 @@ function MUTransport_adminapi_delete($args) {
       
       // for transport to news
       if($tonews == 1) {
-      	$action = pnModGetVar('MUTransport', 'news_state');
 
         $sql = "SELECT page_id, section, subtitle, image, imagetext, text FROM $pagedcontent WHERE page_id = '" . pnVarPrepForStore($id) . "' ORDER BY section ASC";
         $columns = array('page_id', 'section', 'subtitle', 'image', 'imagetext', 'text');
         $question = DBUtil::executeSQL($sql);
         $question_content = DBUtil::marshallObjects($question, $columns);
         $count_question_content = count($question_content);
-
-        $ok2 = MUTransportHelp::generateInputForNews($value[title], $value[ingress], $question_content, $count_question_content, $action);
         
-        if($ok2) {
-          // get the correct format of posting time for putting in news
-          $date = DateUtil::getDatetime($value[unix_timestamp]);
-          $obj = array ('from'	=> $date);
-          // get the last id of News
-          $relation_id = MUTransportHelp::getIdFromNews('sid');
-          $where = "WHERE $newscolumn[sid] = '" . pnVarPrepForStore($relation_id) . "'";
-          DBUtil::updateObject ($obj, 'news', $where);
-             	
-        }    
+        $date = DateUtil::getDatetime($value[unix_timestamp]);
+        $ok2 = MUTransportHelp::generateInputForNews($value[title],$value[page_author] , $value[ingress], $question_content, $count_question_content, $date); 
               
         if($ok2) {
           MUTransportHelp::updateTransport($mutransportcolumn[pageid],$id);
@@ -1848,7 +1840,8 @@ function MUTransport_adminapi_delete($args) {
       }
       	
       $tables = $prefix . 'posts';
-      $tables2 = $prefix . 'users';
+      $tables2 = $prefix . 'comments';
+      $tables3 = $prefix . 'users';
     
       if($wordpress == 1) {
 
@@ -1861,14 +1854,23 @@ function MUTransport_adminapi_delete($args) {
     
         // ask the DB for Pages in wordpress with state 'publish'
         
-        $sql = "SELECT ID, post_title, post_type, post_content, post_status
+        $sql = "SELECT ID, post_author, post_date, post_title, post_type, post_content, post_status, post_type
     	        FROM $tables
     	        WHERE post_status = 'publish'
     	        AND ID = '" . pnVarPrepForStore($id) . "'";
     	    
-        $columns = array('ID', 'post_title', 'post_type','post_content','post_status');
+        $columns = array('ID','post_author', 'post_date', 'post_title', 'post_type','post_content','post_status','post_type');
         $question = DBUtil::executeSQL($sql);
         $obj = DBUtil::marshallObjects($question, $columns);
+        
+        // ask db for the username
+        
+        $sql2 = "SELECT ID, user_login
+        		 FROM $tables3";
+        		  
+        $columns2 = array('ID', 'user_login');
+        $question2 = DBUtil::executeSQL($sql2);
+        $obj2 = DBUtil::marshallObjects($question2, $columns2);
     
         // Connection back to Zikula
         DBConnectionStack::init();
@@ -1876,48 +1878,56 @@ function MUTransport_adminapi_delete($args) {
         if($obj) {
     
           foreach($obj as $wert => $value) {
+          	
+          	if($value[post_type] == 'page') {
     	
-          $ok1 = MUTransportHelp::buildArrayForPagesPage($value[post_title], $value[post_content]);
+              $ok1 = MUTransportHelp::buildArrayForPagesPage($value[post_title], $value[post_content] );
     
-          $relation_id = MUTransportHelp::getIdFromPages('pageid');
+              $counter10 = $counter10 + 1;
+              // update the state of transport for the original Page
+              if ($ok1) {        
+                MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
+              }
+            } // if($value[post_type] == 'page')
+          
+            if($value[post_type] == 'post') {
+            	
+              $ok2 = MUTransportHelp::generateInputForNews($value[post_title],$obj2[0],'', $value[post_content],0,$value[post_date] );
+              
+              $relation_id = MUTransportHelp::getIdFromNews('sid');
+              $counter10 = $counter10 + 1;
+              
+              if ($ok2) {        
+                MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
+              }              
+              if((int)pnModGetVar('MUTransport','wordpress_ezcomments') == 1) {
     
-          $counter10 = $counter10 + 1;
-          // update the state of transport for the original Page
-          if ($ok1) {        
-            MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
+              // Connection to the db of wordpress
+              DBConnectionStack::init($wordpress_db);    
     
-          }
-    
-          if((int)pnModGetVar('MUTransport','wordpress_ezcomments') == 1) {
-    
-            // Connection to the db of wordpress
-            DBConnectionStack::init($wordpress_db);    
-    
-            // ask the DB for Comments in wordpress for this page
-    
-            $tables2 = $prefix . 'comments';
+              // ask the DB for Comments in wordpress for this page
         
-            $sql2 = "SELECT comment_ID, comment_post_ID, comment_author, comment_date, comment_content
+              $sql2 = "SELECT comment_ID, comment_post_ID, comment_author, comment_date, comment_content
     	             FROM $tables2
     	             WHERE comment_post_ID = $value[ID]";
     	    
-            $columns2 = array('comment_ID', 'comment_post_ID', 'comment_author','comment_date','comment_content');
-            $question2 = DBUtil::executeSQL($sql2);
-            $obj2 = DBUtil::marshallObjects($question2, $columns2);
+              $columns2 = array('comment_ID', 'comment_post_ID', 'comment_author','comment_date','comment_content');
+              $question2 = DBUtil::executeSQL($sql2);
+              $obj2 = DBUtil::marshallObjects($question2, $columns2);
     
-            // Connection back to Zikula
-            DBConnectionStack::init();
+              // Connection back to Zikula
+              DBConnectionStack::init();
     
-            if(obj2)  {
+              if(obj2)  {
       
               foreach($obj2 as $wert2 => $value2) {
-      	
-      	      $userid = 1; // TODO  solve the problem   	
-      	      MUTransportHelp::generateInputForEZComments('Pages',$relation_id, $value2[comment_content],$userid, 0 );     	
+      	 	
+      	      MUTransportHelp::generateInputForEZComments('News',$relation_id, $value2[comment_content],0, $value2[comment_author]);     	
       	
               }
             } // if(obj2)
          } // if(pnModGetVar('MUTransport','ezcomments') == 1)
+         } //
          } // foreach($obj as $wert => $value)
     } // if($obj)
     else  {
@@ -1934,7 +1944,7 @@ function MUTransport_adminapi_delete($args) {
         // ask the DB for Users in wordpress
         
         $sql = "SELECT ID, user_login, user_email, user_registered
-    	        FROM $tables2";
+    	        FROM $tables3";
     	    
         $columns2 = array('ID', 'user_login', 'user_email', 'user_registered');
         $question2 = DBUtil::executeSQL($sql);

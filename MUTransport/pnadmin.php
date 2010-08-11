@@ -333,8 +333,7 @@ function MUTransport_admin_pagedelete($args)
     
     //call adminapi_transport    
     pnModAPIFunc('MUTransport', 'admin', 'transport');
-    if($modul == 'wordpress') {
-    	
+    if($modul == 'wordpress') {   	
     	$obj = array('ot'	=> 'cmscontent');
     }
     else  {
