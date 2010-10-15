@@ -33,7 +33,7 @@ function MUTransport_adminapi_check($args)
     }
 // DEBUG: permission check aspect ends
 
-/*    $dom = ZLanguage::getModuleDomain('MUTransport');
+    $dom = ZLanguage::getModuleDomain('MUTransport');
 
 /*------------------------Modules------------------------------------*/
 
@@ -59,7 +59,7 @@ function MUTransport_adminapi_check($args)
     // get data from MUTransport module    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("News") . "'";
     $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    $id = $question2[0][modulid];    
+    $id = $question2[0]['modulid'];    
 
     // call function getState
     $status = MUTransportHelp::getState('News');   
@@ -107,7 +107,7 @@ function MUTransport_adminapi_check($args)
     // get data from MUTransport module    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("Pages") . "'";
     $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    $id = $question2[0][modulid];
+    $id = $question2[0]['modulid'];
     
     // call function getState
     $status = MUTransportHelp::getState('Pages');
@@ -156,7 +156,7 @@ function MUTransport_adminapi_check($args)
     // get data from MUTransport module    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("PagEd") . "'";
     $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    $id = $question2[0][modulid];
+    $id = $question2[0]['modulid'];
    
     // call function getState
     $status = MUTransportHelp::getState('PagEd');
@@ -197,6 +197,54 @@ function MUTransport_adminapi_check($args)
 
 /* -------- End of Part for Module PagEd-------------*/
 
+/* -------- Start of Part for Module Reviews-------------*/
+
+    // get state of the module 'Reviews'
+       
+    // get data from MUTransport module    
+    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("Reviews") . "'";
+    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
+    $id = $question2[0]['modulid'];
+    
+    // call function getState
+    $status = MUTransportHelp::getState('Reviews');
+        
+    // if Pages enabled
+    if(pnModGetVar('MUTransport', 'reviewstocontent') == 1)  {    
+    
+    if(is_array($question2))  {
+    
+    // build the Array with the checked field
+    $obj = array('state' => $status);
+
+    // submit the UPDATE 
+    DBUtil::updateObject ($obj, 'mutransport_modul', $where2);
+   
+    }    
+    if ($question2 == false)
+    {
+    $obj = array ('modulid'  => '',
+                  'name' => 'Reviews',
+                  'state'  => $status);
+    
+    // submit the INSERT
+    DBUtil::insertObject ($obj, 'mutransport_modul', 'modulid');
+    
+    }
+    }
+    else
+    {
+    if(is_array($question2)) {
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    DBUtil::deleteWhere('mutransport_page', $where);    
+    $where2 = "WHERE $mutransportcolumn[name] = 'Reviews'";
+    DBUtil::deleteWhere('mutransport_modul', $where2);
+    }
+    
+    }
+    
+/* -------- End of Part for Module Reviews-------------*/
+
 /* -------- Start of Part for Module Content-------------*/
 
     // get state of the module 'content'
@@ -204,7 +252,7 @@ function MUTransport_adminapi_check($args)
     // get data from MUTransport modul    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("content") . "'";
     $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    $id = $question2[0][modulid];
+    $id = $question2[0]['modulid'];
     
     // call function getState
     $status = MUTransportHelp::getState('content');
@@ -252,7 +300,7 @@ function MUTransport_adminapi_check($args)
     // get data from MUTransport cms    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("wordpress") . "'";
     $question2 = DBUtil::selectObjectArray('mutransport_cms', $where2);
-    $id = $question2[0][cmsid];
+    $id = $question2[0]['cmsid'];
 
     $wordpress = pnModGetVar('MUTransport','wordpress');
     $wordpress_db = pnModGetVar('MUTransport','wordpress_db');
@@ -345,6 +393,7 @@ function MUTransport_adminapi_read($args) {
     pnModDBInfoLoad('News');
     pnModDBInfoLoad('pages');
     pnModDBInfoLoad('PagEd');
+    pnModDBInfoLoad('Reviews');
     pnModDBInfoLoad('Content');
      
     $pntable = pnDBGetTables();
@@ -360,6 +409,8 @@ function MUTransport_adminapi_read($args) {
                            
     if ($name == 'News') {
     
+    $startnum = 0;
+    $itemsperpage = 0;
     $newsscolumn = $pntable['news_column'];
     $mutransportpagecolumn = $pntable['mutransport_page_column'];
     
@@ -674,6 +725,96 @@ function MUTransport_adminapi_read($args) {
 
 //--------------- End of Part for the modul "PagEd" -----------------------
 
+//---------------Start of Part for the modul "Reviews" -----------------------
+                           
+    if ($name == 'Reviews') {
+    
+    $reviewscolumn = $pntable['reviews_column'];
+    $mutransportpagecolumn = $pntable['mutransport_page_column'];
+    
+    // ask the DB for Pages in Pages
+
+    $question = DBUtil::selectObjectArray('reviews');
+    $countquestion = count($question);
+    
+    // ask the DB for existing Pages of Pages in MUTransport
+
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";    
+    $search = DBUtil::selectObjectArray('mutransport_page' , $where);
+    
+        
+    // put the pageid's of existing Pages in MUTransport in an array
+    $search_id = array();
+    foreach ($search as $wert => $value) {
+    if ($modulid == $value[modulid])
+    $search_id[] = $value[pageid];
+    }
+    
+    // put  the new existing Pages in Reviews to MUTransport    
+    if ($countquestion > 0)  {
+ 
+    // build the array
+    $result = array();
+    $result2 = array();
+    foreach ($question as $wert => $value){
+    // put the page into the array, if not existing
+    if (!in_array($value[pageid], $search_id))
+    {    
+      $count = strlen($value[text]);
+      $subtext = substr($value[text],0,50).'.....';
+    
+      $result[] = (array(
+                      'id'                => '',
+                      'pageid'            =>  $value[id],
+                      'title'             =>  $value[title],
+                      'text'              =>  $subtext,
+                      'number_characters' =>  $count,
+                      'transport'         =>  '',
+                      'modulid'           =>  $modulid,
+                       ));
+    } // if
+    else
+    {
+      $count = strlen($value[text]);
+      $subtext = substr($value[text],0,50).'.....';
+      $result2[] = (array('pageid' => $value[id],
+                        'title' => $value[title],
+                        'text'  => $subtext,
+                        'number_characters' => $count));
+    
+    } // else
+    } // foreach
+    
+    $countresult1 = count($result);
+    $countresult2 = count($result2);
+
+
+    // submit the INSERT if result existing
+    if($countresult1 > 0)  { 
+      DBUtil::insertObjectArray ($result, 'mutransport_page');
+    }
+
+    // submit the update if result2 existing
+    if ($countresult2 > 0) {
+      for ($i=0; $i<$countresult2; $i++)  {
+      $result2_obj = $result2[$i];
+      $id = $result2[$i][pageid];
+      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      DBUtil::updateObject ($result2_obj, 'mutransport_page', $where2);      
+      }
+    }
+    if($countresult1 > 0 || $countresult2 > 0)
+      return LogUtil::registerStatus(__('Done! ',$dom) .$countresult1 ._n(' page of Module Reviews add to MUTransport ',' pages of Module Reviews add to MUTransport ',$countresult1,$dom). __(' and ', $dom) . $countresult2 . _n(' page of Module Reviews in MUTransport updated ',' pages of Module Reviews in MUTransport updated ',$countresult2,$dom));         
+    } // if ($countquestion > 0)
+    else
+    { 
+      return LogUtil::registerError(__('No pages in Module Reviews available !',$dom));
+    }
+    
+    } //if ($name == 'Reviews)
+    
+//--------------- End of Part for the modul "Reviews" -----------------------
+
 //--------------- Start of Part for the modul "Content" -----------------------
 
     if ($name == 'content') {
@@ -818,7 +959,8 @@ function MUTransport_adminapi_read($args) {
         
     $sql = "SELECT ID, post_title, post_type, post_content, post_status
     	    FROM $tables
-    	    WHERE post_status = 'publish'";
+    	    WHERE post_status = 'publish'
+    	    AND (post_type = 'post' OR post_type = 'page')";
     	    
     $columns = array('ID', 'post_title', 'post_type','post_content','post_status');
     $question = DBUtil::executeSQL($sql);
@@ -1013,7 +1155,8 @@ function MUTransport_adminapi_delete($args) {
     
     pnModDBInfoLoad('News');    
     pnModDBInfoLoad('pages');
-    pnModDBInfoLoad('PagEd');    
+    pnModDBInfoLoad('PagEd');
+    pnModDBInfoLoad('Reviews');     
     pnModDBInfoLoad('Content');
     $pntable = pnDBGetTables();
     
@@ -1178,6 +1321,54 @@ function MUTransport_adminapi_delete($args) {
     return LogUtil::registerStatus(__('Done! ',$dom) . $diff . _n(' page of PagEd in MUTransport deleted !',' pages of PagEd in MUTransport deleted !',$diff, $dom));
     } // if ($name == 'PagEd')
 //--------------- End of Part for the modul "PagEd" -----------------------
+
+ //---------------Start of Part for the modul "Reviews" -----------------------
+    
+    if ($name == 'Reviews') {    
+        $reviewscolumn = $pntable['reviews_column'];
+        $mutransportpagecolumn = $pntable['mutransport_page_column'];
+    
+        // ask the DB for Pages in Reviews
+
+        $question = DBUtil::selectObjectArray('reviews');
+        $countquestion = count($question);
+        // ask the DB for existing Pages of Reviews in MUTransport
+    
+        $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+        $search = DBUtil::selectObjectArray('mutransport_page', $where);
+        $countsearch = count($search);
+        
+        $diff = $countsearch - $countquestion;
+        
+        // put the pageid's of existing Pages in Reviews in an array
+        $question_id = array();
+        foreach ($question as $wert => $value)  {
+        $question_id[] = $value[pageid];
+        }
+        
+        if($countsearch > 0) {
+          if($countquestion < $countsearch)  {  
+            // delete Pages from MUtransport not existing in Reviews
+            foreach ($search as $wert => $value)  {
+                if (!in_array($value[pageid], $question_id)) {
+                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+                    $ok = DBUtil::deleteWhere ('mutransport_page', $where2);
+ 
+                } // if
+            } // foreach
+          } // if($countquestion < $countsearch)
+          else {
+            return LogUtil::registerError(__('There is no page to delete !',$dom));
+          } 
+        } // if($countsearch > 0)
+        else  {
+          return LogUtil::registerError(__('There are no pages of module Reviews in Modul MUTransport available !',$dom));
+        }
+    if($diff > 0) 
+    return LogUtil::registerStatus(__('Done! ',$dom) . $diff . _n(' page of Reviews in MUTransport deleted !',' pages of Reviews in MUTransport deleted !',$diff, $dom));
+    } // if ($name == 'Reviews')
+//--------------- End of Part for the modul "Reviews" -----------------------
+
 
 //--------------- Start of Part for the modul "Content" -----------------------
 
@@ -1373,7 +1564,7 @@ function MUTransport_adminapi_delete($args) {
  * This function provides a generic handling of all transport requests.
  *
  * @author       Michael Ueberschaer
- * @params       TODO
+ * @param $args
  * @return       Render output
  */
 
@@ -1388,11 +1579,12 @@ function MUTransport_adminapi_delete($args) {
 
     $dom = ZLanguage::getModuleDomain('MUTransport'); 
 
-// take tableinfos of the modules News, PagEd, Pages and Content
+// take tableinfos of the modules
 
     pnModDBInfoLoad('News');   
     pnModDBInfoLoad('PagEd'); 
     pnModDBInfoLoad('pages');
+    pnModDBInfoLoad('Reviews');
     pnModDBInfoLoad('content');
     $pntable = pnDBGetTables();
 
@@ -1403,11 +1595,14 @@ function MUTransport_adminapi_delete($args) {
     $contentcontentcolumn = $pntable['content_content_column'];
     $newscolumn = $pntable['news_column'];    
     $pagescolumn = $pntable['pages_column'];
+    $reviewscolumn = $pntable['reviews_column'];
 //    $column   = $pntables['mutransport_page_column']; TODO delete
 
     // get number of selected copies for module content
     
     $number = FormUtil::getPassedValue('number');
+    
+    // get kind of content, module or cms
     $kind = FormUtil::getPassedValue('kind');
     
     // get settings for transport for module PagEd
@@ -1423,10 +1618,11 @@ function MUTransport_adminapi_delete($args) {
     $counter2 = 0; // counter for Pages of Content
     $counter3 = 0; // counter for Pages of News
     $counter4 = 0; // counter for Pages of PagEd
+    $counter5 = 0; // counter for Pages of Reviews
     
     // set counter for cms
-    
-    $counter10 = 0; // counter for Pages in wordpress     
+    $counterA = 0; // counter for Pages of Wordpress
+       
     
     if (isset($_POST['yes'])) {
       foreach ($_POST['yes'] as $post => $value)  {
@@ -1513,8 +1709,8 @@ function MUTransport_adminapi_delete($args) {
       $pagedcontent = $prefix.'paged_content';
 
       // Get page from the DB
-      $sql = "SELECT page_id, title, ingress, unix_timestamp, page_author FROM $pagedtitles WHERE page_id = '" . pnVarPrepForStore($id) . "'";
-      $columns = array('page_id', 'title', 'ingress', 'unix_timestamp', 'page_author');
+      $sql = "SELECT page_id, title, ingress, unix_timestamp, page_author, pageauthor_name FROM $pagedtitles WHERE page_id = '" . pnVarPrepForStore($id) . "'";
+      $columns = array('page_id', 'title', 'ingress', 'unix_timestamp', 'page_author', 'pageauthor_name');
       $question = DBUtil::executeSQL($sql);
       $question_page = DBUtil::marshallObjects($question, $columns);
       $count_question_page = count($question_page);
@@ -1534,7 +1730,8 @@ function MUTransport_adminapi_delete($args) {
       if (!$check || !$check2)  {
       	if($question_page) {
       
-        // for transport to content
+//---------------------FOR TRANSPORT TO CONTENT----------------------------------------
+
         if($tocontent == 1) { 
         
         // build the page and put it into the db
@@ -1617,6 +1814,8 @@ function MUTransport_adminapi_delete($args) {
         }      
       } // if($tocontent)
       
+//---------------------FOR TRANSPORT TO NEWS----------------------------------------
+      
       // for transport to news
       if($tonews == 1) {
 
@@ -1627,7 +1826,7 @@ function MUTransport_adminapi_delete($args) {
         $count_question_content = count($question_content);
         
         $date = DateUtil::getDatetime($value[unix_timestamp]);
-        $ok2 = MUTransportHelp::generateInputForNews($value[title],$value[page_author] , $value[ingress], $question_content, $count_question_content, $date); 
+        $ok2 = MUTransportHelp::generateInputForNews($value[title],$value[pageauthor_name],$value[page_author] , $value[ingress], $question_content, $count_question_content, $date); 
               
         if($ok2) {
           MUTransportHelp::updateTransport($mutransportcolumn[pageid],$id);
@@ -1705,6 +1904,72 @@ function MUTransport_adminapi_delete($args) {
       return LogUtil::registerError(__('There is still one Page with this Permalink Url!', $dom));                           
     }                
     } //  if ($modul == 'Pages')
+    
+    
+/*-------------------------------MODUL REVIEWS-------------------------------*/
+
+/* -------------         Transport to Content      ------------------------*/
+    
+    if ($modul == 'Reviews') {
+    
+      // Get page from the DB
+      $where = "WHERE $reviewscolumn[id] = '" . pnVarPrepForStore($id) . "'";     
+      $question_page = DBUtil::selectObject('reviews', $where);
+      $count_question_page = count($question_page);    
+        
+    // prepare the selected pages from modul reviews for transport to modul content
+    // if there is a page in Reviews
+
+      $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($question_page['title']) . "'";
+      $check = DBUtil::selectObject('content_page', $where);
+    
+      // prepare the page
+    
+      if (!$check)  {
+      	if($question_page) {  
+        
+        $ok1 = MUTransportHelp::buildArrayForContentPage($question_page['title']);      
+
+        $counter5 = $counter5 + 1;
+        // update the state of transport for the original Page
+        if ($ok1) {
+        MUTransportHelp::updateTransport($mutransportcolumn[pageid],$id); 
+ 
+        } 
+         
+        // prepare the content    
+        // get the page_id of the even inserted Page
+        
+        $relation_id = MUTransportHelp::getIdFromContent('id');
+        
+        // build the array for additional content, if wished
+        if(pnModGetVar('MUTransport', 'details') == 1) {
+          $date = DateUtil::formatDatetime($question_page[cr_date], 'datebrief');
+          $reviewsdetails = (__('published on', $dom)) .": ".$date. "<br /><br/>" .
+                            (__('reviewer', $dom)) . ": " . $question_page[reviewer] . "<br /><br />" . 
+                            (__('points', $dom)) . ": " . $question_page[score] . "<br /><br />" .
+                            (__('hits', $dom)). ": " . $question_page[hits];	
+          MUTransportHelp::buildArrayForContent($reviewsdetails, $format, $relation_id, 'html');	
+        }
+        
+        // build the array for the content for the transport into Content
+                
+        MUTransportHelp::buildArrayForContent($question_page[text], $format, $relation_id, 'html');
+        
+
+
+      	} // if($question_page)
+      	else
+      	{
+      		LogUtil::registerError(__('This page does not exist in Reviews anymore !', $dom)); 
+      	}
+    } // if (!$check)
+    else
+    {
+      return LogUtil::registerError(__('There is still one Page with this Permalink Url!', $dom));                           
+    }                
+    } //  if ($modul == 'Reviews')    
+
         
 /*-------------------------------COPY Pages in MODUL CONTENT-------------------------------*/
       
@@ -1712,6 +1977,7 @@ function MUTransport_adminapi_delete($args) {
     // if there is a page in Content
     if($modul == 'content') {
 
+      $urlname = '';
     
       $where = "WHERE $contentpagecolumn[id] = '" . pnVarPrepForStore($id) . "'";     
       $question_content= DBUtil::selectObject('content_page', $where);
@@ -1830,6 +2096,9 @@ function MUTransport_adminapi_delete($args) {
 	  $wordpress = pnModGetVar('MUTransport','wordpress');
       $wordpress_db = pnModGetVar('MUTransport','wordpress_db');		
 	  $wordpress_prefix = pnModGetVar('MUTransport', 'wordpress_prefix');
+	  $wordpress_imagepath = pnModGetVar('MUTransport', 'image_path2');
+
+	  $music_delete = 1;
 	  
 	  // if set a prefix 
       if($wordpress_prefix != '') {
@@ -1838,10 +2107,13 @@ function MUTransport_adminapi_delete($args) {
       else {
         $prefix = '';
       }
+      
+      // tables of wordpress with prefix
       	
       $tables = $prefix . 'posts';
       $tables2 = $prefix . 'comments';
       $tables3 = $prefix . 'users';
+      $tables4 = $prefix . 'options';
     
       if($wordpress == 1) {
 
@@ -1851,6 +2123,23 @@ function MUTransport_adminapi_delete($args) {
     	 
         // Connection to the db of wordpress
         DBConnectionStack::init($wordpress_db);
+        
+        // get the upload-path in wordpress
+        
+        $path_sql = "SELECT option_value
+        		     FROM $tables4
+        		     WHERE option_name = 'upload_path'";
+        $column = array('option_value');
+        $ask = DBUtil::executeSQL($path_sql);
+        $path = DBUtil::marshallObjects($ask, $column);
+        
+        if($path[0][option_value] != '') {
+          $path = $path[0];
+        }
+        else {
+          $path = 'wp-content/uploads';
+        	
+        }
     
         // ask the DB for Pages in wordpress with state 'publish'
         
@@ -1862,40 +2151,93 @@ function MUTransport_adminapi_delete($args) {
         $columns = array('ID','post_author', 'post_date', 'post_title', 'post_type','post_content','post_status','post_type');
         $question = DBUtil::executeSQL($sql);
         $obj = DBUtil::marshallObjects($question, $columns);
-        
-        // ask db for the username
-        
-        $sql2 = "SELECT ID, user_login
-        		 FROM $tables3";
-        		  
-        $columns2 = array('ID', 'user_login');
-        $question2 = DBUtil::executeSQL($sql2);
-        $obj2 = DBUtil::marshallObjects($question2, $columns2);
-    
-        // Connection back to Zikula
-        DBConnectionStack::init();
     
         if($obj) {
     
           foreach($obj as $wert => $value) {
           	
+          	$content = $value[post_content];
+          	
+          	// search for images
+          	if(preg_match('/<img /', $content)) {
+          		
+          	  // delete links for images
+
+  			  $pattern = '#<a .*>(<img .*src=").*'.$path.'(.+".*>)</a>#';
+  			
+  			  // replace with
+
+  			  $replace = '$1'.$wordpress_imagepath.'$2';
+  			
+  			  // check RegExp and replace
+
+  			  $content = preg_replace($pattern, $replace, $content);
+          	  }
+          	  
+          	  // delete links with 'attachment'
+          	
+              if(preg_match('/.*attachment.*/', $content)) {
+          	
+          	  $pattern2 = '#<a .*attachment.*>.*</a>#';            
+            	
+  			  // replace with
+
+  			  $replace2 = '';
+  			
+  			  // check RegExp and replace
+
+  			  $content = preg_replace($pattern2, $replace2, $content);
+              }
+              
+              // change path for files
+              
+              if(preg_match('/<a .*>/', $content)) {
+          	
+          	  $pattern3 = '#(<a .*href=").*'.$path. '(.+".*>)#';            
+            	
+  			  // replace with
+
+  			  $replace3 = '$1'.$wordpress_imagepath.'$2';
+  			
+  			  // check RegExp and replace
+
+  			  $content = preg_replace($pattern3, $replace3, $content);
+              }
+            
+            // ask wordpress_db for the username
+        
+            $sql2 = "SELECT ID, user_login
+        		     FROM $tables3
+        		     WHERE ID = $value[post_author]";
+        		  
+            $columns2 = array('ID', 'user_login');
+            $question2 = DBUtil::executeSQL($sql2);
+            $obj2 = DBUtil::marshallObjects($question2, $columns2);
+            
+            $poster = $obj2[0][user_login];
+            
+            // Connection back to Zikula
+            DBConnectionStack::init();            
+            
+          	// if the unit in wordpress is a page
           	if($value[post_type] == 'page') {
     	
-              $ok1 = MUTransportHelp::buildArrayForPagesPage($value[post_title], $value[post_content] );
+              $ok1 = MUTransportHelp::buildArrayForPagesPage($value[post_title], $content );
     
-              $counter10 = $counter10 + 1;
+              $counterA = $counterA + 1;
               // update the state of transport for the original Page
               if ($ok1) {        
                 MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
               }
             } // if($value[post_type] == 'page')
-          
+            
+          	// if the unit in wordpress is a post          
             if($value[post_type] == 'post') {
             	
-              $ok2 = MUTransportHelp::generateInputForNews($value[post_title],$obj2[0],'', $value[post_content],0,$value[post_date] );
+              $ok2 = MUTransportHelp::generateInputForNews($value[post_title],$poster,'Gast' ,'', $content,0,$value[post_date] );
               
               $relation_id = MUTransportHelp::getIdFromNews('sid');
-              $counter10 = $counter10 + 1;
+              $counterA = $counterA + 1;
               
               if ($ok2) {        
                 MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
@@ -1907,25 +2249,25 @@ function MUTransport_adminapi_delete($args) {
     
               // ask the DB for Comments in wordpress for this page
         
-              $sql2 = "SELECT comment_ID, comment_post_ID, comment_author, comment_date, comment_content
+              $sql3 = "SELECT comment_ID, comment_post_ID, comment_author, comment_date, comment_content
     	             FROM $tables2
     	             WHERE comment_post_ID = $value[ID]";
     	    
-              $columns2 = array('comment_ID', 'comment_post_ID', 'comment_author','comment_date','comment_content');
-              $question2 = DBUtil::executeSQL($sql2);
-              $obj2 = DBUtil::marshallObjects($question2, $columns2);
+              $columns3 = array('comment_ID', 'comment_post_ID', 'comment_author','comment_date','comment_content');
+              $question3 = DBUtil::executeSQL($sql3);
+              $obj3 = DBUtil::marshallObjects($question3, $columns3);
     
               // Connection back to Zikula
               DBConnectionStack::init();
     
-              if(obj2)  {
+              if($obj3)  {
       
-              foreach($obj2 as $wert2 => $value2) {
+              foreach($obj3 as $wert3 => $value3) {
       	 	
-      	      MUTransportHelp::generateInputForEZComments('News',$relation_id, $value2[comment_content],0, $value2[comment_author]);     	
+      	      MUTransportHelp::generateInputForEZComments('News',$relation_id, $value3[comment_content],0, $value3[comment_author]);     	
       	
               }
-            } // if(obj2)
+            } // if($obj3)
          } // if(pnModGetVar('MUTransport','ezcomments') == 1)
          } //
          } // foreach($obj as $wert => $value)
@@ -1984,8 +2326,14 @@ function MUTransport_adminapi_delete($args) {
   } //  if (isset($_POST['yes']))
   else  {
     return LogUtil::registerError(__('Sorry ! No Page selected!', $dom));
-  } 
-  return LogUtil::registerStatus(__('Done! ', $dom) . $counter . _n(' page of Pages transported',' pages of Pages transported',$counter, $dom) .  __(' and ', $dom) . $counter3 . _n(' page of News transported',' pages of News transported',$counter3, $dom) . __(' and ', $dom) . $counter4 . _n(' page of PagEd transported',' pages of PagEd transported',$counter4, $dom) . __(' and ', $dom) . $counter2 . _n(' page of Content copied !',' pages of Content copied !',$counter2, $dom) );
+  }
+  if($modul == 'wordpress') {
+  return LogUtil::registerStatus(__('Done! ', $dom) . $counterA . _n(' page of wordpress transported',' pages of wordpress transported', $counterA,$dom));	
+  }
+  else 
+  {
+  return LogUtil::registerStatus(__('Done! ', $dom) . $counter . _n(' page of Pages transported',' pages of Pages transported',$counter, $dom) .  __(' and ', $dom) . $counter3 . _n(' page of News transported',' pages of News transported',$counter3, $dom) . __(' and ', $dom) . $counter4 . _n(' page of PagEd transported',' pages of PagEd transported',$counter4, $dom). __(' and ', $dom) . $counter5 . _n(' page of Reviews transported',' pages of Reviews transported',$counter5, $dom) . __(' and ', $dom) . $counter2 . _n(' page of Content copied !',' pages of Content copied !',$counter2, $dom));
+  }
 }
 
 

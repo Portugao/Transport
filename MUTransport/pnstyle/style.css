@@ -34,10 +34,18 @@ div.linktabs {
 
 #mutransport_modules {
   float: left;
-  width: 45%;
+  width: 47%;
   }
   
 #mutransport_cms {
   float: right;
-  width: 45%;
+  width: 47%;
   }
+
+#MUTransport_newsmessage {
+  color:#f00;
+}
+
+#mutransport_general_target_modules {
+  clear:both;	
+} 

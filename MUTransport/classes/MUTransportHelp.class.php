@@ -24,7 +24,7 @@ class MUTransportHelp
  *return $status
  */ 
  
-    function getState($module) { 
+    public function getState($module) { 
     	
     $dom = ZLanguage::getModuleDomain('MUTransport');
     	
@@ -44,7 +44,7 @@ class MUTransportHelp
     
     // get state of the needed module
     
-    $status = $question[0][state];
+    $status = $question[0]['state'];
         
     if ($status == 1)
     $status = __('not installed',$dom);
@@ -105,6 +105,18 @@ class MUTransportHelp
     }
     
 /**
+ * This function is for get the id of the last page in Reviews
+ * 
+ *@param $field           the relevant field as id
+ *return $relation
+ */                       
+    
+    function getIdFromReviews($field) {
+      $relation = DBUtil::selectFieldMax('reviews', $field);
+      return $relation;
+    }
+    
+/**
  * This function is for calculate 
  * the number of transports for 
  * modules and update it
@@ -154,6 +166,8 @@ class MUTransportHelp
  */ 
     function buildArrayForPagesPage($title, $content) {
     	
+      $content = str_replace("\n", "<br />", $content);
+       
       $page = array('title'				=> $title,
       				'content'			=> $content,
       				'language'			=> '',
@@ -239,14 +253,16 @@ class MUTransportHelp
  * This function is for generate the input to news and put it into db
  * 
  * @param $title                 the correct column for the title
- * @param $header				 the header of an chapter
+ * @param $author				 first field for author
+ * @param $author2   			 second field for author, if $author empty 
+ * @param $header				 the header of an chapter, this field will taken
  * @param $result                the result of the select, may be an array or an normal var
  * @param $count                 the number of the content-items, 0 if result is no array
- * @from $from					 the date of the posting  
+ * @param $from					 the date of the posting  
  * @return true      
  */
  
-   function generateInputForNews($title, $author, $header, $result, $count, $from) {
+   function generateInputForNews($title, $author, $author2, $header, $result, $count, $from) {
    	
    $pntable = pnDBGetTables();	
    $newscolumn = $pntable['news_column'];
@@ -286,7 +302,7 @@ class MUTransportHelp
              $image = strrchr($image, "/");
              $image = str_replace("/","",$image);
            }                
-           $img = "<img style='float:right' src='$image_path/$image'>";
+           $img = "<img style='float:right' src='$image_path/$image' />";
            $text = $img . $value2[text];
         }
         else
@@ -332,7 +348,7 @@ class MUTransportHelp
       if((strlen($result) > 400)) {
   	
         $args['hometext'] = substr($result,0,200);
-        $args['bodytext'] = substr($result,201);  	     	
+        $args['bodytext'] = substr($result,200);  	     	
       }
       else {
         $args['hometext'] = $result;	     	
@@ -343,9 +359,16 @@ class MUTransportHelp
     
  //   if($relation_id) {
       // get the correct format of posting time for putting in news
-
+      // take the first author field, if it's not empty
+	  if($author != '') {
       $obj = array ('from'	=> $from,
       				'contributor' => $author);
+	  }
+	  // else the second author field
+	  else {
+      $obj = array ('from'	=> $from,
+      				'contributor' => $author2);
+	  }
       // get the last id of News
       $relation_id = MUTransportHelp::getIdFromNews('sid');
       $where = "WHERE $newscolumn[sid] = '" . pnVarPrepForStore($relation_id) . "'";

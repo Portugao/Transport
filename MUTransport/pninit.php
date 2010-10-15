@@ -56,7 +56,9 @@ function MUTransport_init()
     pnModSetVar('MUTransport', 'newstocontent', 0);
     pnModSetVar('MUTransport', 'pagestocontent', 0);
     pnModSetVar('MUTransport', 'pagedtocontent', 0);
-    pnModSetVar('MUTransport', 'pagedtonews', 0);    
+    pnModSetVar('MUTransport', 'pagedtonews', 0);
+    pnModSetVar('MUTransport', 'reviewstocontent', 0);
+    pnModSetVar('MUTransport', 'details', 0);    
     pnModSetVar('MUTransport', 'contenttocontent', 0);
     pnModSetVar('MUTransport', 'image_path', '');
     pnModSetVar('MUTransport', 'text_format', 'text');
@@ -64,7 +66,8 @@ function MUTransport_init()
     pnModSetVar('MUTransport', 'wordpress', 0);
     pnModSetVar('MUTransport', 'wordpress_db', '');
     pnModSetVar('MUTransport', 'wordpress_prefix', '');
-    pnModSetVar('MUTransport', 'ezcomments', 0);
+    pnModSetVar('MUTransport', 'image_path2', '');
+    pnModSetVar('MUTransport', 'wordpress_ezcomments', 0);
 
     // create the default data for MUTransport
     MUTransport_defaultdata();
@@ -108,9 +111,23 @@ function MUTransport_upgrade($oldversion)
     pnModSetVar('MUTransport', 'wordpress', 0);
     pnModSetVar('MUTransport', 'wordpress_db', '');
     pnModSetVar('MUTransport', 'wordpress_prefix', '');
-    pnModSetVar('MUTransport', 'ezcomments', 0);
-    $sql = "";
-    createTable('MUTransport_cms', $sql );            
+    pnModSetVar('MUTransport', 'image_path2', '');
+    pnModSetVar('MUTransport', 'wordpress_ezcomments', 0);
+    pnModSetVar('MUTransport', 'reviewstocontent', 0);
+    pnModSetVar('MUTransport', 'details', 0);
+
+    // create the cms table
+    if (!DBUtil::createTable('mutransport_cms')) {
+        return false;
+    }
+    // create the cmscontent table
+    if (!DBUtil::createTable('mutransport_cmscontent')) {
+        return false;
+    }
+    // create the user table
+    if (!DBUtil::createTable('mutransport_user')) {
+        return false;
+    }             
     }
 
 

@@ -156,11 +156,11 @@ function MUTransport_admin_view($args)
     // get data from module content
     $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("content") . "'";  
     $question = DBUtil::selectObjectArray('modules', $where);
-    $status = $question[0][state];
+    $status = $question[0]['state'];
     
     $where2 = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("News") . "'";  
     $question2 = DBUtil::selectObjectArray('modules', $where2);
-    $status2 = $question2[0][state];
+    $status2 = $question2[0]['state'];
     
     // assign the state of content to rule the page view
     $render->assign('statuscontent', $status);
@@ -330,6 +330,7 @@ function MUTransport_admin_pagedelete($args)
 // DEBUG: permission check aspect ends
 
     $dom = ZLanguage::getModuleDomain('MUTransport');
+    $modul = '';
     
     //call adminapi_transport    
     pnModAPIFunc('MUTransport', 'admin', 'transport');
@@ -403,14 +404,17 @@ function MUTransport_admin_updateconfig()
     $pagestocontent = (int)FormUtil::getPassedValue('pagestocontent');
     $pagedtocontent = (int)FormUtil::getPassedValue('pagedtocontent');
     $pagedtonews = (int)FormUtil::getPassedValue('pagedtonews');
+    $reviewstocontent = (int)FormUtil::getPassedValue('reviewstocontent');
     $contenttocontent = (int)FormUtil::getPassedValue('contenttocontent');
     $image_path = (string)FormUtil::getPassedValue('image_path');
     $text_format = (string)FormUtil::getPassedValue('text_format');
     $news_state = (string)FormUtil::getPassedValue('news_state');
+    $details = (string)FormUtil::getPassedValue('details');
     $wordpress = (int)FormUtil::getPassedValue('wordpress');
     $wordpress_db = (string)FormUtil::getPassedValue('wordpress_db');
     $wordpress_prefix = (string)FormUtil::getPassedValue('wordpress_prefix');
-    $wordpress_ezcomments = (int)FormUtil::getPassedValue('wordpress_ezcomments');    
+    $wordpress_ezcomments = (int)FormUtil::getPassedValue('wordpress_ezcomments');
+    $image_path2 = (string)FormUtil::getPassedValue('image_path2');    
     
     if (!isset($newstocontent) || !is_numeric($newstocontent)) {
         $newstocontent = 0;
@@ -428,6 +432,10 @@ function MUTransport_admin_updateconfig()
         $pagedtonews = 0;
     }
     
+    if (!isset($reviewstocontent) || !is_numeric($reviewstocontent)) {
+        $reviewstocontent = 0;
+    } 
+    
     if (!isset($contenttocontent) || !is_numeric($contenttocontent)) {
         $contenttocontent = 0;
     } 
@@ -441,6 +449,10 @@ function MUTransport_admin_updateconfig()
     if (!isset($news_state) || !is_numeric($news_state)) {
         $news_state = 4;       
     }
+    
+    if (!isset($details) || !is_numeric($details)) {
+        $details = 0;
+    } 
     if (!isset($wordpress) || !is_numeric($wordpress)) {
         $wordpress = 0;       
     }
@@ -452,20 +464,26 @@ function MUTransport_admin_updateconfig()
     }
     if (!isset($wordpress_ezcomments) || !is_numeric($wordpress_ezcomments)) {
         $wordpress_ezcomments = 0;       
-    }       
+    }
+    if (!isset($image_path2) || !is_string($image_path2)) {
+        $image_path2 = '';
+    }        
           
     pnModSetVar('MUTransport', 'newstocontent', $newstocontent);
     pnModSetVar('MUTransport', 'pagestocontent', $pagestocontent);
     pnModSetVar('MUTransport', 'pagedtocontent', $pagedtocontent);
     pnModSetVar('MUTransport', 'pagedtonews', $pagedtonews);
+    pnModSetVar('MUTransport', 'reviewstocontent', $reviewstocontent);
     pnModSetVar('MUTransport', 'contenttocontent', $contenttocontent);
     pnModSetVar('MUTransport', 'image_path', $image_path);
     pnModSetVar('MUTransport', 'text_format', $text_format);
     pnModSetVar('MUTransport', 'news_state', $news_state);
+    pnModSetVar('MUTransport', 'details', $details);
     pnModSetVar('MUTransport', 'wordpress', $wordpress);
     pnModSetVar('MUTransport', 'wordpress_db', $wordpress_db);
     pnModSetVar('MUTransport', 'wordpress_prefix', $wordpress_prefix);
     pnModSetVar('MUTransport', 'wordpress_ezcomments', $wordpress_ezcomments);
+    pnModSetVar('MUTransport', 'image_path2', $image_path2);
 
 
     // Let any other modules know that the modules configuration has been updated

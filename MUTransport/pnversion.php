@@ -42,6 +42,6 @@ $modversion['contact']        = 'kontakt@mu-t-beratung.de';
 
 // we do have an admin area
 $modversion['admin']          = 1;
-// we do not have a user area
+// we do not have an user area
 $modversion['user']           = 0;
 
