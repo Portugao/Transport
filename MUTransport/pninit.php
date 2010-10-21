@@ -68,6 +68,7 @@ function MUTransport_init()
     pnModSetVar('MUTransport', 'wordpress_prefix', '');
     pnModSetVar('MUTransport', 'image_path2', '');
     pnModSetVar('MUTransport', 'wordpress_ezcomments', 0);
+    pnModSetVar('MUTransport', 'wordpress_clearing', 0);
 
     // create the default data for MUTransport
     MUTransport_defaultdata();
@@ -115,7 +116,7 @@ function MUTransport_upgrade($oldversion)
     pnModSetVar('MUTransport', 'wordpress_ezcomments', 0);
     pnModSetVar('MUTransport', 'reviewstocontent', 0);
     pnModSetVar('MUTransport', 'details', 0);
-
+    pnModSetVar('MUTransport', 'wordpress_clearing', 0);
     // create the cms table
     if (!DBUtil::createTable('mutransport_cms')) {
         return false;

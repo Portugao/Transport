@@ -119,6 +119,10 @@ size="20" /> <!--[else]--> <input id="MUTransport_prefix"
 <!--[if $wordpress_ezcomments eq 1]--> <input id="MUTransport_ezcomments"
 	class="mutransport_form" name="wordpress_ezcomments" type="checkbox" value="1" checked="checked" /> <!--[else]--> <input id="MUTransport_ezcomments"
 	class="mutransport_form" name="wordpress_ezcomments" type="checkbox" value="1"/> <!--[/if]--></div>
+<div class="z-formrow"><label for="MUTransport_clearing"><!--[gt text="Enable the clearing of urls"]--></label>
+<!--[if $wordpress_clearing eq 1]--> <input id="MUTransport_clearing"
+	class="mutransport_form" name="wordpress_clearing" type="checkbox" value="1" checked="checked" /> <!--[else]--> <input id="MUTransport_clearing"
+	class="mutransport_form" name="wordpress_clearing" type="checkbox" value="1"/> <!--[/if]--></div>
 </fieldset>
 <fieldset><legend><!--[gt text="Specific settings for Pages"]--></legend>
 <div class="z-formrow"><label for="MUTransport_imagepath2"><!--[gt text="The image path for Pages"]--></label>

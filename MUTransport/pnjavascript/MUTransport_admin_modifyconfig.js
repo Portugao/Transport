@@ -23,6 +23,9 @@ function MUTransport_modifyconfig_init_check()
     if ($('mutransport_wordpress_details')) {
     	mutransport_wordpress_init();
     }
+/*    if ($('yes[]')) {
+    	mutransport_all_boxes_init();
+    }*/
 }
 
 
@@ -101,3 +104,28 @@ function mutransport_wordpress_init()
     	switchdisplaystate('mutransport_wordpress_details');
     	
     }
+  
+        
+        var state=false;
+        function allboxes()
+        {
+            var elements=document.getElementsByName("yes[]");
+
+            if(state==false)
+            {
+                for(i=0;i<elements.length;i++)
+                {
+                    elements[i].checked=true;
+                    state=true;
+                }
+            }
+            else
+            {
+                for(i=0;i<elements.length;i++)
+                {
+                    elements[i].checked=false;
+                    state=false;
+                }
+            }
+        }
+        

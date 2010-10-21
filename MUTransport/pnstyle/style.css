@@ -30,6 +30,7 @@ div.linktabs {
 .mutransport_warning {
 	font-size: 1.4em;
 	color: red;
+	margin-bottom:25px;
 }
 
 #mutransport_modules {

@@ -17,6 +17,25 @@
 class MUTransportHelp
 {
 	
+    /**
+     * Return the state of a module
+     *
+     * @param module    The module to check
+     *
+     * @return The resulting state
+     */
+    function getStateOfModule($module)
+    {
+        $pntables     = pnDBGetTables();
+        $moduletable  = $pntables['modules'];
+        $modulecolumn = $pntables['modules_column'];
+
+        $columns = array('state');
+        $where = "$modulecolumn[name] = '" . pnVarPrepForStore($module) . "'";  
+        $state = DBUtil::selectObjectArray('modules', $where);
+        return $state;
+    }
+	
 /**
  * This function is for get the state of the needed module
  * 
@@ -43,8 +62,12 @@ class MUTransportHelp
     $question = DBUtil::selectObjectArray('modules', $where);
     
     // get state of the needed module
-    
+    if(isset($question[0])) {
     $status = $question[0]['state'];
+    }
+    else {
+      $status = __('not available', $dom);
+    }
         
     if ($status == 1)
     $status = __('not installed',$dom);
@@ -60,9 +83,6 @@ class MUTransportHelp
     
     if($status == 5)
     $status = __('update available',$dom);
-    
-    if(!$status)
-    $status = __('not available',$dom);
     
     return $status;
     
@@ -342,7 +362,7 @@ class MUTransportHelp
       }
     }
     } // if(is_array($result))
-    // the module witch we want to transport has no several contents
+    // the module witch we want to transport has no several contents, tranport from wordpress
     else {
       $result = str_replace("\n","<br>",$result);
       if((strlen($result) > 400)) {
@@ -488,7 +508,9 @@ class MUTransportHelp
     	  'hashmethod'		=> $method,    	  
     	  );
     	  
-    DBUtil::insertObject($user,'users', 'uid');
-    	   	
+    $ok = DBUtil::insertObject($user,'users', 'uid');
+    if ($ok == true) {
+      return true;
+    }
     }    
 }          

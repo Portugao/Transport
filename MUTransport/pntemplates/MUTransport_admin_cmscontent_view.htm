@@ -1,10 +1,12 @@
 <!--[* purpose of this template: view template for admin area *]-->
-
+<!--[pnajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true]-->
 <!--[include file="MUTransport_admin_header.htm"]-->
+
+<!--[gt text='List of Content' assign='templatetitle']--> 
+<!--[gt text='not transported' assign='nottransported']-->
 
 <div class="pn-admincontainer">
 <div class="pn-adminpageicon"><!--[pnimg modname="core" src="windowlist.gif" set="icons/large" alt=$templatetitle]--></div>
-<!--[gt text='List of Content' assign='templatetitle']--> <!--[gt text='not transported' assign='nottransported']-->
 <h2><!--[$templatetitle]--></h2>
 <form action="index.php?module=mutransport&type=admin&func=transport&kind=content"
 	method="post" name="transport">
@@ -12,7 +14,7 @@
 <table class="pn-admintable">
 	<thead>
 		<tr>
-			<th align="right" valign="middle">&nbsp;</th>
+			<th align="right" valign="middle"><input type="checkbox" id="MUTransport_all_boxes" name="mutransport_all_boxes" onClick="allboxes();"></th>
 			<th align="right" valign="middle"><!--[if $sort eq "cmsid"]-->
 			<a href="<!--[pnmodurl modname="MUTransport" type="admin" func="view" ot="cmscontent" sort="modulid" sdir=$sdir]-->"
 			style="font-style: italic"> <!--[else]--> <a href="<!--[pnmodurl modname="MUTransport" type="admin" func="view" ot="cmscontent" sort="modulid" sdir="asc"]-->">

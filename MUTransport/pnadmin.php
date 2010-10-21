@@ -114,7 +114,7 @@ function MUTransport_admin_view($args)
 
     // use FilterUtil to support generic filtering based on an object-oriented approach
     Loader::LoadClass('FilterUtil', 'modules/MUTransport/classes/FilterUtil/');
-    $fu =& new FilterUtil(array('table' => $objectArray->_objType));
+    $fu =& new FilterUtil('MUTransport','mutransport_modul',array('table' => $objectArray->_objType));
 
     // you could set explicit filters at this point, something like
     // $fu->setFilter('type:eq:' . $args['type'] . ',id:eq:' . $args['id']);
@@ -156,11 +156,21 @@ function MUTransport_admin_view($args)
     // get data from module content
     $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("content") . "'";  
     $question = DBUtil::selectObjectArray('modules', $where);
-    $status = $question[0]['state'];
-    
+    if(isset($question[0])) {
+      $status = $question[0]['state'];
+    }
+    else {
+      $status = 0;
+    }
+    // get data from module news
     $where2 = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("News") . "'";  
     $question2 = DBUtil::selectObjectArray('modules', $where2);
-    $status2 = $question2[0]['state'];
+    if(isset($question2[0])) {
+      $status2 = $question2[0]['state'];
+    }
+    else {
+      $status2 = 0;
+    }
     
     // assign the state of content to rule the page view
     $render->assign('statuscontent', $status);
@@ -414,7 +424,8 @@ function MUTransport_admin_updateconfig()
     $wordpress_db = (string)FormUtil::getPassedValue('wordpress_db');
     $wordpress_prefix = (string)FormUtil::getPassedValue('wordpress_prefix');
     $wordpress_ezcomments = (int)FormUtil::getPassedValue('wordpress_ezcomments');
-    $image_path2 = (string)FormUtil::getPassedValue('image_path2');    
+    $image_path2 = (string)FormUtil::getPassedValue('image_path2');
+    $wordpress_clearing = (int)FormUtil::getPassedValue('wordpress_clearing');    
     
     if (!isset($newstocontent) || !is_numeric($newstocontent)) {
         $newstocontent = 0;
@@ -467,6 +478,9 @@ function MUTransport_admin_updateconfig()
     }
     if (!isset($image_path2) || !is_string($image_path2)) {
         $image_path2 = '';
+    }
+    if (!isset($wordpress_clearing) || !is_numeric($wordpress_clearing)) {
+        $wordpress_clearing = 0;       
     }        
           
     pnModSetVar('MUTransport', 'newstocontent', $newstocontent);
@@ -484,6 +498,7 @@ function MUTransport_admin_updateconfig()
     pnModSetVar('MUTransport', 'wordpress_prefix', $wordpress_prefix);
     pnModSetVar('MUTransport', 'wordpress_ezcomments', $wordpress_ezcomments);
     pnModSetVar('MUTransport', 'image_path2', $image_path2);
+    pnModSetVar('MUTransport', 'wordpress_clearing', $wordpress_clearing);
 
 
     // Let any other modules know that the modules configuration has been updated
