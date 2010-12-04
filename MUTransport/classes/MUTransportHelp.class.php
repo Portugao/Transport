@@ -18,7 +18,7 @@ class MUTransportHelp
 {
 	
     /**
-     * Return the state of a module
+     * Return the state of a module which is necessary as target module
      *
      * @param module    The module to check
      *
@@ -493,7 +493,7 @@ class MUTransportHelp
     	  'uname'			=> $uname,
     	  'email'			=> $email,
     	  'user_regdate'	=> $registered,
-    	  'user_vieweamil'	=> 0,
+    	  'user_viewemail'	=> 0,
     	  'user_theme'		=> 0,
     	  'pass'			=> $pass,
     	  'storynum'		=> 0,

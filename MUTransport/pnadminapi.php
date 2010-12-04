@@ -1583,7 +1583,7 @@ function MUTransport_adminapi_delete($args) {
       } 
     } // if($countsearch2 > 0)
     else  {
-      return LogUtil::registerError(__('There are no Usera of cms wordpress in Modul MUTransport available !',$dom));
+      return LogUtil::registerError(__('There are no Users of cms wordpress in Modul MUTransport available !',$dom));
     }
     if($diff > 0) 
       return LogUtil::registerStatus(__('Done! ',$dom) . $diff2 . _n(' User of wordpress in MUTransport deleted !',' Users of wordpress in MUTransport deleted !',$diff2, $dom));	
@@ -1681,7 +1681,7 @@ function MUTransport_adminapi_delete($args) {
     
     // set counter for cms
     $counterA = 0; // counter for Pages of Wordpress
-    $countera = 0; // counter fpr Users of Wordpress
+    $countera = 0; // counter for Users of Wordpress
        
     
     if (isset($_POST['yes'])) {
@@ -2306,8 +2306,10 @@ function MUTransport_adminapi_delete($args) {
             $poster = $obj2[0][user_login];
             
             // Connection back to Zikula
-            DBConnectionStack::init();            
-            
+            DBConnectionStack::init();
+                        
+//----------------------Transport of Pages of wordpress--------------------------------
+   
           	// if the unit in wordpress is a page
           	if($value[post_type] == 'page') {
     	
@@ -2319,6 +2321,8 @@ function MUTransport_adminapi_delete($args) {
                 MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
               }
             } // if($value[post_type] == 'page')
+
+//----------------------Transport of News of wordpress--------------------------------
             
           	// if the unit in wordpress is a post          
             if($value[post_type] == 'post') {

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-03 08:39+0000\n"
+"POT-Creation-Date: 2010-11-29 14:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pnadmin.php:445
+#: pnadmin.php:507
 msgid "Done! Saved module configuration."
 msgstr ""
 
@@ -32,337 +32,568 @@ msgstr ""
 msgid "mutransport"
 msgstr ""
 
-#: pnadminapi.php:65 pnadminapi.php:134 pnadminapi.php:202 pnadminapi.php:272
-#: pntemplates/MUTransport_admin_modul_view.htm:10
-msgid "not installed"
+#: pnadminapi.php:348 pntemplates/MUTransport_admin_cms_view.htm:14
+msgid "connection made"
 msgstr ""
 
-#: pnadminapi.php:68 pnadminapi.php:137 pnadminapi.php:205 pnadminapi.php:275
-#: pntemplates/MUTransport_admin_modul_view.htm:10
-msgid "inactive"
+#: pnadminapi.php:351
+msgid "connection not possible"
 msgstr ""
 
-#: pnadminapi.php:71 pnadminapi.php:140 pnadminapi.php:208 pnadminapi.php:278
-#: pntemplates/MUTransport_admin_modul_view.htm:9
-msgid "active"
-msgstr ""
-
-#: pnadminapi.php:74 pnadminapi.php:143 pnadminapi.php:211 pnadminapi.php:281
-msgid "files failed"
-msgstr ""
-
-#: pnadminapi.php:77 pnadminapi.php:146 pnadminapi.php:214 pnadminapi.php:284
-msgid "update available"
-msgstr ""
-
-#: pnadminapi.php:80 pnadminapi.php:149 pnadminapi.php:217 pnadminapi.php:287
+#: pnadminapi.php:358 classes/MUTransportHelp.class.php:69
 msgid "not available"
 msgstr ""
 
-#: pnadminapi.php:457 pnadminapi.php:547 pnadminapi.php:670 pnadminapi.php:785
-#: pnadminapi.php:883 pnadminapi.php:931 pnadminapi.php:990
-#: pnadminapi.php:1036 pnadminapi.php:1478
+#: pnadminapi.php:534 pnadminapi.php:624 pnadminapi.php:747 pnadminapi.php:837
+#: pnadminapi.php:952 pnadminapi.php:1071 pnadminapi.php:1159
+#: pnadminapi.php:1250 pnadminapi.php:1298 pnadminapi.php:1357
+#: pnadminapi.php:1404 pnadminapi.php:1451 pnadminapi.php:1531
+#: pnadminapi.php:1589 pnadminapi.php:2421 pnadminapi.php:2424
+#: pnadminapi.php:2429
 msgid "Done! "
 msgstr ""
 
-#: pnadminapi.php:457
+#: pnadminapi.php:534
 msgid " page of Module News add to MUTransport "
 msgid_plural " pages of Module News add to MUTransport "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:457 pnadminapi.php:547 pnadminapi.php:670 pnadminapi.php:785
-#: pnadminapi.php:1478
+#: pnadminapi.php:534 pnadminapi.php:624 pnadminapi.php:747 pnadminapi.php:837
+#: pnadminapi.php:952 pnadminapi.php:1071 pnadminapi.php:1159
+#: pnadminapi.php:2429
 msgid " and "
 msgstr ""
 
-#: pnadminapi.php:457
+#: pnadminapi.php:534
 msgid " page of Module News in MUTransport updated "
 msgid_plural " pages of Module News in MUTransport updated "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:461
+#: pnadminapi.php:538
 msgid "No pages in Module News available !"
 msgstr ""
 
-#: pnadminapi.php:547
+#: pnadminapi.php:624
 msgid " page of Module Pages add to MUTransport "
 msgid_plural " pages of Module Pages add to MUTransport "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:547
+#: pnadminapi.php:624
 msgid " page of Module Pages in MUTransport updated "
 msgid_plural " pages of Module Pages in MUTransport updated "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:551
+#: pnadminapi.php:628
 msgid "No pages in Module Pages available !"
 msgstr ""
 
-#: pnadminapi.php:623 pnadminapi.php:739
+#: pnadminapi.php:700 pnadminapi.php:906
 msgid "Attention ! There is no content for this page !"
 msgstr ""
 
-#: pnadminapi.php:670
+#: pnadminapi.php:747
 msgid " page of Module PagEd add to MUTransport "
 msgid_plural " pages of Module PagEd add to MUTransport "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:670
+#: pnadminapi.php:747
 msgid " page of Module PagEd in MUTransport updated "
 msgid_plural " pages of Module PagEd in MUTransport updated "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:674
+#: pnadminapi.php:751
 msgid "No pages in modul PagEd available !"
 msgstr ""
 
-#: pnadminapi.php:785
+#: pnadminapi.php:837
+msgid " page of Module Reviews add to MUTransport "
+msgid_plural " pages of Module Reviews add to MUTransport "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:837
+msgid " page of Module Reviews in MUTransport updated "
+msgid_plural " pages of Module Reviews in MUTransport updated "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:841
+msgid "No pages in Module Reviews available !"
+msgstr ""
+
+#: pnadminapi.php:952
 msgid " page of Module Content add to MUTransport "
 msgid_plural " pages of Module Content add to MUTransport "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:785
+#: pnadminapi.php:952
 msgid " page of Module Content in MUTransport updated "
 msgid_plural " pages of Module Content in MUTransport updated "
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:789
+#: pnadminapi.php:956
 msgid "No pages in modul Content available !"
 msgstr ""
 
-#: pnadminapi.php:876 pnadminapi.php:924 pnadminapi.php:983
-#: pnadminapi.php:1029
+#: pnadminapi.php:1071
+msgid " page of CMS wordpress add to MUTransport "
+msgid_plural " pages of CMS wordpress add to MUTransport "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:1071
+msgid " page of CMS wordpress in MUTransport updated "
+msgid_plural " pages of CMS wordpress in MUTransport updated "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:1075 pnadminapi.php:1163
+msgid "No pages in CMS wordpress available !"
+msgstr ""
+
+#: pnadminapi.php:1079
+msgid "Sorry ! Connection to database failed !"
+msgstr ""
+
+#: pnadminapi.php:1159
+msgid " User of CMS wordpress add to MUTransport "
+msgid_plural " Users of CMS wordpress add to MUTransport "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:1159
+msgid " User of CMS wordpress in MUTransport updated "
+msgid_plural " Users of CMS wordpress in MUTransport updated "
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:1243 pnadminapi.php:1291 pnadminapi.php:1350
+#: pnadminapi.php:1397 pnadminapi.php:1444 pnadminapi.php:1524
 msgid "There is no page to delete !"
 msgstr ""
 
-#: pnadminapi.php:880
+#: pnadminapi.php:1247
 msgid "There are no Pages of module News in Modul MUTransport available !"
 msgstr ""
 
-#: pnadminapi.php:883
+#: pnadminapi.php:1250
 msgid " page of News in MUTransport deleted !"
 msgid_plural " pages of News in MUTransport deleted !"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:928
+#: pnadminapi.php:1295
 msgid "There are no Pages of module Pages in Modul MUTransport available !"
 msgstr ""
 
-#: pnadminapi.php:931
+#: pnadminapi.php:1298
 msgid " page of Pages in MUTransport deleted !"
 msgid_plural " pages of Pages in MUTransport deleted !"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:987
+#: pnadminapi.php:1354
 msgid "There are no Pages of module PagEd in Modul MUTransport available !"
 msgstr ""
 
-#: pnadminapi.php:990
+#: pnadminapi.php:1357
 msgid " page of PagEd in MUTransport deleted !"
 msgid_plural " pages of PagEd in MUTransport deleted !"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:1033
+#: pnadminapi.php:1401
+msgid "There are no pages of module Reviews in Modul MUTransport available !"
+msgstr ""
+
+#: pnadminapi.php:1404
+msgid " page of Reviews in MUTransport deleted !"
+msgid_plural " pages of Reviews in MUTransport deleted !"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:1448
 msgid "There are no Pages of module Content in Modul MUTransport available !"
 msgstr ""
 
-#: pnadminapi.php:1036
+#: pnadminapi.php:1451
 msgid " page of Content in MUTransport deleted !"
 msgid_plural " pages of Content in MUTransport deleted !"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:1156
+#: pnadminapi.php:1528
+msgid "There are no Pages of cms wordpress in Modul MUTransport available !"
+msgstr ""
+
+#: pnadminapi.php:1531
+msgid " page of wordpress in MUTransport deleted !"
+msgid_plural " pages of wordpress in MUTransport deleted !"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:1582
+msgid "There is no User to delete !"
+msgstr ""
+
+#: pnadminapi.php:1586
+msgid "There are no Users of cms wordpress in Modul MUTransport available !"
+msgstr ""
+
+#: pnadminapi.php:1589
+msgid " User of wordpress in MUTransport deleted !"
+msgid_plural " Users of wordpress in MUTransport deleted !"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:1746
 msgid "This page does not exist in News anymore !"
 msgstr ""
 
-#: pnadminapi.php:1162 pnadminapi.php:1313 pnadminapi.php:1368
-#: pnadminapi.php:1469
+#: pnadminapi.php:1752 pnadminapi.php:1923 pnadminapi.php:1979
+#: pnadminapi.php:2049 pnadminapi.php:2157
 msgid "There is still one Page with this Permalink Url!"
 msgstr ""
 
-#: pnadminapi.php:1307
+#: pnadminapi.php:1756 pnadminapi.php:1882 pnadminapi.php:1983
+#: pnadminapi.php:2053
+msgid "Sorry ! The target module Content is not active!"
+msgstr ""
+
+#: pnadminapi.php:1906
+msgid "Sorry ! The target module News is not active!"
+msgstr ""
+
+#: pnadminapi.php:1917
 msgid "This page does not exist in PagEd anymore !"
 msgstr ""
 
-#: pnadminapi.php:1363
+#: pnadminapi.php:1974
 msgid "This page does not exist in Pages anymore !"
 msgstr ""
 
-#: pnadminapi.php:1382
+#: pnadminapi.php:2028
+msgid "published on"
+msgstr ""
+
+#: pnadminapi.php:2029
+msgid "reviewer"
+msgstr ""
+
+#: pnadminapi.php:2030
+msgid "points"
+msgstr ""
+
+#: pnadminapi.php:2031
+msgid "hits"
+msgstr ""
+
+#: pnadminapi.php:2044
+msgid "This page does not exist in Reviews anymore !"
+msgstr ""
+
+#: pnadminapi.php:2069
 msgid " (A copy)"
 msgstr ""
 
-#: pnadminapi.php:1465
+#: pnadminapi.php:2153
 msgid "This page does not exist in Content anymore !"
 msgstr ""
 
-#: pnadminapi.php:1476
+#: pnadminapi.php:2365
+msgid "This page does not exist in wordpress anymore !"
+msgstr ""
+
+#: pnadminapi.php:2417
 msgid "Sorry ! No Page selected!"
 msgstr ""
 
-#: pnadminapi.php:1478
+#: pnadminapi.php:2421
+msgid " page of wordpress transported"
+msgid_plural " pages of wordpress transported"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:2424
+msgid " user of wordpress transported"
+msgid_plural " users of wordpress transported"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:2429
 msgid " page of Pages transported"
 msgid_plural " pages of Pages transported"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:1478
+#: pnadminapi.php:2429
 msgid " page of News transported"
 msgid_plural " pages of News transported"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:1478
+#: pnadminapi.php:2429
 msgid " page of PagEd transported"
 msgid_plural " pages of PagEd transported"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:1478
+#: pnadminapi.php:2429
+msgid " page of Reviews transported"
+msgid_plural " pages of Reviews transported"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pnadminapi.php:2429
 msgid " page of Content copied !"
 msgid_plural " pages of Content copied !"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pnadminapi.php:1496
+#: pnadminapi.php:2448
 msgid "Modules"
 msgstr ""
 
-#: pnadminapi.php:1500
+#: pnadminapi.php:2452
 msgid "Pages"
 msgstr ""
 
-#: pnadminapi.php:1508 pntemplates/MUTransport_admin_modifyconfig.htm:10
-#: pntemplates/MUTransport_admin_modifyconfig.htm:11
+#: pnadminapi.php:2456 pntemplates/MUTransport_admin_cmscontent_view.htm:21
+#: pntemplates/MUTransport_admin_user_view.htm:29
+msgid "CMS"
+msgstr ""
+
+#: pnadminapi.php:2460 pntemplates/MUTransport_admin_cmscontent_view.htm:33
+#: pntemplates/MUTransport_admin_page_view.htm:34
+msgid "Content"
+msgstr ""
+
+#: pnadminapi.php:2464
+msgid "User"
+msgstr ""
+
+#: pnadminapi.php:2468 pntemplates/MUTransport_admin_modifyconfig.htm:14
+#: pntemplates/MUTransport_admin_modifyconfig.htm:15
 msgid "Settings"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:8
+#: classes/MUTransportHelp.class.php:73
+#: pntemplates/MUTransport_admin_modul_view.htm:7
+#: pntemplates/MUTransport_admin_cms_view.htm:12
+#: pntemplates/MUTransport_admin_user_view.htm:7
+msgid "not installed"
+msgstr ""
+
+#: classes/MUTransportHelp.class.php:76
+#: pntemplates/MUTransport_admin_modul_view.htm:7
+#: pntemplates/MUTransport_admin_cms_view.htm:11
+#: pntemplates/MUTransport_admin_user_view.htm:7
+msgid "inactive"
+msgstr ""
+
+#: classes/MUTransportHelp.class.php:79
+#: pntemplates/MUTransport_admin_modul_view.htm:6
+#: pntemplates/MUTransport_admin_cms_view.htm:10
+#: pntemplates/MUTransport_admin_user_view.htm:6
+msgid "active"
+msgstr ""
+
+#: classes/MUTransportHelp.class.php:82
+msgid "files failed"
+msgstr ""
+
+#: classes/MUTransportHelp.class.php:85
+msgid "update available"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modul_view.htm:5
 msgid "List of Modules"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:8
+#: pntemplates/MUTransport_admin_modul_view.htm:5
+#: pntemplates/MUTransport_admin_user_view.htm:5
 msgid "Get and update Pages of Modul"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:9
+#: pntemplates/MUTransport_admin_modul_view.htm:6
+#: pntemplates/MUTransport_admin_user_view.htm:6
 msgid "Delete Pages of Modul"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:11
+#: pntemplates/MUTransport_admin_modul_view.htm:8
+#: pntemplates/MUTransport_admin_cms_view.htm:13
+#: pntemplates/MUTransport_admin_user_view.htm:8
 msgid "not availabale"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:27
+#: pntemplates/MUTransport_admin_modul_view.htm:24
+#: pntemplates/MUTransport_admin_cms_view.htm:31
 msgid "Name"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:31
+#: pntemplates/MUTransport_admin_modul_view.htm:28
+#: pntemplates/MUTransport_admin_cms_view.htm:35
 msgid "Status"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:33
-#: pntemplates/MUTransport_admin_page_view.htm:40
+#: pntemplates/MUTransport_admin_modul_view.htm:30
+#: pntemplates/MUTransport_admin_cms_view.htm:37
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:42
+#: pntemplates/MUTransport_admin_page_view.htm:43
+#: pntemplates/MUTransport_admin_user_view.htm:42
 msgid "Options"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modul_view.htm:67
+#: pntemplates/MUTransport_admin_modul_view.htm:62
 msgid "No Modules"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:3
-#: pntemplates/MUTransport_admin_modifyconfig.htm:77
-#: pntemplates/MUTransport_admin_modifyconfig.htm:81
-#: pntemplates/MUTransport_admin_modifyconfig.htm:87
+#: pntemplates/MUTransport_admin_modifyconfig.htm:4
+#: pntemplates/MUTransport_admin_modifyconfig.htm:149
+#: pntemplates/MUTransport_admin_modifyconfig.htm:151
+msgid "published"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:7
+#: pntemplates/MUTransport_admin_modifyconfig.htm:154
+#: pntemplates/MUTransport_admin_modifyconfig.htm:156
 msgid "waiting"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:6
-#: pntemplates/MUTransport_admin_modifyconfig.htm:78
-#: pntemplates/MUTransport_admin_modifyconfig.htm:82
-#: pntemplates/MUTransport_admin_modifyconfig.htm:88
+#: pntemplates/MUTransport_admin_modifyconfig.htm:10
+#: pntemplates/MUTransport_admin_modifyconfig.htm:159
+#: pntemplates/MUTransport_admin_modifyconfig.htm:161
 msgid "draft"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:12
+#: pntemplates/MUTransport_admin_modifyconfig.htm:16
 msgid ""
 "Attention ! Disable a module will delete the pages of the module in page "
 "view and the module in the module view !"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:13
+#: pntemplates/MUTransport_admin_modifyconfig.htm:17
 msgid ""
 "PagEd will only be deleted, if you disable both of the options for this "
 "module !"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:18
-msgid "General settings"
-msgstr ""
-
-#: pntemplates/MUTransport_admin_modifyconfig.htm:19
-msgid "1. Enable transport News to Content"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:23
+msgid "For modules"
 msgstr ""
 
 #: pntemplates/MUTransport_admin_modifyconfig.htm:24
-msgid "2. Enable transport Pages to Content"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:97
+msgid "General settings"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:29
-msgid "3. Enable transport PagEd to Content"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:25
+msgid "Enable transport News to Content"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:34
-msgid "4. Enable transport PagEd to News"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:30
+msgid "Enable transport Pages to Content"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:39
-msgid "5. Enable copy Content to Content"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:35
+msgid "Enable transport PagEd to Content"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:46
-msgid "6. Format of transport for News, Pages and PagEd "
+#: pntemplates/MUTransport_admin_modifyconfig.htm:40
+msgid "Enable transport PagEd to News"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:47
-#: pntemplates/MUTransport_admin_modifyconfig.htm:74
-msgid "active "
+#: pntemplates/MUTransport_admin_modifyconfig.htm:45
+msgid "Enable transport Reviews to Content"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:51
+msgid "Enable copy Content to Content"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:58
+msgid "Format of transport"
 msgstr ""
 
 #: pntemplates/MUTransport_admin_modifyconfig.htm:59
-#: pntemplates/MUTransport_admin_modifyconfig.htm:86
+#: pntemplates/MUTransport_admin_modifyconfig.htm:141
+msgid "active "
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:71
+#: pntemplates/MUTransport_admin_modifyconfig.htm:145
 msgid "please select"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:65
-msgid "Specific settings for PagEd"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:76
+msgid "Specific settings for start modules"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:66
-msgid "7. The image path for PagEd"
+#: pntemplates/MUTransport_admin_modifyconfig.htm:78
+msgid "The image path for PagEd"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:73
-msgid "8. The state you wish for transport to News "
+#: pntemplates/MUTransport_admin_modifyconfig.htm:86
+msgid "Enable transport of details for Reviews"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:91
+#: pntemplates/MUTransport_admin_modifyconfig.htm:96
+msgid "For CMS"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:98
+msgid "Enable transport wordpress to Zikula"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:105
+msgid "Specific settings for wordpress"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:106
+msgid "The name of the DB in the config"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:112
+msgid "The prefix of the wordpress database"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:118
+msgid "Enable the transport of comments"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:122
+msgid "Enable the clearing of urls"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:127
+msgid "Specific settings for Pages"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:128
+msgid "The image path for Pages"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:138
+msgid "General settings for target modules"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:140
+msgid "The state you wish for transport to News "
+msgstr ""
+
+#: pntemplates/MUTransport_admin_modifyconfig.htm:167
 msgid "Save"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_modifyconfig.htm:92
+#: pntemplates/MUTransport_admin_modifyconfig.htm:168
 #: pntemplates/MUTransport_init_delete.htm:8
 msgid "Cancel"
 msgstr ""
@@ -387,6 +618,30 @@ msgstr ""
 
 #: pntemplates/MUTransport_admin_header.htm:6
 msgid "The Modul MUTransport"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cms_view.htm:5
+msgid "List of CMS"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cms_view.htm:6
+msgid "Get Content of CMS"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cms_view.htm:7
+msgid "Delete Content of CMS"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cms_view.htm:8
+msgid "Get User of CMS"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cms_view.htm:9
+msgid "Delete User of CMS"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cms_view.htm:77
+msgid "No CMS"
 msgstr ""
 
 #: pntemplates/MUTransport_init_interactive.htm:3
@@ -433,77 +688,134 @@ msgid ""
 msgstr ""
 
 #: pntemplates/MUTransport_init_interactive.htm:15
-msgid "copy from modul Content to Content"
+msgid "transport from modul Reviews to Content"
 msgstr ""
 
 #: pntemplates/MUTransport_init_interactive.htm:16
 msgid ""
-"Have an overwiew about the pages in Content and copy them, if you wish !"
+"Have an overwiew about the pages in Reviews and transport them, if you wish !"
 msgstr ""
 
 #: pntemplates/MUTransport_init_interactive.htm:17
-msgid "Make some settings"
+msgid "copy from modul Content to Content"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:18
+msgid "New! "
 msgstr ""
 
 #: pntemplates/MUTransport_init_interactive.htm:18
 msgid ""
-"enable and disable modules, set a path for PagEd import and choose text or "
-"html format !"
+"Have an overwiew about the pages and users of a wordpress installation and "
+"transport them !"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:19
+msgid "transport pages and users from wordpress to your Zikula system"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:20
+msgid "Make some settings"
 msgstr ""
 
 #: pntemplates/MUTransport_init_interactive.htm:21
+msgid ""
+"enable and disable modules, set a paths for images, choose text or html "
+"format and some more !"
+msgstr ""
+
+#: pntemplates/MUTransport_init_interactive.htm:24
 msgid "Continue the installation"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:7
-msgid "List of Pages"
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:5
+msgid "List of Content"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:7
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:6
+#: pntemplates/MUTransport_admin_page_view.htm:6
 msgid "not transported"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:19
-msgid "Modul"
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:25
+msgid "Page Id in CMS"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:23
-msgid "Page Id in Modul"
-msgstr ""
-
-#: pntemplates/MUTransport_admin_page_view.htm:27
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:29
+#: pntemplates/MUTransport_admin_page_view.htm:30
 msgid "Title"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:31
-msgid "Content"
-msgstr ""
-
-#: pntemplates/MUTransport_admin_page_view.htm:35
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:37
+#: pntemplates/MUTransport_admin_page_view.htm:38
 msgid "Number of Characters"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:39
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:41
+#: pntemplates/MUTransport_admin_page_view.htm:42
 msgid "Status of transport"
 msgstr ""
 
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:66
 #: pntemplates/MUTransport_admin_page_view.htm:64
 msgid " Times"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:75
+msgid "No Content"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:80
+#: pntemplates/MUTransport_admin_page_view.htm:78
+msgid "Number of Copies"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:100
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:101
+#: pntemplates/MUTransport_admin_page_view.htm:98
+#: pntemplates/MUTransport_admin_page_view.htm:99
+#: pntemplates/MUTransport_admin_user_view.htm:84
+msgid "Transport"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_cmscontent_view.htm:102
+#: pntemplates/MUTransport_admin_page_view.htm:100
+#: pntemplates/MUTransport_admin_user_view.htm:85
+msgid "Reset"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:5
+msgid "List of Pages"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:22
+msgid "Modul"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_page_view.htm:26
+msgid "Page Id in Modul"
 msgstr ""
 
 #: pntemplates/MUTransport_admin_page_view.htm:73
 msgid "No Pages"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:78
-msgid "Number of Copies"
+#: pntemplates/MUTransport_admin_user_view.htm:5
+msgid "List of User"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:98
-#: pntemplates/MUTransport_admin_page_view.htm:99
-msgid "Transport"
+#: pntemplates/MUTransport_admin_user_view.htm:33
+msgid "User ID in CMS"
 msgstr ""
 
-#: pntemplates/MUTransport_admin_page_view.htm:100
-msgid "Reset"
+#: pntemplates/MUTransport_admin_user_view.htm:37
+msgid "Name of User"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_user_view.htm:41
+msgid "Email of User"
+msgstr ""
+
+#: pntemplates/MUTransport_admin_user_view.htm:77
+msgid "No Users"
 msgstr ""
