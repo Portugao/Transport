@@ -1,6 +1,6 @@
 <?php
 /**
- * PostNuke Application Framework
+ * ikula Application Framework
  *
  * @copyright (c) 2010, PostNuke Development Team
  * @link http://www.postnuke.com
@@ -135,6 +135,7 @@ class MUTransportHelp
       $relation = DBUtil::selectFieldMax('reviews', $field);
       return $relation;
     }
+
     
 /**
  * This function is for calculate 
@@ -186,9 +187,10 @@ class MUTransportHelp
  */ 
     function buildArrayForPagesPage($title, $content) {
     	
-      $content = str_replace("\n", "<br />", $content);
+ /*     $content = str_replace("\n", "<br />", $content);* this line contains a problem TODO; if the line is without comment, the page will not be transported	*/
        
-      $page = array('title'				=> $title,
+      $args = array('pageid'			=> '',
+					'title'				=> $title,
       				'content'			=> $content,
       				'language'			=> '',
       				'displaywrapper' 	=> 0,
@@ -199,8 +201,8 @@ class MUTransportHelp
       				'displayprint'		=> 0
       				);
       
-      pnModApiFunc('Pages', 'Admin','create', $page);
-      return true;	
+      pnModApiFunc('Pages', 'admin','create', $args);
+ 
     	
     }
     
@@ -294,7 +296,7 @@ class MUTransportHelp
    $args['bodytextcontenttype'] = 1;
    $args['notes'] = '';
    $args['action'] = $action;
-   $args['format_type'] = '';
+   $args['format_type'] = 0;
    $args['hideonindex'] = 1;
    $args['disallowcomments'] = 1;
    $args['hometext'] = '';
@@ -402,7 +404,7 @@ class MUTransportHelp
 
 /**
 * This function is for generate the input
-* to ezcomments and put it into db
+* to ezcomments and put it into the db
 * 
 * @param $mod					the module for that the comment is
 * @param $pageid				the page for that the comment is
@@ -446,7 +448,7 @@ class MUTransportHelp
  * @param $uname			the 
  */ 
  
-    function generateInputForUsers($uname, $email, $registered) {
+    function generateInputForUsers($uname, $email, $registered, $group) {
     	
     // get length of the password
     $length = pnModGetVar('Users','minpass' );	
@@ -510,7 +512,14 @@ class MUTransportHelp
     	  
     $ok = DBUtil::insertObject($user,'users', 'uid');
     if ($ok == true) {
+      $relation_id = MUTransportHelp::getIdFromUsers('uid');
+      $object = array('gid' => $group,
+                    'uid' => $relation_id);
+      $ok2 = DBUtil::insertObject($object, 'group_membership');
+      
+      if($ok2) {
       return true;
+      }
     }
     }    
-}          
+}

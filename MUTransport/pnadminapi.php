@@ -58,9 +58,9 @@ function MUTransport_adminapi_check($args)
         
     // get data from MUTransport module    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("News") . "'";
-    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    if(isset($question2[0])) {
-      $id = $question2[0]['modulid'];
+    $question2 = DBUtil::selectObject('mutransport_modul', $where2);
+    if(isset($question2)) {
+      $id = $question2['modulid'];
     }
     else {
       $id = 0;
@@ -111,9 +111,9 @@ function MUTransport_adminapi_check($args)
        
     // get data from MUTransport module    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("Pages") . "'";
-    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    if(isset($question2[0])) {
-      $id = $question2[0]['modulid'];
+    $question2 = DBUtil::selectObject('mutransport_modul', $where2);
+    if(isset($question2)) {
+      $id = $question2['modulid'];
     }
     else {
       $id = 0;
@@ -165,9 +165,9 @@ function MUTransport_adminapi_check($args)
 
     // get data from MUTransport module    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("PagEd") . "'";
-    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    if(isset($question2[0])) {
-      $id = $question2[0]['modulid'];
+    $question2 = DBUtil::selectObject('mutransport_modul', $where2);
+    if(isset($question2)) {
+      $id = $question2['modulid'];
     }
     else {
       $id = 0;
@@ -218,9 +218,9 @@ function MUTransport_adminapi_check($args)
        
     // get data from MUTransport module    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("Reviews") . "'";
-    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    if(isset($question2[0])) {
-      $id = $question2[0]['modulid'];
+    $question2 = DBUtil::selectObject('mutransport_modul', $where2);
+    if(isset($question2)) {
+      $id = $question2['modulid'];
     }
     else {
       $id = 0;
@@ -271,9 +271,9 @@ function MUTransport_adminapi_check($args)
 
     // get data from MUTransport modul    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("content") . "'";
-    $question2 = DBUtil::selectObjectArray('mutransport_modul', $where2);
-    if(isset($question2[0])) {
-      $id = $question2[0]['modulid'];
+    $question2 = DBUtil::selectObject('mutransport_modul', $where2);
+    if(isset($question2)) {
+      $id = $question2['modulid'];
     }
     else {
       $id = 0;
@@ -324,9 +324,9 @@ function MUTransport_adminapi_check($args)
 
     // get data from MUTransport cms    
     $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("wordpress") . "'";
-    $question2 = DBUtil::selectObjectArray('mutransport_cms', $where2);
-    if(isset($question2[0])) {
-      $id = $question2[0]['cmsid'];
+    $question2 = DBUtil::selectObject('mutransport_cms', $where2);
+    if(isset($question2)) {
+      $id = $question2['cmsid'];
     }
     else {
       $id = 0;
@@ -762,12 +762,12 @@ function MUTransport_adminapi_read($args) {
     $reviewscolumn = $pntable['reviews_column'];
     $mutransportpagecolumn = $pntable['mutransport_page_column'];
     
-    // ask the DB for Pages in Pages
+    // ask the DB for Pages in Reviews
 
     $question = DBUtil::selectObjectArray('reviews');
     $countquestion = count($question);
     
-    // ask the DB for existing Pages of Pages in MUTransport
+    // ask the DB for existing Pages of Reviews in MUTransport
 
     $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";    
     $search = DBUtil::selectObjectArray('mutransport_page' , $where);
@@ -788,7 +788,7 @@ function MUTransport_adminapi_read($args) {
     $result2 = array();
     foreach ($question as $wert => $value){
     // put the page into the array, if not existing
-    if (!in_array($value[pageid], $search_id))
+    if (!in_array($value[id], $search_id))
     {    
       $count = strlen($value[text]);
       $subtext = substr($value[text],0,50).'.....';
@@ -2313,12 +2313,16 @@ function MUTransport_adminapi_delete($args) {
           	// if the unit in wordpress is a page
           	if($value[post_type] == 'page') {
     	
-              $ok1 = MUTransportHelp::buildArrayForPagesPage($value[post_title], $content );
+              MUTransportHelp::buildArrayForPagesPage($value[post_title], $content );
     
               $counterA = $counterA + 1;
               // update the state of transport for the original Page
               if ($ok1) {        
                 MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
+              }
+              else {
+              	return false;
+              	
               }
             } // if($value[post_type] == 'page')
 
@@ -2396,7 +2400,7 @@ function MUTransport_adminapi_delete($args) {
     
           foreach($obj2 as $wert2 => $value2) {
     	
-          $ok1 = MUTransportHelp::generateInputForUsers($value2[user_login], $value2[user_email], $value2[user_registered]);
+          $ok1 = MUTransportHelp::generateInputForUsers($value2[user_login], $value2[user_email], $value2[user_registered], 1);
     
           if ($ok1 == true) {        
             $countera = $countera + 1;    
@@ -2413,7 +2417,6 @@ function MUTransport_adminapi_delete($args) {
 //-------------------------END WORDPRESS------------------------------------------------
 
 
-//-------------------------END OTHER CMS-----------------------------------------------
            
     } // foreach ($_POST as $post => $value)
   } //  if (isset($_POST['yes']))
@@ -2433,6 +2436,8 @@ function MUTransport_adminapi_delete($args) {
   return LogUtil::registerStatus(__('Done! ', $dom) . $counter . _n(' page of Pages transported',' pages of Pages transported',$counter, $dom) .  __(' and ', $dom) . $counter3 . _n(' page of News transported',' pages of News transported',$counter3, $dom) . __(' and ', $dom) . $counter4 . _n(' page of PagEd transported',' pages of PagEd transported',$counter4, $dom). __(' and ', $dom) . $counter5 . _n(' page of Reviews transported',' pages of Reviews transported',$counter5, $dom) . __(' and ', $dom) . $counter2 . _n(' page of Content copied !',' pages of Content copied !',$counter2, $dom));
   }
 }
+
+//-------------------------END OTHER CMS-----------------------------------------------
 
 
 /**
