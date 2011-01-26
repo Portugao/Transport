@@ -12,12 +12,17 @@
  */
 
 /**
- * This class is for perform the transport
+ * This class is a helper class for recoming jobs for performing the transport
  */
 class MUTransportHelp
 {
 	
+/*----------------------FUNCTIONS FOR MODULES IN ZIKULA-----------------------------*/
+
+// Fot performing transports only if the needed module are active ist for avoid faults in the DB
+	
     /**
+     * This function will check the module when the user  has started a transport
      * Return the state of a module which is necessary as target module
      *
      * @param module    The module to check
@@ -37,6 +42,7 @@ class MUTransportHelp
     }
 	
 /**
+ * This function is reading in the states of modules for the module view
  * This function is for get the state of the needed module
  * 
  *@param $module          the relevant module
@@ -87,6 +93,8 @@ class MUTransportHelp
     return $status;
     
     }
+    
+/*----------------THE FOLLOWING MODULES ARE FOR GETTING THE LAST ID IN A MODULE------------*/
 
 /**
  * This function is for get the id of the last page in content
@@ -136,11 +144,13 @@ class MUTransportHelp
       return $relation;
     }
 
+/*-------------------FOR UPDATING THE COUNTERS IN THE VIEW OF PAGES, CONTENT
+ * ------------------ OR USERS IN ZIKULA OR OTHER CMS-----------------------*/
     
 /**
  * This function is for calculate 
  * the number of transports for 
- * modules and update it
+ * modules in Zikula and update it
  * 
  * @param $column          the column for update
  * @param $id              the id of the transported page  
@@ -206,7 +216,7 @@ class MUTransportHelp
     	
     }
     
-/*--------------FUNCTIONS FOR TRANSPORT TO CONTENT OF OTHER MODULES THAN CONTENT--------*/
+/*--------------FUNCTIONS FOR TRANSPORT TO CONTENT OTHER MODULES THAN CONTENT--------*/
     
 /**
  *  This function is for build the array
@@ -216,6 +226,8 @@ class MUTransportHelp
  *
  */
      function buildArrayForContentPage($title) {
+
+/*    Now we build the array for the API*/
  
       $page = array('page'  =>  array('title' => $title,
                                     'urlname' => '',
@@ -225,6 +237,8 @@ class MUTransportHelp
                                     ),
                       'pageId'  => '',
                       'location' => '',);
+                      
+/*    call the API function of Pages to greate the news page    */
     
       pnModAPIFunc('content', 'page', 'newPage',$page);
       return true;
@@ -242,11 +256,15 @@ class MUTransportHelp
  */
     
     function buildArrayForContent($text, $format, $relation_id, $type ) {
+    	
+/*      build the array $data    */
     
         $data = array (
                         'text' => $text,
                         'inputType' => $format,                  
-                      );                              
+                      );  
+                      
+/*      build the array $content  */                            
     
         $content = array( 'id' => '',
                           'pageId'  => $relation_id,
@@ -265,9 +283,13 @@ class MUTransportHelp
                                                'lu_date' =>  '',
                                                'lu_uid'  =>  '',
                                               ));           
-          // call newContent method of Content modul                                   
+// call newContent method of Content modul 
+
+                                  
           pnModAPIFunc('content', 'content', 'newContent',$content);           
     }
+    
+/*--------------END OF FUNCTIONS FOR TRANSPORT TO CONTENT OTHER MODULES THAN CONTENT--------*/
 
 /*----------------FUNCTIONS FOR NEWS MODULE-------------------------------------*/
     
@@ -288,8 +310,14 @@ class MUTransportHelp
    	
    $pntable = pnDBGetTables();	
    $newscolumn = $pntable['news_column'];
+   
+/* First we check the Module Var 'news_state' of MUTransport:
+ *     witch state will a generated news have? 
+ */
    	
    $action = pnModGetVar('MUTransport', 'news_state');
+   
+/* Now we fill the necessary $args*/
    
    $args['title'] = $title;
    $args['hometextcontenttype'] = 1;
@@ -303,18 +331,21 @@ class MUTransportHelp
    $args['bodytext'] = '';     
        
    $text2 = '';
-   // the module we wish to tranport has several content
+   
+/*----------- the module we wish to tranport has several content, 
+--------------the module 'Content' for example----*/
+
    if(is_array($result)) {        
    foreach($result as $wert2 => $value2) {
         
    // ckeck the image path, if not empty check for image
-   // else do nothing and take only the text
+
         
      if(pnModGetVar('MUTransport', 'image_path') != '') {
         
      // if there is an image build the image path and html code
      // and put before the text
-     // else do nothing with the existing text        
+       
         
        if($value2[image] != '') {
          $image_path = pnModGetVar('MUTransport', 'image_path');
@@ -326,37 +357,57 @@ class MUTransportHelp
            }                
            $img = "<img style='float:right' src='$image_path/$image' />";
            $text = $img . $value2[text];
-        }
+           
+        }  // else do nothing with the existing text 
+
         else
         {
         $text = $value2[text];
         }
       }
-      else
+      else // else do nothing and take only the text
+      
       {
         $text = $value2[text];
       }
+      
+      // if the module, for example PagEd, contains headers, put it before the text
         
       if($header != '' && $wert2 == 0) {
         $text = '<h3>'. $header . '</h3>' . $text;
       }
+
+      // if the module, for example PagEd, contains subtitles, put it before the text
         
       if($value2[subtitle] != '') {
         $text = '<h3>'. $value2[subtitle] . '</h3>' . $text;
       }
               
-
+/*-----Now we handle the text of the module to transport and generate
+ * ----hometext, bodytext or only hometext
+ */
+ 
+      // bodytext will be empty, if only 1 content unit was found
+      
       if($count == 1) {
         $args['hometext'] = $text;
         $args['bodytext'] = '';
       }
+      
+      // more than 1 content unit
 
       if($count > 1) {
+      	
+      	// the first content we put into the hometext
+      	
         if($wert2 == 0) {
           $text2 = $text2 . $text . '<br /><br />';
           $args['hometext'] = $text2;
           $text2 = '';
         }
+        
+        // all other content we put into the bodytext
+        
         if($wert2 > 0) {
           $text2 = $text2 . $text . '<br /><br />';    
           $args['bodytext'] = $text2;
@@ -366,13 +417,20 @@ class MUTransportHelp
     } // if(is_array($result))
     // the module witch we want to transport has no several contents, tranport from wordpress
     else {
+    	
+      // We clean up the code
+    
       $result = str_replace("\n","<br>",$result);
+      
+      // if the text content is longer than 400 characters, we split
+      
       if((strlen($result) > 400)) {
   	
         $args['hometext'] = substr($result,0,200);
         $args['bodytext'] = substr($result,200);  	     	
       }
-      else {
+      else // nothing to do 
+      {
         $args['hometext'] = $result;	     	
       }	 	
     }
@@ -415,6 +473,8 @@ class MUTransportHelp
  
    function generateInputForEZComments($mod,$pageid, $comment, $owneruid, $anonname ) {
    	
+   	// We build the array for the API of EZComments
+   	
    	$args = array('mod'			=> $mod,
    			      'objectid'	=> $pageid,
    			      'comment'		=> $comment,
@@ -422,7 +482,8 @@ class MUTransportHelp
    			      'uid'			=> 0,
    			      'anonname'	=> $anonname);
    			      
-    // call create method of module EZComments        
+    // call create method of module EZComments
+            
     pnModApiFunc('EZComments', 'user', 'create', $args);        
     return true; 
    			      
@@ -450,7 +511,8 @@ class MUTransportHelp
  
     function generateInputForUsers($uname, $email, $registered, $group) {
     	
-    // get length of the password
+    // get the length of the password, that is necessary
+    
     $length = pnModGetVar('Users','minpass' );	
     
     // password generating
@@ -488,6 +550,8 @@ class MUTransportHelp
     	
       $uname = strtolower($uname);
     }
+    
+    // we build the array for the API of module Users
     	
     $user = array (
     	
@@ -510,9 +574,18 @@ class MUTransportHelp
     	  'hashmethod'		=> $method,    	  
     	  );
     	  
+    // W e insert the usr into the DB
+    	  
     $ok = DBUtil::insertObject($user,'users', 'uid');
     if ($ok == true) {
+    	
+      // we get the last user id
+    	
       $relation_id = MUTransportHelp::getIdFromUsers('uid');
+      
+      /* we build the array for putting the user into the group,
+         that is selected by calling this function   */
+      
       $object = array('gid' => $group,
                     'uid' => $relation_id);
       $ok2 = DBUtil::insertObject($object, 'group_membership');

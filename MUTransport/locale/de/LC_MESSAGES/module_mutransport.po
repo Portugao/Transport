@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MUTransport 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-29 14:56+0000\n"
+"POT-Creation-Date: 2011-01-26 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mike <kontakt@mu-t-beratung.de>\n"
 "Language-Team: \n"
@@ -40,7 +40,7 @@ msgid "connection not possible"
 msgstr "Verbindung nicht möglich"
 
 #: pnadminapi.php:358
-#: classes/MUTransportHelp.class.php:69
+#: classes/MUTransportHelp.class.php:75
 msgid "not available"
 msgstr "nicht vorhanden"
 
@@ -58,9 +58,9 @@ msgstr "nicht vorhanden"
 #: pnadminapi.php:1451
 #: pnadminapi.php:1531
 #: pnadminapi.php:1589
-#: pnadminapi.php:2421
-#: pnadminapi.php:2424
-#: pnadminapi.php:2429
+#: pnadminapi.php:2428
+#: pnadminapi.php:2431
+#: pnadminapi.php:2436
 msgid "Done! "
 msgstr "Erledigt ! "
 
@@ -77,7 +77,7 @@ msgstr[1] " Seiten des Moduls News zu MUTransport hinzugefügt "
 #: pnadminapi.php:952
 #: pnadminapi.php:1071
 #: pnadminapi.php:1159
-#: pnadminapi.php:2429
+#: pnadminapi.php:2436
 msgid " and "
 msgstr " und "
 
@@ -214,7 +214,7 @@ msgstr[1] "  Seiten des Moduls News in MUTransport gelöscht !"
 
 #: pnadminapi.php:1295
 msgid "There are no Pages of module Pages in Modul MUTransport available !"
-msgstr "Keine Seiten des Moduls Pages in MUtransport vorhanden !"
+msgstr "Keine Seiten des Moduls Pages in MUTransport vorhanden !"
 
 #: pnadminapi.php:1298
 msgid " page of Pages in MUTransport deleted !"
@@ -224,7 +224,7 @@ msgstr[1] "  Seiten des Moduls Pages in MUTransport gelöscht !"
 
 #: pnadminapi.php:1354
 msgid "There are no Pages of module PagEd in Modul MUTransport available !"
-msgstr "Keine Seiten des Moduls PagEd in MUtransport vorhanden !"
+msgstr "Keine Seiten des Moduls PagEd in MUTransport vorhanden !"
 
 #: pnadminapi.php:1357
 msgid " page of PagEd in MUTransport deleted !"
@@ -244,7 +244,7 @@ msgstr[1] " Seiten des Moduls Reviews in MUTransport gelöscht !"
 
 #: pnadminapi.php:1448
 msgid "There are no Pages of module Content in Modul MUTransport available !"
-msgstr "Keine Seiten des Moduls Content in MUtransport vorhanden !"
+msgstr "Keine Seiten des Moduls Content in MUTransport vorhanden !"
 
 #: pnadminapi.php:1451
 msgid " page of Content in MUTransport deleted !"
@@ -335,112 +335,112 @@ msgstr " (Eine Kopie)"
 msgid "This page does not exist in Content anymore !"
 msgstr "Diese Seite existiert in Content nicht mehr !"
 
-#: pnadminapi.php:2365
+#: pnadminapi.php:2373
 msgid "This page does not exist in wordpress anymore !"
 msgstr "Diese Seite existiert in Wordpress nicht mehr !"
 
-#: pnadminapi.php:2417
+#: pnadminapi.php:2424
 msgid "Sorry ! No Page selected!"
 msgstr "Sorry ! Keine Seite ausgewählt !"
 
-#: pnadminapi.php:2421
+#: pnadminapi.php:2428
 msgid " page of wordpress transported"
 msgid_plural " pages of wordpress transported"
 msgstr[0] "Inhalt von Wordpress transportiert"
 msgstr[1] "Inhalte von Wordpress transportiert"
 
-#: pnadminapi.php:2424
+#: pnadminapi.php:2431
 msgid " user of wordpress transported"
 msgid_plural " users of wordpress transported"
 msgstr[0] "Benutzer von Wordpress transportiert"
 msgstr[1] "Benutzer von Wordpress transportiert"
 
-#: pnadminapi.php:2429
+#: pnadminapi.php:2436
 msgid " page of Pages transported"
 msgid_plural " pages of Pages transported"
 msgstr[0] " Seite des Moduls Pages transportiert"
 msgstr[1] " Seiten des Moduls Pages transportiert"
 
-#: pnadminapi.php:2429
+#: pnadminapi.php:2436
 msgid " page of News transported"
 msgid_plural " pages of News transported"
 msgstr[0] " Seite des Moduls News transportiert"
 msgstr[1] " Seiten des Moduls News transportiert"
 
-#: pnadminapi.php:2429
+#: pnadminapi.php:2436
 msgid " page of PagEd transported"
 msgid_plural " pages of PagEd transported"
 msgstr[0] " Seite des Moduls PagEd transportiert"
 msgstr[1] " Seiten des Moduls PagEd transportiert"
 
-#: pnadminapi.php:2429
+#: pnadminapi.php:2436
 msgid " page of Reviews transported"
 msgid_plural " pages of Reviews transported"
 msgstr[0] " Seite des Moduls Reviews transportiert"
 msgstr[1] " Seiten des Moduls Reviews transportiert"
 
-#: pnadminapi.php:2429
+#: pnadminapi.php:2436
 msgid " page of Content copied !"
 msgid_plural " pages of Content copied !"
 msgstr[0] " Seite des Moduls Content kopiert !"
 msgstr[1] " Seiten des Moduls Content kopiert !"
 
-#: pnadminapi.php:2448
+#: pnadminapi.php:2457
 msgid "Modules"
 msgstr "Module"
 
-#: pnadminapi.php:2452
+#: pnadminapi.php:2461
 msgid "Pages"
 msgstr "Seiten"
 
-#: pnadminapi.php:2456
+#: pnadminapi.php:2465
 #: pntemplates/MUTransport_admin_cmscontent_view.htm:21
 #: pntemplates/MUTransport_admin_user_view.htm:29
 msgid "CMS"
 msgstr "CMS"
 
-#: pnadminapi.php:2460
+#: pnadminapi.php:2469
 #: pntemplates/MUTransport_admin_cmscontent_view.htm:33
 #: pntemplates/MUTransport_admin_page_view.htm:34
 msgid "Content"
 msgstr "Inhalt"
 
-#: pnadminapi.php:2464
+#: pnadminapi.php:2473
 msgid "User"
 msgstr "Benutzer"
 
-#: pnadminapi.php:2468
+#: pnadminapi.php:2477
 #: pntemplates/MUTransport_admin_modifyconfig.htm:14
 #: pntemplates/MUTransport_admin_modifyconfig.htm:15
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: classes/MUTransportHelp.class.php:73
+#: classes/MUTransportHelp.class.php:79
 #: pntemplates/MUTransport_admin_modul_view.htm:7
 #: pntemplates/MUTransport_admin_cms_view.htm:12
 #: pntemplates/MUTransport_admin_user_view.htm:7
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: classes/MUTransportHelp.class.php:76
+#: classes/MUTransportHelp.class.php:82
 #: pntemplates/MUTransport_admin_modul_view.htm:7
 #: pntemplates/MUTransport_admin_cms_view.htm:11
 #: pntemplates/MUTransport_admin_user_view.htm:7
 msgid "inactive"
 msgstr "inaktiv"
 
-#: classes/MUTransportHelp.class.php:79
+#: classes/MUTransportHelp.class.php:85
 #: pntemplates/MUTransport_admin_modul_view.htm:6
 #: pntemplates/MUTransport_admin_cms_view.htm:10
 #: pntemplates/MUTransport_admin_user_view.htm:6
 msgid "active"
 msgstr "aktiv"
 
-#: classes/MUTransportHelp.class.php:82
+#: classes/MUTransportHelp.class.php:88
 msgid "files failed"
 msgstr "keine Dateien vorhanden"
 
-#: classes/MUTransportHelp.class.php:85
+#: classes/MUTransportHelp.class.php:91
 msgid "update available"
 msgstr "update verfügbar"
 
