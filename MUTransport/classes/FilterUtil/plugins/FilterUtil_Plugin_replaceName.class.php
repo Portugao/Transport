@@ -15,7 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
 Loader::loadClass('FilterUtil_ReplaceCommon', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 
 class FilterUtil_Plugin_replaceName extends FilterUtil_ReplaceCommon
@@ -43,12 +42,12 @@ class FilterUtil_Plugin_replaceName extends FilterUtil_ReplaceCommon
      * @param string $value Value
      * @return array array(field, op, value)
      */
-     public function replace($field, $op, $value)
-     {
-         if (isset($this->pair[$field]) && !empty($this->pair[$field])) {
-             $field = $this->pair[$field];
-         }
+    public function replace($field, $op, $value)
+    {
+        if (isset($this->pair[$field]) && !empty($this->pair[$field])) {
+            $field = $this->pair[$field];
+        }
 
-         return array($field, $op, $value);
-     }
+        return array($field, $op, $value);
+    }
 }
