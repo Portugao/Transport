@@ -60,19 +60,17 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
         // retrieve the ID of the object we wish to edit
         // default to 0 (which is a numeric id but an invalid value)
         // no provided id means that we want to create a new object
-        $this->modulid = (int) FormUtil::getPassedValue('modulid', 0, 'GET');
-
-
+        $this->modulid = (int)FormUtil::getPassedValue('modulid', 0, 'GET');
 
         $objectType = 'modul';
-    // load the object class corresponding to $objectType
-    if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
-        pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');
-    }
+        // load the object class corresponding to $objectType
+        if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
+            pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');
+        }
 
         $this->mode = 'create';
         // if modulid is not 0, we wish to edit an existing modul
-        if($this->modulid) {
+        if ($this->modulid) {
             $this->mode = 'edit';
 
             if (!SecurityUtil::checkPermission('MUTransport::', '::', ACCESS_EDIT)) {
@@ -80,12 +78,12 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
                 return $render->pnFormSetErrorMsg(_MUTRANSPORT_NOTAUTHORIZED);
             }
 
-    // intantiate object model and get the object of the specified ID from the database
-    $object = new $class('D', $this->modulid);
+            // intantiate object model and get the object of the specified ID from the database
+            $object = new $class('D', $this->modulid);
 
-    // assign object data fetched from the database during object instantiation
-    // while the result will be saved within the object, we assign it to a local variable for convenience
-    $objectData = $object->get();
+            // assign object data fetched from the database during object instantiation
+            // while the result will be saved within the object, we assign it to a local variable for convenience
+            $objectData = $object->get();
             if (count($objectData) == 0) {
                 return $render->pnFormSetErrorMsg(_MUTRANSPORT_MODUL_UNKNOWN);
             }
@@ -93,35 +91,28 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
             // try to guarantee that only one person at a time can be editing this modul
             $returnUrl = pnModUrl('MUTransport', 'admin', 'view', array('modulid' => $this->modulid));
             pnModAPIFunc('PageLock', 'user', 'pageLock',
-                                 array('lockName' => "MUTransportModul{$this->modulid}",
-                                       'returnUrl' => $returnUrl));
+                array('lockName'  => "MUTransportModul{$this->modulid}",
+                'returnUrl' => $returnUrl));
 
             // assign data to template
             $render->assign('modul', $objectData);
 
             return true;
-        }
-        else {
+        } else {
             if (!SecurityUtil::checkPermission('MUTransport::', '::', ACCESS_ADD)) {
                 // set an error message and return false
                 return $render->pnFormSetErrorMsg(_MUTRANSPORT_NOTAUTHORIZED);
             }
 
-
         }
-
-
 
         // assign mode var to referenced render instance
         $render->assign('mode', $this->mode);
-
-
 
         // everything okay, no initialization errors occured
         return true;
 
     }
-
 
     /**
      * Command event handler
@@ -141,10 +132,10 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
         $returnUrl = null;
 
         $objectType = 'modul';
-    // load the object class corresponding to $objectType
-    if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
-        pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');
-    }
+        // load the object class corresponding to $objectType
+        if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
+            pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');
+        }
 
         // instantiate the class we just loaded
         // it will be appropriately initialized but contain no data.
@@ -167,7 +158,7 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
             $modul->setData($modulData);
             $modul->getDataFromInputPostProcess();
 
-            // save modul 
+            // save modul
             $modul->save();
 
             $this->modulid = $modul->getID();
@@ -180,10 +171,9 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
 
             // redirect to the detail page of the newly created modul
             $returnUrl = pnModUrl('MUTransport', 'admin', 'display',
-                                                             array('ot' => 'modul',
-                                                                   'modulid' => $this->modulid));
-        }
-        elseif ($args['commandName'] == 'update') {
+                array('ot'      => 'modul',
+                'modulid' => $this->modulid));
+        } elseif ($args['commandName'] == 'update') {
             // event handling if user clicks on update
 
             // fetch posted data input values as an associative array
@@ -197,7 +187,7 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
             $modul->setData($modulData);
             $modul->getDataFromInputPostProcess();
 
-            // save modul 
+            // save modul
             $updateResult = $modul->save();
 
             if ($updateResult === false) {
@@ -209,10 +199,9 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
 
             // redirect to the detail page of the treated modul
             $returnUrl = pnModUrl('MUTransport', 'admin', 'display',
-                                                             array('ot' => 'modul',
-                                                                   'modulid' => $this->modulid));
-        }
-        elseif ($args['commandName'] == 'delete') {
+                array('ot'      => 'modul',
+                'modulid' => $this->modulid));
+        } elseif ($args['commandName'] == 'delete') {
             // event handling if user clicks on delete
 
             // Note: No need to check validation when deleting
@@ -248,35 +237,32 @@ class MUTransport_admin_modul_editHandler extends pnFormHandler
 
             // redirect to the list of modules
             $returnUrl = pnModUrl('MUTransport', 'admin', 'view',
-                                                                 array('ot' => 'modul'));
-        }
-        else if ($args['commandName'] == 'cancel') {
+                array('ot' => 'modul'));
+        } else if ($args['commandName'] == 'cancel') {
             // event handling if user clicks on cancel
 
             if ($this->mode == 'edit') {
                 // redirect to the detail page of the treated modul
                 $returnUrl = pnModUrl('MUTransport', 'admin', 'display',
-                                                                 array('ot' => 'modul',
-                                                                       'modulid' => $this->modulid));
-            }
-            else {
+                    array('ot'      => 'modul',
+                    'modulid' => $this->modulid));
+            } else {
                 // redirect to the list of modules
                 $returnUrl = pnModUrl('MUTransport', 'admin', 'view',
-                                                                 array('ot' => 'modul'));
+                    array('ot' => 'modul'));
             }
         }
-
 
         if ($returnUrl != null) {
             if ($this->mode == 'edit') {
                 pnModAPIFunc('PageLock', 'user', 'releaseLock',
-                                 array('lockName' => "MUTransportModul{$this->modulid}"));
+                    array('lockName' => "MUTransportModul{$this->modulid}"));
             }
 
             return $render->pnFormRedirect($returnUrl);
         }
 
-        // We should in principle not end here at all, since the above command handlers should 
+        // We should in principle not end here at all, since the above command handlers should
         // match all possible commands, but we return "ok" (true) for all cases.
         // You could also return $render->pnFormSetErrorMsg('Unexpected command') or just do a pn_die()
         return true;

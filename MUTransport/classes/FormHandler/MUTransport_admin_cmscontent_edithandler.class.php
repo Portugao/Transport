@@ -41,10 +41,10 @@
  * @subpackage Base
  * @author       Michael Ueberschaer
  */
-class MUTransport_admin_page_editHandler extends pnFormHandler
+class MUTransport_admin_cmscontent_editHandler extends pnFormHandler
 {
-    // store page ID in (persistent) member variable
-    var $pageid;
+    // store cmscontent ID in (persistent) member variable
+    var $cmscontentid;
     var $mode;
 
     /**
@@ -60,17 +60,17 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
         // retrieve the ID of the object we wish to edit
         // default to 0 (which is a numeric id but an invalid value)
         // no provided id means that we want to create a new object
-        $this->pageid = (int)FormUtil::getPassedValue('pageid', 0, 'GET');
+        $this->cmscontentid = (int)FormUtil::getPassedValue('cmscontentid', 0, 'GET');
 
-        $objectType = 'page';
+        $objectType = 'cmscontent';
         // load the object class corresponding to $objectType
         if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
             pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');
         }
 
         $this->mode = 'create';
-        // if pageid is not 0, we wish to edit an existing page
-        if ($this->pageid) {
+        // if cmscontentid is not 0, we wish to edit an existing cmscontent
+        if ($this->cmscontentid) {
             $this->mode = 'edit';
 
             if (!SecurityUtil::checkPermission('MUTransport::', '::', ACCESS_EDIT)) {
@@ -79,23 +79,23 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
             }
 
             // intantiate object model and get the object of the specified ID from the database
-            $object = new $class('D', $this->pageid);
+            $object = new $class('D', $this->cmscontentid);
 
             // assign object data fetched from the database during object instantiation
             // while the result will be saved within the object, we assign it to a local variable for convenience
             $objectData = $object->get();
             if (count($objectData) == 0) {
-                return $render->pnFormSetErrorMsg(_MUTRANSPORT_PAGE_UNKNOWN);
+                return $render->pnFormSetErrorMsg(_MUTRANSPORT_CMSCONTENT_UNKNOWN);
             }
 
             // try to guarantee that only one person at a time can be editing this page
-            $returnUrl = pnModUrl('MUTransport', 'admin', 'view', array('pageid' => $this->pageid));
+            $returnUrl = pnModUrl('MUTransport', 'admin', 'view', array('cmscontentid' => $this->cmscontentid));
             pnModAPIFunc('PageLock', 'user', 'pageLock',
-                array('lockName'  => "MUTransportPage{$this->pageid}",
+                array('lockName'  => "MUTransportCms{$this->pageid}",
                 'returnUrl' => $returnUrl));
 
             // assign data to template
-            $render->assign('page', $objectData);
+            $render->assign('cmscontent', $objectData);
 
             return true;
         } else {
@@ -131,7 +131,7 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
         // return url for redirecting
         $returnUrl = null;
 
-        $objectType = 'page';
+        $objectType = 'cmscontent';
         // load the object class corresponding to $objectType
         if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
             pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');

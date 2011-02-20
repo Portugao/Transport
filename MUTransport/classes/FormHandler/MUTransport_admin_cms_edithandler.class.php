@@ -41,10 +41,10 @@
  * @subpackage Base
  * @author       Michael Ueberschaer
  */
-class MUTransport_admin_page_editHandler extends pnFormHandler
+class MUTransport_admin_cms_editHandler extends pnFormHandler
 {
-    // store page ID in (persistent) member variable
-    var $pageid;
+    // store cms ID in (persistent) member variable
+    var $cmsid;
     var $mode;
 
     /**
@@ -60,9 +60,9 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
         // retrieve the ID of the object we wish to edit
         // default to 0 (which is a numeric id but an invalid value)
         // no provided id means that we want to create a new object
-        $this->pageid = (int)FormUtil::getPassedValue('pageid', 0, 'GET');
+        $this->cmsid = (int)FormUtil::getPassedValue('cmsid', 0, 'GET');
 
-        $objectType = 'page';
+        $objectType = 'cms';
         // load the object class corresponding to $objectType
         if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
             pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');
@@ -70,7 +70,7 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
 
         $this->mode = 'create';
         // if pageid is not 0, we wish to edit an existing page
-        if ($this->pageid) {
+        if ($this->cmsid) {
             $this->mode = 'edit';
 
             if (!SecurityUtil::checkPermission('MUTransport::', '::', ACCESS_EDIT)) {
@@ -79,23 +79,23 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
             }
 
             // intantiate object model and get the object of the specified ID from the database
-            $object = new $class('D', $this->pageid);
+            $object = new $class('D', $this->cmsid);
 
             // assign object data fetched from the database during object instantiation
             // while the result will be saved within the object, we assign it to a local variable for convenience
             $objectData = $object->get();
             if (count($objectData) == 0) {
-                return $render->pnFormSetErrorMsg(_MUTRANSPORT_PAGE_UNKNOWN);
+                return $render->pnFormSetErrorMsg(_MUTRANSPORT_CMS_UNKNOWN);
             }
 
-            // try to guarantee that only one person at a time can be editing this page
-            $returnUrl = pnModUrl('MUTransport', 'admin', 'view', array('pageid' => $this->pageid));
+            // try to guarantee that only one person at a time can be editing this cms
+            $returnUrl = pnModUrl('MUTransport', 'admin', 'view', array('cmsid' => $this->cmsid));
             pnModAPIFunc('PageLock', 'user', 'pageLock',
-                array('lockName'  => "MUTransportPage{$this->pageid}",
+                array('lockName'  => "MUTransportCms{$this->cmsid}",
                 'returnUrl' => $returnUrl));
 
             // assign data to template
-            $render->assign('page', $objectData);
+            $render->assign('cms', $objectData);
 
             return true;
         } else {
@@ -131,7 +131,7 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
         // return url for redirecting
         $returnUrl = null;
 
-        $objectType = 'page';
+        $objectType = 'cms';
         // load the object class corresponding to $objectType
         if (!($class = Loader::loadClassFromModule('MUTransport', $objectType))) {
             pn_exit('Unable to load class [' . DataUtil::formatForDisplay($objectType) . '] ...');
@@ -139,10 +139,10 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
 
         // instantiate the class we just loaded
         // it will be appropriately initialized but contain no data.
-        $page = new $class();
+        $cms = new $class();
 
         if ($args['commandName'] != 'delete') {
-            // do forms validation including checking all validators on the page to validate their input
+            // do forms validation including checking all validators on the cms to validate their input
             if (!$render->pnFormIsValid()) {
                 return false;
             }
@@ -152,55 +152,55 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
             // event handling if user clicks on create
 
             // fetch posted data input values as an associative array
-            $pageData = $render->pnFormGetValues();
-            // usually one would use $page->getDataFromInput() to get the data, this is the way PNObject works
+            $cmsData = $render->pnFormGetValues();
+            // usually one would use $cms->getDataFromInput() to get the data, this is the way PNObject works
             // but since we want also use pnForm we simply assign the fetched data and call the post process functionality here
-            $page->setData($pageData);
-            $page->getDataFromInputPostProcess();
+            $cms->setData($cmsData);
+            $cms->getDataFromInputPostProcess();
 
-            // save page
-            $page->save();
+            // save cms
+            $cms->save();
 
-            $this->pageid = $page->getID();
-            if ($this->pageid === false) {
+            $this->cmsid = $cms->getID();
+            if ($this->cmsid === false) {
                 // set an error message and return false
                 return $render->pnFormSetErrorMsg(_CREATEFAILED);
             }
 
             LogUtil::registerStatus(pnML('_CREATEITEMSUCCEDED', array('i' => _MUTRANSPORT_PAGE)));
 
-            // redirect to the detail page of the newly created page
+            // redirect to the detail cms of the newly created cms
             $returnUrl = pnModUrl('MUTransport', 'admin', 'display',
-                array('ot'     => 'page',
-                'pageid' => $this->pageid));
+                array('ot'    => 'cms',
+                'cmsid' => $this->cmsid));
         } elseif ($args['commandName'] == 'update') {
             // event handling if user clicks on update
 
             // fetch posted data input values as an associative array
-            $pageData = $render->pnFormGetValues();
+            $cmsData = $render->pnFormGetValues();
 
             // add persisted primary key to fetched values
-            $pageData['pageid'] = $this->pageid;
+            $cmsData['cmsid'] = $this->cmsid;
 
-            // usually one would use $page->getDataFromInput() to get the data, this is the way PNObject works
+            // usually one would use $cms->getDataFromInput() to get the data, this is the way PNObject works
             // but since we want also use pnForm we simply assign the fetched data and call the post process functionality here
-            $page->setData($pageData);
-            $page->getDataFromInputPostProcess();
+            $cms->setData($cmsData);
+            $cms->getDataFromInputPostProcess();
 
-            // save page
-            $updateResult = $page->save();
+            // save cms
+            $updateResult = $cms->save();
 
             if ($updateResult === false) {
                 // set an error message and return false
                 return $render->pnFormSetErrorMsg(_UPDATEFAILED);
             }
 
-            LogUtil::registerStatus(pnML('_UPDATEITEMSUCCEDED', array('i' => _MUTRANSPORT_PAGE)));
+            LogUtil::registerStatus(pnML('_UPDATEITEMSUCCEDED', array('i' => _MUTRANSPORT_CMS)));
 
-            // redirect to the detail page of the treated page
+            // redirect to the detail page of the treated cms
             $returnUrl = pnModUrl('MUTransport', 'admin', 'display',
-                array('ot'     => 'page',
-                'pageid' => $this->pageid));
+                array('ot'    => 'cms',
+                'cmsid' => $this->cmsid));
         } elseif ($args['commandName'] == 'delete') {
             // event handling if user clicks on delete
 
@@ -212,51 +212,51 @@ class MUTransport_admin_page_editHandler extends pnFormHandler
             }
 
             // fetch posted data input values as an associative array
-            $pageData = $render->pnFormGetValues();
+            $cmsData = $render->pnFormGetValues();
 
             // add persisted primary key to fetched values
-            $pageData['pageid'] = $this->pageid;
+            $cmsData['cmsid'] = $this->cmsid;
 
-            // usually one would use $page->getDataFromInput() to get the data, this is the way PNObject works
+            // usually one would use $cms->getDataFromInput() to get the data, this is the way PNObject works
             // but since we want also use pnForm we simply assign the fetched data and call the post process functionality here
-            $page->setData($pageData);
-            $page->getDataFromInputPostProcess();
+            $cms->setData($cmsData);
+            $cms->getDataFromInputPostProcess();
 
             // add persisted primary key to fetched values
-            $pageData['pageid'] = $this->pageid;
+            $cmsData['cmsid'] = $this->cmsid;
 
-            // delete page
-            $page->delete();
+            // delete cms
+            $cms->delete();
 
             if ($deleteResult === false) {
                 // set an error message and return false
                 return $render->pnFormSetErrorMsg(_DELETEFAILED);
             }
 
-            LogUtil::registerStatus(pnML('_DELETEITEMSUCCEDED', array('i' => _MUTRANSPORT_PAGE)));
+            LogUtil::registerStatus(pnML('_DELETEITEMSUCCEDED', array('i' => _MUTRANSPORT_CMS)));
 
-            // redirect to the list of pages
+            // redirect to the list of cms
             $returnUrl = pnModUrl('MUTransport', 'admin', 'view',
-                array('ot' => 'page'));
+                array('ot' => 'cms'));
         } else if ($args['commandName'] == 'cancel') {
             // event handling if user clicks on cancel
 
             if ($this->mode == 'edit') {
-                // redirect to the detail page of the treated page
+                // redirect to the detail page of the treated cms
                 $returnUrl = pnModUrl('MUTransport', 'admin', 'display',
-                    array('ot'     => 'page',
-                    'pageid' => $this->pageid));
+                    array('ot'    => 'cms',
+                    'cmsid' => $this->cmsid));
             } else {
-                // redirect to the list of pages
+                // redirect to the list of cms
                 $returnUrl = pnModUrl('MUTransport', 'admin', 'view',
-                    array('ot' => 'page'));
+                    array('ot' => 'cms'));
             }
         }
 
         if ($returnUrl != null) {
             if ($this->mode == 'edit') {
                 pnModAPIFunc('PageLock', 'user', 'releaseLock',
-                    array('lockName' => "MUTransportPage{$this->pageid}"));
+                    array('lockName' => "MUTransportCms{$this->cmsid}"));
             }
 
             return $render->pnFormRedirect($returnUrl);
