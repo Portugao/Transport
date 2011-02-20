@@ -15,8 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
-
 Loader::loadClass('PNMUTransport', 'modules/MUTransport/classes');
 
 /**
@@ -48,43 +46,38 @@ abstract class PNCmsBase extends PNMUTransport
 
         // set the tablename this object maps to
 
-        $this->_objType       = 'mutransport_cms';
+        $this->_objType = 'mutransport_cms';
 
         // set the ID field for this object
 
-        $this->_objField      = 'cmsid';
+        $this->_objField = 'cmsid';
 
         // set the access path under which the object's
         // input data can be retrieved upon input
 
-        $this->_objPath       = 'cms';
-
+        $this->_objPath = 'cms';
 
         // apply object permission filters
         $this->_objPermissionFilter[] = array('component_left'   => 'MUTransport',
-                                              'component_middle' => 'Cms',
-                                              'component_right'  => '',
-                                              'instance_left'    => 'cmsid',
-                                              'instance_middle'  => '',
-                                              'instance_right'   => '',
-                                              'level'            => ACCESS_READ);
-
-
-
+            'component_middle' => 'Cms',
+            'component_right'  => '',
+            'instance_left'    => 'cmsid',
+            'instance_middle'  => '',
+            'instance_right'   => '',
+            'level'            => ACCESS_READ);
 
         // call initialisation routine
         $this->_init($init, $key, $this->_objField);
     }
 
-
-
     /**
      * Interceptor being called if an object is used within a string context.
-     * 
+     *
      * @return string
      */
-    public function __toString() {
-        $string  = 'Instance of the class "PNCmsBase' . "\n";
+    public function __toString()
+    {
+        $string = 'Instance of the class "PNCmsBase' . "\n";
         $string .= 'Managed table: cms' . "\n";
         $string .= 'Table fields:' . "\n";
         $string .= '        cmsid' . "\n";

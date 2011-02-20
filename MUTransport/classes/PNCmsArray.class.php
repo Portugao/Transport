@@ -15,8 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
-
 Loader::loadClass('PNCmsArrayBase', 'modules/MUTransport/classes');
 
 /**

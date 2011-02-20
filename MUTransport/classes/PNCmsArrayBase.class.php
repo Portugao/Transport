@@ -15,8 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
-
 Loader::loadClass('PNMUTransportArray', 'modules/MUTransport/classes');
 
 /**
@@ -45,28 +43,23 @@ abstract class PNCmsArrayBase extends PNMUTransportArray
         $this->PNObjectArray();
 
         // set the tablename this object maps to
-        $this->_objType       = 'mutransport_cms';
-
+        $this->_objType = 'mutransport_cms';
 
         // set the ID field for this object
-        $this->_objField      = 'cmsid';
-
-
+        $this->_objField = 'cmsid';
 
         // set the access path under which the object's
         // input data can be retrieved upon input
-        $this->_objPath       = 'cms_array';
-
+        $this->_objPath = 'cms_array';
 
         // apply object permission filters
         $this->_objPermissionFilter[] = array('component_left'   => 'MUTransport',
-                                              'component_middle' => 'Cms',
-                                              'component_right'  => '',
-                                              'instance_left'    => 'cmsid',
-                                              'instance_middle'  => '',
-                                              'instance_right'   => '',
-                                              'level'            => ACCESS_READ);
-
+            'component_middle' => 'Cms',
+            'component_right'  => '',
+            'instance_left'    => 'cmsid',
+            'instance_middle'  => '',
+            'instance_right'   => '',
+            'level'            => ACCESS_READ);
 
         // call initialization routine
         $this->_init($init, $where, $orderBy, $assocKey);
@@ -74,11 +67,12 @@ abstract class PNCmsArrayBase extends PNMUTransportArray
 
     /**
      * Interceptor being called if an object is used within a string context.
-     * 
+     *
      * @return string
      */
-    public function __toString() {
-        $string  = 'Instance of the class "PNCmsArrayBase' . "\n";
+    public function __toString()
+    {
+        $string = 'Instance of the class "PNCmsArrayBase' . "\n";
         $string .= 'Managed table: cms' . "\n";
         $string .= 'Table fields:' . "\n";
         $string .= '        cmsid' . "\n";

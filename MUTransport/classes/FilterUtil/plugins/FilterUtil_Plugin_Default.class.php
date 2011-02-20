@@ -15,7 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
 Loader::loadClass('FilterUtil_OpCommon', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 
 class FilterUtil_Plugin_Default extends FilterUtil_OpCommon
@@ -54,35 +53,35 @@ class FilterUtil_Plugin_Default extends FilterUtil_OpCommon
     public function getSQL($field, $op, $value)
     {
         switch ($op) {
-        case 'ne':
-            return array('where' => $this->column[$field]." <> '" . $value . "'");
-            break;
-        case 'lt':
-            return array('where' => $this->column[$field]." < '" . $value . "'");
-            break;
-        case 'le':
-            return array('where' => $this->column[$field]." <= '" . $value . "'");
-            break;
-        case 'gt':
-            return array('where' => $this->column[$field]." > '" . $value . "'");
-            break;
-        case 'ge':
-            return array('where' => $this->column[$field]." >= '" . $value . "'");
-            break;
-        case 'like':
-            return array('where' => $this->column[$field]." like '" . $value . "'");
-            break;
-        case 'null':
-            return array('where' => $this->column[$field]." = '' OR ".$this->column[$field]." IS NULL");
-            break;
-        case 'notnull':
-            return array('where' => $this->column[$field]." <> '' AND ".$this->column[$field]." IS NOT NULL");
-            break;
-        case 'eq':
-            return array('where' => $this->column[$field]." = '" . $value . "'");
-            break;
-        default:
-            return '';
+            case 'ne':
+                return array('where' => $this->column[$field] . " <> '" . $value . "'");
+                break;
+            case 'lt':
+                return array('where' => $this->column[$field] . " < '" . $value . "'");
+                break;
+            case 'le':
+                return array('where' => $this->column[$field] . " <= '" . $value . "'");
+                break;
+            case 'gt':
+                return array('where' => $this->column[$field] . " > '" . $value . "'");
+                break;
+            case 'ge':
+                return array('where' => $this->column[$field] . " >= '" . $value . "'");
+                break;
+            case 'like':
+                return array('where' => $this->column[$field] . " like '" . $value . "'");
+                break;
+            case 'null':
+                return array('where' => $this->column[$field] . " = '' OR " . $this->column[$field] . " IS NULL");
+                break;
+            case 'notnull':
+                return array('where' => $this->column[$field] . " <> '' AND " . $this->column[$field] . " IS NOT NULL");
+                break;
+            case 'eq':
+                return array('where' => $this->column[$field] . " = '" . $value . "'");
+                break;
+            default:
+                return '';
         }
     }
 }

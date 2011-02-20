@@ -15,8 +15,8 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
-class FilterUtil_Common {
+class FilterUtil_Common
+{
 
     /**
      * Table name in pntable.php
@@ -39,7 +39,8 @@ class FilterUtil_Common {
      *
      * @param string $args['table'] Tablename
      */
-    public function __construct($args = array()) {
+    public function __construct($args = array())
+    {
         if (isset($args['table'])) {
             $this->setTable($args['table']);
         }

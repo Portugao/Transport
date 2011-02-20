@@ -15,7 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
 Loader::loadClass('FilterUtil_Common', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 
 class FilterUtil_Plugin extends FilterUtil_Common
@@ -35,7 +34,6 @@ class FilterUtil_Plugin extends FilterUtil_Common
      */
     private $replaces;
 
-
     /**
      * Constructor
      *
@@ -48,9 +46,9 @@ class FilterUtil_Plugin extends FilterUtil_Common
     {
         parent::__construct($config);
         if ($plgs !== null && is_array($plgs) && count($plgs) > 0) {
-             $ok = $this->loadPlugins($plgs);
+            $ok = $this->loadPlugins($plgs);
         }
-        return ($ok === false?false:$this);
+        return ($ok === false ? false : $this);
     }
 
     /**
@@ -64,7 +62,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
     {
         $error = false;
         foreach ($plgs as $k => $v) {
-            $error = ($this->loadPlugin($k, $v)?$error:true);
+            $error = ($this->loadPlugin($k, $v) ? $error : true);
         }
 
         return $error;
@@ -144,7 +142,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      */
     public function isLoaded($name)
     {
-        if (isset($this->plg[$name]) && is_a($this->plg[$name], 'FilterUtil_Plugin_'.$name)) {
+        if (isset($this->plg[$name]) && is_a($this->plg[$name], 'FilterUtil_Plugin_' . $name)) {
             return true;
         }
         return false;
@@ -166,11 +164,10 @@ class FilterUtil_Plugin extends FilterUtil_Common
             list($field, $op, $value) = $obj->replace($field, $op, $value);
         }
 
-        return array(    'field' => $field,
-                        'op'    => $op,
-                        'value'    => $value);
+        return array('field' => $field,
+            'op'    => $op,
+            'value' => $value);
     }
-
 
     /**
      * return SQL code

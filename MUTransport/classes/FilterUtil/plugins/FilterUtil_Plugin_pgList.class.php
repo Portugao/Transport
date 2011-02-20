@@ -15,7 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
 Loader::loadClass('FilterUtil_OpCommon', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 
 class FilterUtil_Plugin_pgList extends FilterUtil_OpCommon
@@ -84,7 +83,7 @@ class FilterUtil_Plugin_pgList extends FilterUtil_OpCommon
             return '';
         }
 
-        $list = pnModAPIFunc('pagesetter', 'admin', 'getList', array('lid'    => $this->fields[$field], 'topListValueID' => $value));
+        $list = pnModAPIFunc('pagesetter', 'admin', 'getList', array('lid' => $this->fields[$field], 'topListValueID' => $value));
 
         if ($list === false) {
             pnSessionDelVar('errormsg');

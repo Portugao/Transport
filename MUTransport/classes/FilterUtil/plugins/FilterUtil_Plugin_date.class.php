@@ -15,7 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
 Loader::loadClass('FilterUtil_ReplaceCommon', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 
 /**
@@ -23,7 +22,8 @@ Loader::loadClass('FilterUtil_ReplaceCommon', MUTRANSPORT_FILTERUTIL_CLASS_PATH)
  *
  * This plugin
  */
-class FilterUtil_Plugin_Date extends FilterUtil_ReplaceCommon {
+class FilterUtil_Plugin_Date extends FilterUtil_ReplaceCommon
+{
 
     /**
      * Replace field's value
@@ -38,7 +38,7 @@ class FilterUtil_Plugin_Date extends FilterUtil_ReplaceCommon {
         // First check if this plugin have to work with this field
         if (!$this->IsValidField($field)) {
             return $value; //If not, return given value
-        }
+            }
 
         // Check if plugin is configured correctly
         if (!$this->config->IsConfigured()) {
@@ -57,21 +57,21 @@ class FilterUtil_Plugin_Date extends FilterUtil_ReplaceCommon {
 
     protected function DateToStamp($date)
     {
-        switch(true) {
-        case strtotime($date) !== false:
-            $time = strtotime($date);
-            break;
-        case strptime($date, "%d.%m.%Y %H:%M:%S") !== false:
-            $arr = strptime($date, "%d.%m.%Y %H:%M:%S");
-            $time = mktime($arr['tm_hour'], $arr['tm_min'], $arr['tm_sec'],
-                           $arr['tm_mon'], $arr['tm_monday'], $arr['tm_year']);
-            break;
-        case is_numeric($date):
-            $time = $date;
-            break;
-        default:
-            $time = false;
-            break;
+        switch (true) {
+            case strtotime($date) !== false:
+                $time = strtotime($date);
+                break;
+            case strptime($date, "%d.%m.%Y %H:%M:%S") !== false:
+                $arr = strptime($date, "%d.%m.%Y %H:%M:%S");
+                $time = mktime($arr['tm_hour'], $arr['tm_min'], $arr['tm_sec'],
+                    $arr['tm_mon'], $arr['tm_monday'], $arr['tm_year']);
+                break;
+            case is_numeric($date):
+                $time = $date;
+                break;
+            default:
+                $time = false;
+                break;
         }
 
         return $time;
@@ -81,7 +81,8 @@ class FilterUtil_Plugin_Date extends FilterUtil_ReplaceCommon {
 /**
  * Plugin's config class
  */
-class FilterUtil_Plugin_Date_Config extends FilterUtil_PluginConfig {
+class FilterUtil_Plugin_Date_Config extends FilterUtil_PluginConfig
+{
 
     /**
      * Define standard date format
@@ -139,7 +140,7 @@ class FilterUtil_Plugin_Date_Config extends FilterUtil_PluginConfig {
         // check if the configuration is ok
         if (empty($this->dateformat) || !is_numeric(date($this->dateformat))) {
             return false; //if not, return false
-        }
+            }
         //else return true
         return true;
     }

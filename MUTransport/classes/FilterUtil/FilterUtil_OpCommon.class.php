@@ -15,10 +15,10 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
 Loader::loadClass('FilterUtil_Common', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 
-class FilterUtil_OpCommon extends FilterUtil_Common {
+class FilterUtil_OpCommon extends FilterUtil_Common
+{
 
     /**
      * Activated operators
@@ -86,7 +86,7 @@ class FilterUtil_OpCommon extends FilterUtil_Common {
     public function addFields($fields)
     {
         if (is_array($fields)) {
-            foreach($fields as $fld)
+            foreach ($fields as $fld)
                 $this->addFields($fld);
         } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
             $this->fields[] = $fields;
@@ -113,7 +113,7 @@ class FilterUtil_OpCommon extends FilterUtil_Common {
     public function activateOperators($op)
     {
         if (is_array($op)) {
-            foreach($op as $v)
+            foreach ($op as $v)
                 $this->activateOperators($v);
         } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $this->availableOperators()) !== false) {
             $this->ops[] = $op;

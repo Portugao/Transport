@@ -15,8 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
-
 /**
  * Define Class path
  */
@@ -28,7 +26,8 @@ Loader::loadClass('FilterUtil_Common', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 /**
  * This class adds a Pagesetter like filter feature to a particular module
  */
-class FilterUtil extends FilterUtil_Common {
+class FilterUtil extends FilterUtil_Common
+{
 
     /**
      * The Input variable name
@@ -71,7 +70,8 @@ class FilterUtil extends FilterUtil_Common {
 
         if (isset($args['plugins'])) {
             $this->plugin->loadPlugins($args['plugins']);
-        } if (isset($args['varname'])) {
+        }
+        if (isset($args['varname'])) {
             $this->setVarName($args['varname']);
         }
 
@@ -93,7 +93,7 @@ class FilterUtil extends FilterUtil_Common {
         $this->varname = $name;
     }
 
-//++++++++++++++++ Object handling +++++++++++++++++++
+    //++++++++++++++++ Object handling +++++++++++++++++++
 
     /**
      * strip brackets around a filterstring
@@ -152,9 +152,11 @@ class FilterUtil extends FilterUtil_Common {
         $cycle = 0;
         while (!empty($filter)) {
             preg_match($regex, $filter, $match);
-            $op = str_replace(array(',', '*'),array('and', 'or'), $match['1']);
-            if (!$op) $op = 0;
-            else $op .= $cycle++;
+            $op = str_replace(array(',', '*'), array('and', 'or'), $match['1']);
+            if (!$op)
+                $op = 0;
+            else
+                $op .= $cycle++;
             $string = $this->stripBrackets($match[2]);
             if (strpos($string, ',') || strpos($string, '*')) {
                 $sub = $this->GenObjectRecursive($string);
@@ -162,9 +164,9 @@ class FilterUtil extends FilterUtil_Common {
                     $obj[$op] = $sub;
                 }
             } elseif (($cond = $this->makeCondition($string)) !== false) {
-                    $obj[$op] = $cond;
+                $obj[$op] = $cond;
             }
-            $filter = substr($filter, strlen($match[2])+strlen($match[1]));
+            $filter = substr($filter, strlen($match[2]) + strlen($match[1]));
         }
 
         return $obj;
@@ -194,30 +196,28 @@ class FilterUtil extends FilterUtil_Common {
         return $this->obj;
     }
 
-//---------------- Object handling ---------------------
-//++++++++++++++++ Filter handling +++++++++++++++++++++
+    //---------------- Object handling ---------------------
+    //++++++++++++++++ Filter handling +++++++++++++++++++++
     /**
      * Get all filters from Input
      *
      * @return array Array of filters
      */
-    public function GetFiltersFromInput ()
+    public function GetFiltersFromInput()
     {
         $i = 1;
-          $filter = array();
+        $filter = array();
 
         // Get unnumbered filter string
         $filterStr = pnVarCleanFromInput($this->varname);
-        if (!empty($filterStr))
-        {
+        if (!empty($filterStr)) {
             $filter[] = $filterStr;
         }
 
         // Get filter1 ... filterN
-        while (true)
-        {
+        while (true) {
             $filterURLName = $this->varname . "$i";
-            $filterStr     = pnVarCleanFromInput($filterURLName);
+            $filterStr = pnVarCleanFromInput($filterURLName);
 
             if (empty($filterStr))
                 break;
@@ -228,7 +228,6 @@ class FilterUtil extends FilterUtil_Common {
 
         return $filter;
     }
-
 
     /**
      * Get filterstring
@@ -241,7 +240,7 @@ class FilterUtil extends FilterUtil_Common {
         if (!isset($this->filter) || empty($this->filter)) {
             $filter = $this->GetFiltersFromInput();
             if (is_array($filter) && count($filter) > 0) {
-                $this->filter = "(".implode(')*(', $filter).")";
+                $this->filter = "(" . implode(')*(', $filter) . ")";
             }
         }
 
@@ -260,7 +259,7 @@ class FilterUtil extends FilterUtil_Common {
     public function setFilter($filter)
     {
         if (is_array($filter)) {
-            $this->filter = "(".implode(')*(', $filter).")";
+            $this->filter = "(" . implode(')*(', $filter) . ")";
         } else {
             $this->filter = $filter;
         }
@@ -269,8 +268,8 @@ class FilterUtil extends FilterUtil_Common {
 
     }
 
-//--------------- Filter handling ----------------------
-//+++++++++++++++ SQL Handling +++++++++++++++++++++++++
+    //--------------- Filter handling ----------------------
+    //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
 
     /**
      * Help function for generate the filter SQL from a Filter-object
@@ -308,8 +307,8 @@ class FilterUtil extends FilterUtil_Common {
                 }
             }
         }
-        return array('where' => (empty($where)?'':"(\n $where \n)"),
-                     'join'  => $join);
+        return array('where' => (empty($where) ? '' : "(\n $where \n)"),
+            'join'  => $join);
     }
 
     /**

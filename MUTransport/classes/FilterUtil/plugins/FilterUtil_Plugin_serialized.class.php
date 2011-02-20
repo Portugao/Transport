@@ -15,7 +15,6 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
 
-
 Loader::loadClass('FilterUtil_ReplaceCommon', MUTRANSPORT_FILTERUTIL_CLASS_PATH);
 
 class FilterUtil_Plugin_serialized extends FilterUtil_OpCommon
@@ -67,13 +66,13 @@ class FilterUtil_Plugin_serialized extends FilterUtil_OpCommon
             return array($field, $op, $value);
         }
 
-        $newfield = $this->pair[$field]; 
+        $newfield = $this->pair[$field];
 
         switch ($op) {
-        case "eq":
-            $op = "";
-            $value = "%".serialize($field) . serialize($value)."%";
-            break;
+            case "eq":
+                $op = "";
+                $value = "%" . serialize($field) . serialize($value) . "%";
+                break;
         }
     }
 }
