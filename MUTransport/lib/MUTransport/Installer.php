@@ -73,10 +73,20 @@ public function install()
     $this->setVar('wordpress_clearing', 0);
 
     // create the default data for MUTransport
-    //$this->defaultdata();
+    //$this->defaultdata(); maybe we can user later
     
     // jump to interactive installation
-    $this->init_interactiveinit();
+    // $this->init_interactiveinit();
+    
+    if(!ModUtil::registerHook('item',
+                       'create',
+                       'API',
+                       'News',
+                       'admin',
+                       'createNews')) {
+    return LogUtil::registerError('Register of Hook failed!');
+    }
+    
 
     // Initialisation successful
     return true;
@@ -150,7 +160,7 @@ public function upgrade($oldversion)
  * @author       Michael Ueberschaer
  * @return       bool       true on success, false otherwise
  */
-public function delete()
+public function uninstall()
 {
     if (!DBUtil::dropTable('mutransport_modul')) {
         return false;
@@ -174,7 +184,7 @@ public function delete()
 
 
     // remove all module vars
-    $this->DelVars();
+    $this->delVars();
 
     // Deletion successful
     return true;
@@ -211,7 +221,7 @@ public function defaultdata()
  *
  * @author       Michael Ueberschaer
  * @return       pnRender output
- */
+ *//*
 public function init_interactiveinit()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
@@ -225,12 +235,12 @@ public function init_interactiveinit()
 } 
 
 
-/**
+*//**
  * interactive installation procedure step 3
  *
  * @author       Michael Ueberschaer
  * @return       pnRender output
- */
+ *//*
 public function init_interactiveinitstep3()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
@@ -245,14 +255,14 @@ public function init_interactiveinitstep3()
     $render->assign('authid', SecurityUtil::generateAuthKey('Modules'));
     $render->assign('activate', $activate);
     return $render->fetch('MUTransport_init_step3.htm');
-}
+}*/
 
 /**
  * interactive update procedure
  *
  * @author       Michael Ueberschaer
  * @return       pnRender output
- */
+ 
 public function init_interactiveupdate()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
@@ -271,7 +281,7 @@ public function init_interactiveupdate()
  *
  * @author       Michael Ueberschaer
  * @return       pnRender output
- */
+
 public function init_interactivedelete()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
@@ -283,6 +293,6 @@ public function init_interactivedelete()
     $render = pnRender::getInstance('MUTransport');
     $render->assign('authid', SecurityUtil::generateAuthKey('Modules'));
     return $render->fetch('MUTransport_init_delete.htm');
-}
+}*/
 }
 

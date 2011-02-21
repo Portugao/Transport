@@ -322,7 +322,7 @@ class MUTransportHelp
          *     witch state will a generated news have?
          */
 
-        $action = pnModGetVar('MUTransport', 'news_state');
+        $action = ModUtil::getVar('MUTransport', 'news_state');
 
         /* Now we fill the necessary $args*/
 

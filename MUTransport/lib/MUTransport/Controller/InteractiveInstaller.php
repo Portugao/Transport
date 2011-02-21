@@ -33,12 +33,12 @@ class MUTransport_Controller_Interactiveinstaller extends Zikula_InteractiveInst
     }
     
 /**
- * interactive installation procedure step 3
+ * interactive installation procedure step 2
  *
  * @author       Michael Ueberschaer
  * @return       pnRender output
  */
-public function step3()
+public function step2()
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
@@ -47,7 +47,25 @@ public function step3()
     $activate = (bool) FormUtil::getPassedValue('activate', false, 'POST');
     $this->view->assign('authid', SecurityUtil::generateAuthKey('Modules'));
     $this->view->assign('activate', $activate);
-    return $this->view->fetch('MUTransport_init_step3.htm');
+    return $this->view->fetch('MUTransport_init_step2.htm');
+}
+
+/**
+ * interactive uninstall
+ *
+ * @author       Michael Ueberschaer
+ * @return       pnRender output
+ */
+public function uninstall()
+{
+    if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+    
+//    $dom = ZLanguage::getModuleDomain('MUTransport');
+
+    $this->assign('authid', SecurityUtil::generateAuthKey('Modules'));
+    return $this->view->fetch('MUTransport_init_delete.htm');
 }
 }
 

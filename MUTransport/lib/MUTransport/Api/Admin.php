@@ -1639,7 +1639,7 @@ public function delete($args) {
     }
 // DEBUG: permission check aspect ends
 
-    $dom = ZLanguage::getModuleDomain('MUTransport'); 
+  //  $dom = ZLanguage::getModuleDomain('MUTransport'); 
 
 // take tableinfos of the modules
 
@@ -1776,17 +1776,17 @@ public function delete($args) {
       	}
       	else
       	{
-      		return LogUtil::registerError($this->__('This page does not exist in News anymore !', $dom));
+      		return LogUtil::registerError($this->__('This page does not exist in News anymore !'));
       	}
     
     } // if (!$check)
     else
     {
-      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!', $dom));                           
+      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!'));                           
     }
       } // if($content_state == 3)
       else {
-      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!', $dom)); 
+      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!')); 
       }                 
     } //  if ($modul == 'News') 
 
@@ -1863,14 +1863,14 @@ public function delete($args) {
         // ckeck the image path, if not empty check for image
         // else do nothing and take only the text
         
-        if(pnModGetVar('MUTransport', 'image_path') != '') {
+        if(Modtil::getVar('MUTransport', 'image_path') != '') {
         
         // if there is an image build the image path and html code
         // and put before the text
         // else do nothing with the existing text        
         
         if($value2[image] != '') {
-        $image_path = pnModGetVar('MUTransport', 'image_path');
+        $image_path = Modtil::getVar('MUTransport', 'image_path');
         $image = $value2[image];
         $exist = strpos($image,"/");
         if($exist) {
@@ -1912,7 +1912,7 @@ public function delete($args) {
         }
           }// if($content_state == 3)
       else {
-      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!', $dom)); 
+      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!')); 
       }       
       } // if($tocontent)
       
@@ -1936,7 +1936,7 @@ public function delete($args) {
         }
       }// if($news_state == 3)
       else {
-      	return LogUtil::registerError($this->__('Sorry ! The target module News is not active!', $dom)); 
+      	return LogUtil::registerError($this->__('Sorry ! The target module News is not active!')); 
       }
       
       } // if($tonews)
@@ -1947,13 +1947,13 @@ public function delete($args) {
       } // if($question_page)
       else
       {
-      	return LogUtil::registerError($this->__('This page does not exist in PagEd anymore !', $dom));
+      	return LogUtil::registerError($this->__('This page does not exist in PagEd anymore !'));
       }  
     } // if (!$check)
     
     else
     {
-      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!', $dom));                           
+      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!'));                           
     }
     } // foreach($question_page as $wert => $value)
           
@@ -2004,16 +2004,16 @@ public function delete($args) {
       	} // if($question_page)
       	else
       	{
-      		LogUtil::registerError($this->__('This page does not exist in Pages anymore !', $dom)); 
+      		LogUtil::registerError($this->__('This page does not exist in Pages anymore !')); 
       	}
     } // if (!$check)
     else
     {
-      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!', $dom));                           
+      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!'));                           
     }
       } // if($content_state == 3)
       else {
-      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!', $dom)); 
+      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!')); 
       }                
     } //  if($modul == 'Pages')
     
@@ -2058,10 +2058,10 @@ public function delete($args) {
         // build the array for additional content, if wished
         if(pnModGetVar('MUTransport', 'details') == 1) {
           $date = DateUtil::formatDatetime($question_page[cr_date], 'datebrief');
-          $reviewsdetails = ($this->__('published on', $dom)) .": ".$date. "<br /><br/>" .
-                            ($this->__('reviewer', $dom)) . ": " . $question_page[reviewer] . "<br /><br />" . 
-                            ($this->__('points', $dom)) . ": " . $question_page[score] . "<br /><br />" .
-                            ($this->__('hits', $dom)). ": " . $question_page[hits];	
+          $reviewsdetails = ($this->__('published on')) .": ".$date. "<br /><br/>" .
+                            ($this->__('reviewer')) . ": " . $question_page[reviewer] . "<br /><br />" . 
+                            ($this->__('points')) . ": " . $question_page[score] . "<br /><br />" .
+                            ($this->__('hits')). ": " . $question_page[hits];	
           MUTransportHelp::buildArrayForContent($reviewsdetails, $format, $relation_id, 'html');	
         }
         
@@ -2074,16 +2074,16 @@ public function delete($args) {
       	} // if($question_page)
       	else
       	{
-      		LogUtil::registerError($this->__('This page does not exist in Reviews anymore !', $dom)); 
+      		LogUtil::registerError($this->__('This page does not exist in Reviews anymore !')); 
       	}
     } // if (!$check)
     else
     {
-      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!', $dom));                           
+      return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!'));                           
     }
       } // if($content_state == 3)
       else {
-      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!', $dom)); 
+      	return LogUtil::registerError($this->__('Sorry ! The target module Content is not active!')); 
       }                 
     } //  if ($modul == 'Reviews')    
 
@@ -2099,7 +2099,7 @@ public function delete($args) {
       $where = "WHERE $contentpagecolumn[id] = '" . pnVarPrepForStore($id) . "'";     
       $question_content= DBUtil::selectObject('content_page', $where);
           
-      $copy = $this->__(' (A copy)',$dom);
+      $copy = $this->__(' (A copy)');
       $title = $question_content[title];
       $title = $title . $copy;
     
@@ -2183,11 +2183,11 @@ public function delete($args) {
       	} // if($question_content)
       	else
       	{
-      		return LogUtil::registerError($this->__('This page does not exist in Content anymore !', $dom)); 
+      		return LogUtil::registerError($this->__('This page does not exist in Content anymore !')); 
       	}
       } // if (!$check)
       else  {
-        return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!', $dom));                           
+        return LogUtil::registerError($this->__('There is still one Page with this Permalink Url!'));                           
       }
     } // if($modul == 'content')
     
@@ -2210,10 +2210,10 @@ public function delete($args) {
 	  $mutransportcmscontentcolumn = $pntable['mutransport_cmscontent_column'];
       $mutransportusercolumn = $pntable['mutransport_user_column'];
 	  
-	  $wordpress = pnModGetVar('MUTransport','wordpress');
-      $wordpress_db = pnModGetVar('MUTransport','wordpress_db');		
-	  $wordpress_prefix = pnModGetVar('MUTransport', 'wordpress_prefix');
-	  $wordpress_imagepath = pnModGetVar('MUTransport', 'image_path2');
+	  $wordpress = ModUtil::getVar('MUTransport','wordpress');
+      $wordpress_db = ModUtil::getVar('MUTransport','wordpress_db');		
+	  $wordpress_prefix = ModUtil::getVar('MUTransport', 'wordpress_prefix');
+	  $wordpress_imagepath = ModUtil::getVar('MUTransport', 'image_path2');
 
 	  $music_delete = 1;
 	  
@@ -2363,16 +2363,12 @@ public function delete($args) {
           	// if the unit in wordpress is a page
           	if($value[post_type] == 'page') {
     	
-              MUTransportHelp::buildArrayForPagesPage($value[post_title], $content );
+            $ok1 =  MUTransportHelp::buildArrayForPagesPage($value[post_title], $content );
     
               $counterA = $counterA + 1;
               // update the state of transport for the original Page
               if ($ok1) {        
                 MUTransportHelp::updateTransportCms($mutransportcmscolumn[contentid],$id);
-              }
-              else {
-              	return false;
-              	
               }
             } // if($value[post_type] == 'page')
 
@@ -2505,8 +2501,17 @@ public function delete($args) {
   }
 }
 
-//-------------------------END OTHER CMS-----------------------------------------------
+//---------------------------------END OTHER CMS-----------------------------------------------
 
+//------------------------------------HOOKS------------------------------------------------------------
+
+public function NewstoContent()
+{
+	$relation_id = MUTransportHelp::getIdFromNews();
+	
+}
+
+//------------------------------------END-OF-HOOKS------------------------------------------------------------
 
 /**
  * get available admin panel links
