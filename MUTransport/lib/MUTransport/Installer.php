@@ -15,7 +15,7 @@
  * generated at Sat Dec 12 18:12:57 CET 2009 by ModuleStudio 0.4.3 (http://modulestudio.de)
  */
  
-class MUTransport_Installer extends Zikula_Installer
+class MUTransport_Installer extends Zikula_AbstractInstaller
 {
 
 /**
@@ -76,17 +76,7 @@ public function install()
     //$this->defaultdata(); maybe we can user later
     
     // jump to interactive installation
-    // $this->init_interactiveinit();
-    
-    if(!ModUtil::registerHook('item',
-                       'create',
-                       'API',
-                       'News',
-                       'admin',
-                       'createNews')) {
-    return LogUtil::registerError('Register of Hook failed!');
-    }
-    
+    // $this->init_interactiveinit(); 
 
     // Initialisation successful
     return true;

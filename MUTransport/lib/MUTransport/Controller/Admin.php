@@ -29,7 +29,7 @@ Loader::requireOnce('modules/MUTransport/common.php');
 // include pnForm in order to be able to inherit from pnFormHandler
 Loader::requireOnce('includes/pnForm.php');
 
-class MUTransport_Controller_Admin extends Zikula_Controller 
+class MUTransport_Controller_Admin extends Zikula_AbstractController 
 {
 
 /**
@@ -50,7 +50,8 @@ public function main($args)
     
     // call check method
     ModUtil::apiFunc('MUTransport','admin','check');
-    return $this->view('modul');
+    return $this->view->fetch('MUTransport_admin_modul_view.htm');
+ //   return $this->view->fetch('modul');
 
 }
 

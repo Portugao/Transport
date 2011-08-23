@@ -17,7 +17,7 @@
  
 Loader::LoadClass('MUTransportHelp', 'modules/MUTransport/classes/');
  
- class MUTransport_Api_Admin extends Zikula_Api {
+ class MUTransport_Api_Admin extends Zikula_AbstractApi {
 
 /**
  * This function provides a generic handling of all check requests.

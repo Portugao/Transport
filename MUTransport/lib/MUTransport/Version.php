@@ -11,7 +11,7 @@
  * @url mu-t-beratung.de
  */
  
-class MUTransport_Version extends Zikula_Version 
+class MUTransport_Version extends Zikula_AbstractVersion 
 {
 
 	public function getMetaData() 

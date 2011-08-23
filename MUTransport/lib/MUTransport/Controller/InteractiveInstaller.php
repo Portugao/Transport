@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class MUTransport_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller
+class MUTransport_Controller_Interactiveinstaller extends Zikula_Controller_AbstractInteractiveInstaller
 {
     /**
      * Initialise the interactive install system for the MUTransport module
@@ -28,6 +28,9 @@ class MUTransport_Controller_Interactiveinstaller extends Zikula_InteractiveInst
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
+    
+    $authid = FormUtil::getPassedValue('csrftoken', false, 'POST');
+    $this->view->assign('authid', $authid);
     
     return $this->view->fetch('MUTransport_init_interactive.htm');
     }
