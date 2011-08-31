@@ -278,7 +278,7 @@ class MUTransportHelp
             'contentAreaIndex' => '',
             'position'         => '0',
             'addVersion'       => '',
-            'content'          => array('module'        => 'content',
+            'content'          => array('module'        => 'Content',
                 'type'          => $type,
                 'data'          => $data,
                 'stylePosition' => 'none',
