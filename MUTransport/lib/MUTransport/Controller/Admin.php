@@ -50,8 +50,8 @@ public function main($args)
     
     // call check method
     ModUtil::apiFunc('MUTransport','admin','check');
-    return $this->view->fetch('MUTransport_admin_modul_view.htm');
- //   return $this->view->fetch('modul');
+    // call template
+    return $this->view->fetch('MUTransport_admin_main.htm');
 
 }
 
