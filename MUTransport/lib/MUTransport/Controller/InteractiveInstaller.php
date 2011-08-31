@@ -29,9 +29,6 @@ class MUTransport_Controller_Interactiveinstaller extends Zikula_Controller_Abst
         return LogUtil::registerPermissionError();
     }
     
-    $authid = FormUtil::getPassedValue('csrftoken', false, 'POST');
-    $this->view->assign('authid', $authid);
-    
     return $this->view->fetch('MUTransport_init_interactive.htm');
     }
     
