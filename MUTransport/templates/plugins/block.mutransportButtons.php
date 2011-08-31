@@ -8,7 +8,7 @@
  * @package PostNuke_Generated_Modules
  * @subpackage MUTransport
  * @author Michael Ueberschaer
- * @url mu-t-beratung.de
+ * @url webdesign-in-bremen.com
  */
 
 /*
