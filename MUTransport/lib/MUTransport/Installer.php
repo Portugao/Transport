@@ -133,9 +133,12 @@ public function upgrade($oldversion)
     // create the user table
     if (!DBUtil::createTable('mutransport_user')) {
         return false;
-    }             
     }
-
+    
+    case '1.3.0':
+    // nothing to do    
+                 
+    }
 
     // Update successful
     return true;
