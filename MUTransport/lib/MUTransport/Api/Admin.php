@@ -1771,7 +1771,7 @@ public function delete($args) {
         else
         $newstext = $question_page[hometext];
         
-        MUTransportHelp::buildArrayForContent($newstext, $format, $relation_id, 'html');
+        MUTransportHelp::buildArrayForContent($newstext, $format, $relation_id, 'Html');
         
       	}
       	else
