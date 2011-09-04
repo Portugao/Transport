@@ -31,12 +31,12 @@ class MUTransportHelp
      */
     public function getStateOfModule($module)
     {
-        $pntables = pnDBGetTables();
+        $pntables = DBUtil::getTables();
         $moduletable = $pntables['modules'];
         $modulecolumn = $pntables['modules_column'];
 
         $columns = array('state');
-        $where = "$modulecolumn[name] = '" . pnVarPrepForStore($module) . "'";
+        $where = "$modulecolumn[name] = '" . DataUtil::formatForStore($module) . "'";
         $state = DBUtil::selectObjectArray('modules', $where);
         return $state;
     }
@@ -56,7 +56,7 @@ class MUTransportHelp
 
         // get table infos of the module 'modules'
         ModUtil::dbInfoLoad('modules');
-        $pntable = pnDBGetTables();
+        $pntable = DBUtil::getTables();
 
         // get columnname infos of the modules 'modules' and 'MUTransport'
 
@@ -65,7 +65,7 @@ class MUTransportHelp
         $mutransportpagecolumn = $pntable['mutransport_page_column'];
 
         // get data from module modules
-        $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore($module) . "'";
+        $where = "WHERE $modulescolumn[name] = '" . DataUtil::formatForStore($module) . "'";
         $question = DBUtil::selectObjectArray('modules', $where);
 
         // get state of the needed module
@@ -347,13 +347,13 @@ class MUTransportHelp
 
                 // ckeck the image path, if not empty check for image
 
-                if (pnModGetVar('MUTransport', 'image_path') != '') {
+                if (ModUtil::getVar('MUTransport', 'image_path') != '') {
 
                     // if there is an image build the image path and html code
                     // and put before the text
 
                     if ($value2[image] != '') {
-                        $image_path = pnModGetVar('MUTransport', 'image_path');
+                        $image_path = ModUtil::getVar('MUTransport', 'image_path');
                         $image = $value2[image];
                         $exist = strpos($image, "/");
                         if ($exist) {
@@ -495,21 +495,13 @@ class MUTransportHelp
     /*----------------------FUNCTIONS FOR OTHER CMS------------------------------*/
 
     /**
-     * This function ist for make a check to another database
+     * This function is for make a check to another database
      */
      
-     public function checkExtDB() {
-     	
-     	include_once('config/mutransport_wordpress_dbconfig.php');
-     	
-     	$DBName = (isset($args['wordpressDBName'])) ? $args['wordpressDBName'] : null;
-        $DBUname = (isset($args['wordpressDBUname'])) ? $args['wordpressDBUname'] : null;
-        $DBPass = (isset($args['wordpressDBPass'])) ? $args['wordpressDBPass'] : null;
-        $DBHost = (isset($args['wordpressDBHost'])) ? $args['wordpressDBHost'] : null;
-        $DBType = (isset($args['wordpressDBType'])) ? $args['wordpressDBType'] : null;
+     public function checkExtDB($host,$dbname,$dbuser, $dbpassword) {
      	
      	try {
-            $connect = new PDO("mysql:host=localhost;dbname=wordpress", 'root', '');
+            $connect = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $dbpassword);
         } catch (PDOException $e) {
             return false;
         }
@@ -523,22 +515,14 @@ class MUTransportHelp
      }
      
     /**
-     * This function ist for make a connect to another database
+     * This function is for make a connect to another database
      * and execute a query and return the result as an aray
      */
      
-     public function connectExtDB($query) {
-     	
-     	include_once('config/mutransport_wordpress_dbconfig.php');
-     	
-     	$DBName = (isset($args['wordpressDBName'])) ? $args['wordpressDBName'] : null;
-        $DBUname = (isset($args['wordpressDBUname'])) ? $args['wordpressDBUname'] : null;
-        $DBPass = (isset($args['wordpressDBPass'])) ? $args['wordpressDBPass'] : null;
-        $DBHost = (isset($args['wordpressDBHost'])) ? $args['wordpressDBHost'] : null;
-        $DBType = (isset($args['wordpressDBType'])) ? $args['wordpressDBType'] : null;
+     public function connectExtDB($query,$host,$dbname,$dbuser, $dbpassword) {
      	
      	try {
-            $connect = new PDO("mysql:host=localhost;dbname=wordpress", 'root', '');
+            $connect = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $dbpassword);
         } catch (PDOException $e) {
             return false;
         }
@@ -598,7 +582,7 @@ class MUTransportHelp
 
         // get the length of the password, that is necessary
 
-        $length = pnModGetVar('Users', 'minpass');
+        $length = ModUtil::getVar('Users', 'minpass');
 
         // password generating
         // letters and numbers in an array
@@ -627,7 +611,7 @@ class MUTransportHelp
             }
         }
 
-        $method = pnModGetVar('Users', 'hash_method');
+        $method = ModUtil::getVar('Users', 'hash_method');
         $pass = DataUtil::hash($input, $method);
 
         // if username must be in lowercase
