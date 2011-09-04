@@ -26,10 +26,10 @@ class MUTransport_Api_Account extends Zikula_AbstractApi
         $items = array();
 
         if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
-            $items['0'] = array('url' => ModUtil::url('MUTransport', 'admin', 'mutransport'),
+            $items['0'] = array('url' => ModUtil::url('MUTransport', 'admin', 'main'),
                     'module' => 'MUTransport',
                     'title' => $this->__('MUTransport'),
-                    'icon' => 'admin.png');
+                    'icon' => 'admin.gif');
         }
 
         // Return the items

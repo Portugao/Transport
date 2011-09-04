@@ -42,7 +42,7 @@ public function check($args)
 
     // get table infos of the module 'modules'
     ModUtil::dbInfoLoad('modules');
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     
     
     
@@ -60,7 +60,7 @@ public function check($args)
     // get state of the module 'News'
         
     // get data from MUTransport module    
-    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("News") . "'";
+    $where2 = "WHERE $mutransportcolumn[name] = '" . DataUtil::FormatForStore("News") . "'";
     $question2 = DBUtil::selectObject('mutransport_modul', $where2);
     if(isset($question2)) {
       $id = $question2['modulid'];
@@ -98,7 +98,7 @@ public function check($args)
     else
     {
     if(is_array($question2)) {
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($id) . "'";
     DBUtil::deleteWhere('mutransport_page', $where);    
     $where2 = "WHERE $mutransportcolumn[name] = 'News'";
     DBUtil::deleteWhere('mutransport_modul', $where2);
@@ -113,7 +113,7 @@ public function check($args)
     // get state of the module 'Pages'
        
     // get data from MUTransport module    
-    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("Pages") . "'";
+    $where2 = "WHERE $mutransportcolumn[name] = '" . DataUtil::formatForStore("Pages") . "'";
     $question2 = DBUtil::selectObject('mutransport_modul', $where2);
     if(isset($question2)) {
       $id = $question2['modulid'];
@@ -151,7 +151,7 @@ public function check($args)
     else
     {
     if(is_array($question2)) {
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($id) . "'";
     DBUtil::deleteWhere('mutransport_page', $where);    
     $where2 = "WHERE $mutransportcolumn[name] = 'Pages'";
     DBUtil::deleteWhere('mutransport_modul', $where2);
@@ -167,7 +167,7 @@ public function check($args)
     
 
     // get data from MUTransport module    
-    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("PagEd") . "'";
+    $where2 = "WHERE $mutransportcolumn[name] = '" . DataUtil::formatForStore("PagEd") . "'";
     $question2 = DBUtil::selectObject('mutransport_modul', $where2);
     if(isset($question2)) {
       $id = $question2['modulid'];
@@ -205,7 +205,7 @@ public function check($args)
     else
     {
     if(is_array($question2)) {
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($id) . "'";
     DBUtil::deleteWhere('mutransport_page', $where);    
     $where2 = "WHERE $mutransportcolumn[name] = 'PagEd'";
     DBUtil::deleteWhere('mutransport_modul', $where2);
@@ -220,7 +220,7 @@ public function check($args)
     // get state of the module 'Reviews'
        
     // get data from MUTransport module    
-    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("Reviews") . "'";
+    $where2 = "WHERE $mutransportcolumn[name] = '" . DataUtil::formatForStore("Reviews") . "'";
     $question2 = DBUtil::selectObject('mutransport_modul', $where2);
     if(isset($question2)) {
       $id = $question2['modulid'];
@@ -258,7 +258,7 @@ public function check($args)
     else
     {
     if(is_array($question2)) {
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($id) . "'";
     DBUtil::deleteWhere('mutransport_page', $where);    
     $where2 = "WHERE $mutransportcolumn[name] = 'Reviews'";
     DBUtil::deleteWhere('mutransport_modul', $where2);
@@ -273,7 +273,7 @@ public function check($args)
     // get state of the module 'content'
 
     // get data from MUTransport modul    
-    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("content") . "'";
+    $where2 = "WHERE $mutransportcolumn[name] = '" . DataUtil::formatForStore("content") . "'";
     $question2 = DBUtil::selectObject('mutransport_modul', $where2);
     if(isset($question2)) {
       $id = $question2['modulid'];
@@ -311,7 +311,7 @@ public function check($args)
     else
     {
     if(is_array($question2)) {
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($id) . "'";
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($id) . "'";
     DBUtil::deleteWhere('mutransport_page', $where);    
     $where2 = "WHERE $mutransportcolumn[name] = 'content'";
     DBUtil::deleteWhere('mutransport_modul', $where2);
@@ -326,7 +326,7 @@ public function check($args)
 /*-----------------------WORDPRESS-------------------------------*/
 
     // get data from MUTransport cms    
-    $where2 = "WHERE $mutransportcolumn[name] = '" . pnVarPrepForStore("wordpress") . "'";
+    $where2 = "WHERE $mutransportcolumn[name] = '" . DataUtil::formatForStore("wordpress") . "'";
     $question2 = DBUtil::selectObject('mutransport_cms', $where2);
     if(isset($question2)) {
       $id = $question2['cmsid'];
@@ -336,7 +336,10 @@ public function check($args)
     }
 
     $wordpress = ModUtil::getVar('MUTransport','wordpress');
+    $wordpress_host = ModUtil::getVar('MUTransport', 'wordpress_host');
     $wordpress_db = ModUtil::getVar('MUTransport','wordpress_db');
+	$wordpress_user = ModUtil::getVar('MUTransport','wordpress_user');
+	$wordpress_pw = ModUtil::getVar('MUTransport','wordpress_pw');
     
     // if wordpress enabled in configuration
     if($wordpress == 1) {
@@ -346,7 +349,7 @@ public function check($args)
       if($wordpress_db != '') {
       		
       	// connect to the wordpress db    	
-      	$connect = MUTransportHelp::checkExtDB();
+      	$connect = MUTransportHelp::checkExtDB($wordpress_host,$wordpress_db, $wordpress_user, $wordpress_pw);
       	     
         // if connect, the connection to the db is possible
       	if($connect == true) {
@@ -385,9 +388,9 @@ public function check($args)
     } // if($wordpress == 1)
     else {
     if(is_array($question2)) {
-    $where = "WHERE $mutransportcmscontentcolumn[cmsid] = '" . pnVarPrepForStore($id) . "'";
+    $where = "WHERE $mutransportcmscontentcolumn[cmsid] = '" . DataUtil::formatForStore($id) . "'";
     DBUtil::deleteWhere('mutransport_cmscontent', $where);
-    $where2 = "WHERE $mutransportusercolumn[cmsid] = '" . pnVarPrepForStore($id) . "'";
+    $where2 = "WHERE $mutransportusercolumn[cmsid] = '" . DataUtil::formatForStore($id) . "'";
     DBUtil::deleteWhere('mutransport_user', $where2);    
     $where3 = "WHERE $mutransportcmscolumn[name] = 'wordpress'";
     DBUtil::deleteWhere('mutransport_cms', $where3);   	
@@ -423,7 +426,7 @@ public function read($args) {
     ModUtil::dbInfoLoad('Reviews');
     ModUtil::dbInfoLoad('Content');
      
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     
     // get the name and id of modul
     
@@ -457,7 +460,7 @@ public function read($args) {
     
     // ask the DB for existing Pages of News in MUTransport
 
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";    
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";    
     $search = DBUtil::selectObjectArray('mutransport_page' , $where);
     
         
@@ -523,7 +526,7 @@ public function read($args) {
       for ($i=0; $i<$countresult2; $i++)  {
       $result2_obj = $result2[$i];
       $id = $result2[$i][pageid];
-      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'"; 
       DBUtil::updateObject ($result2_obj, 'mutransport_page', $where2);      
       }
     }
@@ -553,7 +556,7 @@ public function read($args) {
     
     // ask the DB for existing Pages of Pages in MUTransport
 
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";    
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";    
     $search = DBUtil::selectObjectArray('mutransport_page' , $where);
     
         
@@ -613,7 +616,7 @@ public function read($args) {
       for ($i=0; $i<$countresult2; $i++)  {
       $result2_obj = $result2[$i];
       $id = $result2[$i][pageid];
-      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'"; 
       DBUtil::updateObject ($result2_obj, 'mutransport_page', $where2);      
       }
     }
@@ -634,7 +637,7 @@ public function read($args) {
     if ($name == 'PagEd') {
 
     // get the prefix if one exists    
-    $prefix = pnConfigGetVar("prefix");
+    $prefix = System::getVar("prefix");
     if($prefix != '')
     $prefix = $prefix.'_';
     else
@@ -655,7 +658,7 @@ public function read($args) {
     
     // ask the DB for existing Pages of PagEd in MUTransport
 
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'"; 
     $search = DBUtil::selectObjectArray('mutransport_page', $where);
     
     // put the pageid's of existing Pages in MUTransport in an array
@@ -674,7 +677,7 @@ public function read($args) {
     // put the page into the array, if not existing in MUTransport   
     // get the content of the page in Modul PagEd
     
-    $sql2 = "SELECT text FROM $pagedcontent WHERE page_id = '" . pnVarPrepForStore($value['page_id']) . "'";
+    $sql2 = "SELECT text FROM $pagedcontent WHERE page_id = '" . DataUtil::formatForStore($value['page_id']) . "'";
     $columns2 = array('text');
     $question2 = DBUtil::executeSQL($sql2);
     $obj2 = DBUtil::marshallObjects($question2, $columns2);
@@ -734,7 +737,7 @@ public function read($args) {
       for ($i=0; $i<$count; $i++)  {
       $result2_obj = $result2[$i];
       $id = $result2[$i][pageid];
-      $where3 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      $where3 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'"; 
       DBUtil::updateObject ($result2_obj, 'mutransport_page', $where3);
 
       }    
@@ -766,7 +769,7 @@ public function read($args) {
     
     // ask the DB for existing Pages of Reviews in MUTransport
 
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";    
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";    
     $search = DBUtil::selectObjectArray('mutransport_page' , $where);
     
         
@@ -826,7 +829,7 @@ public function read($args) {
       for ($i=0; $i<$countresult2; $i++)  {
       $result2_obj = $result2[$i];
       $id = $result2[$i][pageid];
-      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'"; 
       DBUtil::updateObject ($result2_obj, 'mutransport_page', $where2);      
       }
     }
@@ -859,7 +862,7 @@ public function read($args) {
     
     // ask the DB for existing Pages of Content in MUTransport
 
-    $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+    $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'"; 
     $search = DBUtil::selectObjectArray('mutransport_page', $where);
     
     // put the pageid's of existing Pages in MUTransport in an array
@@ -882,7 +885,7 @@ public function read($args) {
     
     // get the content of the page in Modul Content
     
-    $where2 = "WHERE $contentcolumn[pageId] = '" . pnVarPrepForStore($value[id]) . "'";
+    $where2 = "WHERE $contentcolumn[pageId] = '" . DataUtil::formatForStore($value[id]) . "'";
     $question2 = DBUtil::selectObjectArray('content_content', $where2);
     // if content for the page in content is available
     if ($question2){
@@ -939,7 +942,7 @@ public function read($args) {
       for ($i=0; $i<$count; $i++)  {
       $result2_obj = $result2[$i];
       $id = $result2[$i][pageid];
-      $where3 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'"; 
+      $where3 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($id) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'"; 
       DBUtil::updateObject ($result2_obj, 'mutransport_page', $where3);
 
       }    
@@ -963,8 +966,11 @@ public function read($args) {
 	  $mutransportcmscontentcolumn = $pntable['mutransport_cmscontent_column'];
       $mutransportusercolumn = $pntable['mutransport_user_column'];
 	  
-	  $wordpress = ModUtil::getVar('MUTransport','wordpress');
-      $wordpress_db = ModUtil::getVar('MUTransport','wordpress_db');		
+      $wordpress = ModUtil::getVar('MUTransport','wordpress');
+      $wordpress_host = ModUtil::getVar('MUTransport', 'wordpress_host');
+      $wordpress_db = ModUtil::getVar('MUTransport','wordpress_db');
+	  $wordpress_user = ModUtil::getVar('MUTransport','wordpress_user');
+	  $wordpress_pw = ModUtil::getVar('MUTransport','wordpress_pw');		
 	  $wordpress_prefix = ModUtil::getVar('MUTransport', 'wordpress_prefix');
 	  
 	  // if set a prefix 
@@ -986,27 +992,16 @@ public function read($args) {
     	                     WHERE post_status = 'publish'
     	                     AND (post_type = 'post' OR post_type = 'page')";
     
-    $obj = MUTransportHelp::connectExtDB($query);
+    $obj = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);
     
     // count the items in the array
     $countquestion = count($obj);
     
     if($obj) {   
-/*    $sql = "SELECT ID, post_title, post_type, post_content, post_status
-    	    FROM $tables
-    	    WHERE post_status = 'publish'
-    	    AND (post_type = 'post' OR post_type = 'page')";
-    	    
-    $columns = array('ID', 'post_title', 'post_type','post_content','post_status');
-    $question = DBUtil::executeSQL($sql);
-    $obj = DBUtil::marshallObjects($question, $columns);
-    $countquestion = count($obj);*/
-    
-    //DBConnectionStack::init();
     
      // ask the DB for existing Content of wordpress in MUTransport
 
-    $where = "WHERE $mutransportcmscontentcolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'"; 
+    $where = "WHERE $mutransportcmscontentcolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'"; 
     $search = DBUtil::selectObjectArray('mutransport_cmscontent', $where);
     
     // put the contentid's of existing Pages in MUTransport in an array
@@ -1066,7 +1061,7 @@ public function read($args) {
       for ($i=0; $i<$countresult2; $i++)  {
       $result2_obj = $result2[$i];
       $id = $result2[$i][contentid];
-      $where2 = "WHERE $mutransportcmscontentcolumn[contentid] = '" . pnVarPrepForStore($id) . "' AND $mutransportcmscontentcolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'"; 
+      $where2 = "WHERE $mutransportcmscontentcolumn[contentid] = '" . DataUtil::formatForStore($id) . "' AND $mutransportcmscontentcolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'"; 
       DBUtil::updateObject ($result2_obj, 'mutransport_cmscontent', $where2);      
       }
     }
@@ -1084,31 +1079,19 @@ public function read($args) {
     } // if($kind == 'content')
     
     if($kind == 'user') {
-    	
-    // DBConnectionStack::init($wordpress_db);
     
     // ask the DB for Users in wordpress    
     $query = "SELECT ID, user_login, user_email
     	    FROM $tables2";
     	    
-    $obj2 = MUTransportHelp::connectExtDB($query);    
+    $obj2 = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);    
     
     // count the items in the array
     $countquestion2 = count($obj2);
-        
-/*    $sql = "SELECT ID, user_login, user_email
-    	    FROM $tables2";
-    	    
-    $columns2 = array('ID', 'user_login', 'user_email');
-    $question2 = DBUtil::executeSQL($sql);
-    $obj2 = DBUtil::marshallObjects($question2, $columns2);
-    $countquestion2 = count($obj2);
     
-    DBConnectionStack::init();*/
-    
-     // ask the DB for existing Users of wordpress in MUTransport
+    // ask the DB for existing Users of wordpress in MUTransport
 
-    $where = "WHERE $mutransportusercolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'"; 
+    $where = "WHERE $mutransportusercolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'"; 
     $search = DBUtil::selectObjectArray('mutransport_user', $where);
     
     // put the contentid's of existing USers in MUTransport in an array
@@ -1161,7 +1144,7 @@ public function read($args) {
       for ($i=0; $i<$countresult2; $i++)  {
       $result2_obj = $result2[$i];
       $id = $result2[$i][userid];
-      $where2 = "WHERE $mutransportusercolumn[userid] = '" . pnVarPrepForStore($id) . "' AND $mutransportusercolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'"; 
+      $where2 = "WHERE $mutransportusercolumn[userid] = '" . DataUtil::formatForStore($id) . "' AND $mutransportusercolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'"; 
       DBUtil::updateObject ($result2_obj, 'mutransport_user', $where2);      
       }
     }
@@ -1204,7 +1187,7 @@ public function delete($args) {
     ModUtil::dbInfoLoad('PagEd');
     ModUtil::dbInfoLoad('Reviews');     
     ModUtil::dbInfoLoad('Content');
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     
     // get the name, id of modul, id of cms and kind of TODO
     
@@ -1226,7 +1209,7 @@ public function delete($args) {
         
         // ask the DB for existing Pages of News in MUTransport
     
-        $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+        $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
         $search = DBUtil::selectObjectArray('mutransport_page', $where);
         $countsearch = count($search);
         
@@ -1243,7 +1226,7 @@ public function delete($args) {
             // delete Pages from MUTransport not existing in News
             foreach ($search as $wert => $value)  {
                 if (!in_array($value[pageid], $question_id)) {
-                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
                     $ok = DBUtil::deleteWhere ('mutransport_page', $where2);
  
                 } // if
@@ -1274,7 +1257,7 @@ public function delete($args) {
         $countquestion = count($question);
         // ask the DB for existing Pages of Pages in MUTransport
     
-        $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+        $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
         $search = DBUtil::selectObjectArray('mutransport_page', $where);
         $countsearch = count($search);
         
@@ -1291,7 +1274,7 @@ public function delete($args) {
             // delete Pages from MUtransport not existing in Pages
             foreach ($search as $wert => $value)  {
                 if (!in_array($value[pageid], $question_id)) {
-                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
                     $ok = DBUtil::deleteWhere ('mutransport_page', $where2);
  
                 } // if
@@ -1315,7 +1298,7 @@ public function delete($args) {
         $pagescolumn = $pntable['pages_column'];
         $mutransportpagecolumn = $pntable['mutransport_page_column'];
         
-        $prefix = pnConfigGetVar("prefix");
+        $prefix = System::getVar("prefix");
         if($prefix != '')
         $prefix = $prefix.'_';
         else
@@ -1333,7 +1316,7 @@ public function delete($args) {
 
         // ask the DB for existing Pages of PagEd in MUTransport
     
-        $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+        $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
         $search = DBUtil::selectObjectArray('mutransport_page', $where);
         $countsearch = count($search);
         
@@ -1350,7 +1333,7 @@ public function delete($args) {
             // delete Pages from MUtransport not existing in PagEd
             foreach ($search as $wert => $value)  {
                 if (!in_array($value[pageid], $question_id)) {
-                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
                     $ok = DBUtil::deleteWhere ('mutransport_page', $where2);
  
                 } // if
@@ -1380,7 +1363,7 @@ public function delete($args) {
         $countquestion = count($question);
         // ask the DB for existing Pages of Reviews in MUTransport
     
-        $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+        $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
         $search = DBUtil::selectObjectArray('mutransport_page', $where);
         $countsearch = count($search);
         
@@ -1397,7 +1380,7 @@ public function delete($args) {
             // delete Pages from MUtransport not existing in Reviews
             foreach ($search as $wert => $value)  {
                 if (!in_array($value[pageid], $question_id)) {
-                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+                    $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
                     $ok = DBUtil::deleteWhere ('mutransport_page', $where2);
  
                 } // if
@@ -1427,7 +1410,7 @@ public function delete($args) {
         $countquestion = count($question);
         
         // ask the DB for existing Pages of Content in MUTransport
-        $where = "WHERE $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";    
+        $where = "WHERE $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";    
         $search = DBUtil::selectObjectArray('mutransport_page', $where);
         $countsearch = count($search);
         
@@ -1444,7 +1427,7 @@ public function delete($args) {
             // delete Pages from MUtransport not existing in Content
             foreach ($search as $wert => $value)  {
             if (!in_array($value[pageid], $question_id)) {
-                $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . pnVarPrepForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . pnVarPrepForStore($modulid) . "'";
+                $where2 = "WHERE $mutransportpagecolumn[pageid] = '" . DataUtil::formatForStore($value[pageid]) . "' AND $mutransportpagecolumn[modulid] = '" . DataUtil::formatForStore($modulid) . "'";
                 DBUtil::deleteWhere ('mutransport_page', $where2);
     
             } // if
@@ -1474,9 +1457,12 @@ public function delete($args) {
     
     // ask the DB for Pages in wordpress
         
-	  $wordpress = pnModGetVar('MUTransport','wordpress');
-      $wordpress_db = pnModGetVar('MUTransport','wordpress_db');		
-	  $wordpress_prefix = pnModGetVar('MUTransport', 'wordpress_prefix');
+	  $wordpress = ModUtil::getVar('MUTransport','wordpress');
+      $wordpress_host = ModUtil::getVar('MUTransport','wordpress_host');
+      $wordpress_db = ModUtil::getVar('MUTransport','wordpress_db');
+      $wordpress_user = ModUtil::getVar('MUTransport','wordpress_user');
+      $wordpress_pw = ModUtil::getVar('MUTransport','wordpress_pw');		
+	  $wordpress_prefix = ModUtil::getVar('MUTransport', 'wordpress_prefix');
 	  
 	  // if set a prefix 
       if($wordpress_prefix != '') {
@@ -1497,26 +1483,14 @@ public function delete($args) {
     	      FROM $tables
     	      WHERE post_status = 'publish'";
     	    
-    $obj = MUTransportHelp::connectExtDB($query);    
+    $obj = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);    
     
     // count the items in the array
     $countquestion = count($obj);
-    
-/*    // ask the DB for Pages in wordpress with state 'publish'        
-    $sql = "SELECT ID, post_title, post_type, post_content, post_status
-    	    FROM $tables
-    	    WHERE post_status = 'publish'";
-    	   
-    $columns = array('ID', 'post_title', 'post_type','post_content','post_status');
-    $question = DBUtil::executeSQL($sql);
-    $obj = DBUtil::marshallObjects($question, $columns);
-    $countquestion = count($obj);
-    
-    DBConnectionStack::init();*/
         
     // ask the DB for existing Pages of wordpress in MUTransport
     
-    $where = "WHERE $mutransportcmscontentcolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'";
+    $where = "WHERE $mutransportcmscontentcolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'";
     $search = DBUtil::selectObjectArray('mutransport_cmscontent', $where);
     $countsearch = count($search);
         
@@ -1533,7 +1507,7 @@ public function delete($args) {
         // delete Pages from MUTransport not existing in wordpress
         foreach ($search as $wert => $value)  {
             if (!in_array($value[contentid], $question_id)) {
-                $where2 = "WHERE $mutransportcmscontentcolumn[contentid] = '" . pnVarPrepForStore($value[contentid]) . "' AND $mutransportcmscontentcolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'";
+                $where2 = "WHERE $mutransportcmscontentcolumn[contentid] = '" . DataUtil::formatForStore($value[contentid]) . "' AND $mutransportcmscontentcolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'";
                 $ok = DBUtil::deleteWhere ('mutransport_cmscontent', $where2);
  
             } // if
@@ -1558,24 +1532,13 @@ public function delete($args) {
     $query = "SELECT ID, user_login, user_email
     	    FROM $tables2";
     	    
-    $obj2 = MUTransportHelp::connectExtDB($query);
+    $obj2 = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);
     
     $countquestion2 = count($obj2); 
-        
-/*
- * TODO    $sql = "SELECT ID, user_login, user_email
-    	    FROM $tables2";
-    	    
-    $columns2 = array('ID', 'user_login', 'user_email');
-    $question2 = DBUtil::executeSQL($sql);
-    $obj2 = DBUtil::marshallObjects($question2, $columns2);
-    $countquestion2 = count($obj2);
-    
-    DBConnectionStack::init();*/
     
     // ask the DB for existing Users of wordpress in MUTransport
     
-    $where2 = "WHERE $mutransportusercolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'";
+    $where2 = "WHERE $mutransportusercolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'";
     $search2 = DBUtil::selectObjectArray('mutransport_user', $where2);
     $countsearch2 = count($search2);
         
@@ -1598,7 +1561,7 @@ public function delete($args) {
         // delete Pages from MUTransport not existing in wordpress
         foreach ($search2 as $wert2 => $value2)  {
             if (!in_array($value[contentid], $question_id)) {
-                $where3 = "WHERE $mutransportusercolumn[userid] = '" . pnVarPrepForStore($value2[userid]) . "' AND $mutransportusercolumn[cmsid] = '" . pnVarPrepForStore($cmsid) . "'";
+                $where3 = "WHERE $mutransportusercolumn[userid] = '" . DataUtil::formatForStore($value2[userid]) . "' AND $mutransportusercolumn[cmsid] = '" . DataUtil::formatForStore($cmsid) . "'";
                 $ok2 = DBUtil::deleteWhere ('mutransport_user', $where3);
  
             } // if
@@ -1648,7 +1611,7 @@ public function delete($args) {
     ModUtil::dbInfoLoad('pages');
     ModUtil::dbInfoLoad('Reviews');
     ModUtil::dbInfoLoad('content');
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
 
     // take columns of tables
     $mutransportcolumn = $pntable['mutransport_page_column'];
@@ -1658,7 +1621,6 @@ public function delete($args) {
     $newscolumn = $pntable['news_column'];    
     $pagescolumn = $pntable['pages_column'];
     $reviewscolumn = $pntable['reviews_column'];
-//    $column   = $pntables['mutransport_page_column']; TODO delete
 
     // get state of modules
     $content_state_result = MUTransportHelp::getStateOfModule('content');
@@ -1732,14 +1694,14 @@ public function delete($args) {
       if($content_state == 3) {
     
       // Get page from the DB
-      $where = "WHERE $newscolumn[sid] = '" . pnVarPrepForStore($id) . "'";     
+      $where = "WHERE $newscolumn[sid] = '" . DataUtil::formatForStore($id) . "'";     
       $question_page = DBUtil::selectObject('news', $where);
       $count_question_page = count($question_page);    
         
       // prepare the selected pages from modul news for transport to modul content
       // if there is a page in News
 
-      $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($question_page['title']) . "'";
+      $where = "WHERE $contentpagecolumn[title] = '" . DataUtil::formatForStore($question_page['title']) . "'";
       $check = DBUtil::selectObject('content_page', $where);
     
       // prepare the page
@@ -1798,7 +1760,7 @@ public function delete($args) {
     if ($modul == 'PagEd') {
 
       // get the prefix if one exists
-      $prefix = pnConfigGetVar("prefix");
+      $prefix = System::getVar("prefix");
       if($prefix != '')
       $prefix = $prefix.'_';
       else
@@ -1807,7 +1769,7 @@ public function delete($args) {
       $pagedcontent = $prefix.'paged_content';
 
       // Get page from the DB
-      $sql = "SELECT page_id, title, ingress, unix_timestamp, page_author, pageauthor_name FROM $pagedtitles WHERE page_id = '" . pnVarPrepForStore($id) . "'";
+      $sql = "SELECT page_id, title, ingress, unix_timestamp, page_author, pageauthor_name FROM $pagedtitles WHERE page_id = '" . DataUtil::formatForStore($id) . "'";
       $columns = array('page_id', 'title', 'ingress', 'unix_timestamp', 'page_author', 'pageauthor_name');
       $question = DBUtil::executeSQL($sql);
       $question_page = DBUtil::marshallObjects($question, $columns);
@@ -1818,10 +1780,10 @@ public function delete($args) {
       
       foreach($question_page as $wert => $value) {
       // ckeck content for page with given title
-      $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($value['title']) . "'";
+      $where = "WHERE $contentpagecolumn[title] = '" . DataUtil::formatForStore($value['title']) . "'";
       $check = DBUtil::selectObject('content_page', $where);
       // ckeck news for page with given title
-      $where2 = "WHERE $newscolumn[title] = '" . pnVarPrepForStore($value['title']) . "'";
+      $where2 = "WHERE $newscolumn[title] = '" . DataUtil::formatForStore($value['title']) . "'";
       $check2 = DBUtil::selectObject('news', $where2);
       
          
@@ -1849,7 +1811,7 @@ public function delete($args) {
         
         $sql2 = "SELECT page_id, section, subtitle, image, imagetext, text
         		 FROM $pagedcontent
-        		 WHERE page_id = '" . pnVarPrepForStore($id) . "' ORDER BY section DESC";
+        		 WHERE page_id = '" . DataUtil::formatForStore($id) . "' ORDER BY section DESC";
         		
         $columns2 = array('page_id', 'section', 'subtitle', 'image', 'imagetext', 'text');
         $question2 = DBUtil::executeSQL($sql2);
@@ -1922,7 +1884,7 @@ public function delete($args) {
       if($tonews == 1) {
       	if ($news_state == 3) {
 
-        $sql = "SELECT page_id, section, subtitle, image, imagetext, text FROM $pagedcontent WHERE page_id = '" . pnVarPrepForStore($id) . "' ORDER BY section ASC";
+        $sql = "SELECT page_id, section, subtitle, image, imagetext, text FROM $pagedcontent WHERE page_id = '" . DataUtil::formatForStore($id) . "' ORDER BY section ASC";
         $columns = array('page_id', 'section', 'subtitle', 'image', 'imagetext', 'text');
         $question = DBUtil::executeSQL($sql);
         $question_content = DBUtil::marshallObjects($question, $columns);
@@ -1968,14 +1930,14 @@ public function delete($args) {
       if($content_state == 3) {  
     
       // Get page from the DB
-      $where = "WHERE $pagescolumn[pageid] = '" . pnVarPrepForStore($id) . "'";     
+      $where = "WHERE $pagescolumn[pageid] = '" . DataUtil::formatForStore($id) . "'";     
       $question_page = DBUtil::selectObject('pages', $where);
       $count_question_page = count($question_page);    
         
     // prepare the selected pages from modul pages for transport to modul content
     // if there is a page in Pages
 
-      $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($question_page['title']) . "'";
+      $where = "WHERE $contentpagecolumn[title] = '" . DataUtil::formatForStore($question_page['title']) . "'";
       $check = DBUtil::selectObject('content_page', $where);
     
       // prepare the page
@@ -2026,14 +1988,14 @@ public function delete($args) {
       if($content_state == 3) {
     
       // Get page from the DB
-      $where = "WHERE $reviewscolumn[id] = '" . pnVarPrepForStore($id) . "'";     
+      $where = "WHERE $reviewscolumn[id] = '" . DataUtil::formatForStore($id) . "'";     
       $question_page = DBUtil::selectObject('reviews', $where);
       $count_question_page = count($question_page);    
         
     // prepare the selected pages from modul reviews for transport to modul content
     // if there is a page in Reviews
 
-      $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($question_page['title']) . "'";
+      $where = "WHERE $contentpagecolumn[title] = '" . DataUtil::formatForStore($question_page['title']) . "'";
       $check = DBUtil::selectObject('content_page', $where);
     
       // prepare the page
@@ -2096,21 +2058,21 @@ public function delete($args) {
 
       $urlname = '';
     
-      $where = "WHERE $contentpagecolumn[id] = '" . pnVarPrepForStore($id) . "'";     
+      $where = "WHERE $contentpagecolumn[id] = '" . DataUtil::formatForStore($id) . "'";     
       $question_content= DBUtil::selectObject('content_page', $where);
           
       $copy = $this->__(' (A copy)');
       $title = $question_content[title];
       $title = $title . $copy;
     
-      $where = "WHERE $contentpagecolumn[title] = '" . pnVarPrepForStore($title) . "'";
+      $where = "WHERE $contentpagecolumn[title] = '" . DataUtil::formatForStore($title) . "'";
       $check = DBUtil::selectObject('content_page', $where);
             
       // start to copy
       if(!$check) {
       	if($question_content) {
       		
-          $where = "WHERE $mutransportcolumn[pageid] = '" . pnVarPrepForStore($id) . "'";
+          $where = "WHERE $mutransportcolumn[pageid] = '" . DataUtil::formatForStore($id) . "'";
           $old = DBUtil::selectObject('mutransport_page', $where);
           $transport = $old[transport];    
           for ($i=1; $i<=$number; $i++) {
@@ -2138,7 +2100,7 @@ public function delete($args) {
     
           // take the content for the page
     
-          $where2 = "WHERE $contentcontentcolumn[pageId] = '" . pnVarPrepForStore($id) . "'";  
+          $where2 = "WHERE $contentcontentcolumn[pageId] = '" . DataUtil::formatForStore($id) . "'";  
           $page_content = DBUtil::selectObjectArray('content_content', $where2);
 
           // build the array for the content for the transport into Content
@@ -2211,7 +2173,10 @@ public function delete($args) {
       $mutransportusercolumn = $pntable['mutransport_user_column'];
 	  
 	  $wordpress = ModUtil::getVar('MUTransport','wordpress');
-      $wordpress_db = ModUtil::getVar('MUTransport','wordpress_db');		
+      $wordpress_host = ModUtil::getVar('MUTransport','wordpress_host');
+      $wordpress_db = ModUtil::getVar('MUTransport','wordpress_db');
+      $wordpress_user = ModUtil::getVar('MUTransport','wordpress_user');
+      $wordpress_pw = ModUtil::getVar('MUTransport','wordpress_pw');		
 	  $wordpress_prefix = ModUtil::getVar('MUTransport', 'wordpress_prefix');
 	  $wordpress_imagepath = ModUtil::getVar('MUTransport', 'image_path2');
 
@@ -2244,16 +2209,7 @@ public function delete($args) {
         		     FROM $tables4
         		     WHERE option_name = 'upload_path'";
     	    
-        $path = MUTransportHelp::connectExtDB($query);
-        
-        // DBConnectionStack::init($wordpress_db);
-        
-/*        $path_sql = "SELECT option_value
-        		     FROM $tables4
-        		     WHERE option_name = 'upload_path'";
-        $column = array('option_value');
-        $ask = DBUtil::executeSQL($path_sql);
-        $path = DBUtil::marshallObjects($ask, $column);*/
+        $path = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);
         
         if($path[0][option_value] != '') {
           $path = $path[0];
@@ -2270,16 +2226,7 @@ public function delete($args) {
     	          WHERE post_status = 'publish'
     	          AND ID = $id";
     	    
-        $obj = MUTransportHelp::connectExtDB($query);
-        
- /*       $sql = "SELECT ID, post_author, post_date, post_title, post_type, post_content, post_status, post_type
-    	        FROM $tables
-    	        WHERE post_status = 'publish'
-    	        AND ID = '" . pnVarPrepForStore($id) . "'";
-    	    
-        $columns = array('ID','post_author', 'post_date', 'post_title', 'post_type','post_content','post_status','post_type');
-        $question = DBUtil::executeSQL($sql);
-        $obj = DBUtil::marshallObjects($question, $columns);*/
+        $obj = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);
     
         if($obj) {
     
@@ -2343,20 +2290,10 @@ public function delete($args) {
         		     FROM $tables3
         		     WHERE ID = $value[post_author]";
     	    
-            $obj2 = MUTransportHelp::connectExtDB($query);
-        
-/*            $sql2 = "SELECT ID, user_login
-        		     FROM $tables3
-        		     WHERE ID = $value[post_author]";
-        		  
-            $columns2 = array('ID', 'user_login');
-            $question2 = DBUtil::executeSQL($sql2);
-            $obj2 = DBUtil::marshallObjects($question2, $columns2);*/
+            $obj2 = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);
             
             $poster = $obj2[0][user_login];
-            
-            // Connection back to Zikula
-            //DBConnectionStack::init();
+
                         
 //----------------------Transport of Pages of wordpress--------------------------------
    
@@ -2396,18 +2333,7 @@ public function delete($args) {
     	                  FROM $tables2
     	                  WHERE comment_post_ID = $value[ID]";
     	    
-                $obj3 = MUTransportHelp::connectExtDB($query);              
-      
-/*            $sql3 = "SELECT comment_ID, comment_post_ID, comment_author, comment_date, comment_content
-    	             FROM $tables2
-    	             WHERE comment_post_ID = $value[ID]";
-    	    
-              $columns3 = array('comment_ID', 'comment_post_ID', 'comment_author','comment_date','comment_content');
-              $question3 = DBUtil::executeSQL($sql3);
-              $obj3 = DBUtil::marshallObjects($question3, $columns3);*/
-    
-              // Connection back to Zikula
-              //DBConnectionStack::init();
+                $obj3 = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);              
     
                 if($obj3)  {
       
@@ -2442,20 +2368,18 @@ public function delete($args) {
     	        FROM $tables3
     	        WHERE ID = $id";
     	    
-        $obj2 = MUTransportHelp::connectExtDB($query);            
+        $obj2 = MUTransportHelp::connectExtDB($query,$wordpress_host,$wordpress_db,$wordpress_user,$wordpress_pw);            
 
 // TODO        
 /*        $sql = "SELECT ID, user_login, user_email, user_registered
     	        FROM $tables3
-    	        WHERE ID = '" . pnVarPrepForStore($id) . "'";
+    	        WHERE ID = '" . DataUtil::formatForStore($id) . "'";
     	    
         $columns2 = array('ID', 'user_login', 'user_email', 'user_registered');
         $question2 = DBUtil::executeSQL($sql);
         $obj2 = DBUtil::marshallObjects($question2, $columns2);*/
         
         $countquestion2 = count($obj2);
-    
-        //DBConnectionStack::init();
         
         // get all users in Zikula
         $items = ModUtil::apiFunc('Users', 'user', 'getall');

@@ -66,7 +66,10 @@ public function install()
     $this->setVar('text_format', 'text');
     $this->setVar('news_state', 4);
     $this->setVar('wordpress', 0);
+    $this->setVar('wordpress_host', '');
     $this->setVar('wordpress_db', '');
+    $this->setVar('wordpress_user', '');
+    $this->setVar('wordpress_pw', '');
     $this->setVar('wordpress_prefix', '');
     $this->setVar('image_path2', '');
     $this->setVar('wordpress_ezcomments', 0);
@@ -136,7 +139,11 @@ public function upgrade($oldversion)
     }
     
     case '1.3.0':
-    // nothing to do    
+    // set new modvar
+
+	$this->setVar('wordpress_host','');
+    $this->setVar('wordpress_user', '');
+    $this->setVar('wordpress_pw', '');
                  
     }
 

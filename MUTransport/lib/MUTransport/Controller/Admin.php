@@ -157,12 +157,12 @@ public function view($args)
     // check the state of the target modul Content
     
     ModUtil::dbInfoLoad('modules');
-    $pntable = pnDBGetTables();
+    $pntable = DBUtil::getTables();
     
     $modulescolumn = $pntable['modules_column'];
     $mutransportcolumn = $pntable['mutransport_modul_column'];
     // get data from module content
-    $where = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("content") . "'";  
+    $where = "WHERE $modulescolumn[name] = '" . DataUtil::formatForStore("content") . "'";  
     $question = DBUtil::selectObjectArray('modules', $where);
     if(isset($question[0])) {
       $status = $question[0]['state'];
@@ -171,7 +171,7 @@ public function view($args)
       $status = 0;
     }
     // get data from module news
-    $where2 = "WHERE $modulescolumn[name] = '" . pnVarPrepForStore("News") . "'";  
+    $where2 = "WHERE $modulescolumn[name] = '" . DataUtil::formatForStore("News") . "'";  
     $question2 = DBUtil::selectObjectArray('modules', $where2);
     if(isset($question2[0])) {
       $status2 = $question2[0]['state'];
@@ -303,7 +303,7 @@ public function read($args)
     
     ModUtil::apiFunc('MUTransport', 'admin', 'read');
     
-    return pnRedirect(ModUtil::url('mutransport', 'admin', 'view'));
+    return System::redirect(ModUtil::url('mutransport', 'admin', 'view'));
 
 }
 
@@ -328,7 +328,7 @@ public function pagedelete($args)
     
     ModUtil::apiFunc('MUTransport', 'admin', 'delete');
     
-    return pnRedirect(ModUtil::url('mutransport', 'admin', 'view'));
+    return System::redirect(ModUtil::url('mutransport', 'admin', 'view'));
 
 }
  /**
@@ -358,7 +358,7 @@ public function pagedelete($args)
     else  {
     $obj = array ('ot'  => 'page');
     }
-    return pnRedirect(ModUtil::url('mutransport', 'admin', 'view', $obj));
+    return System::redirect(ModUtil::url('mutransport', 'admin', 'view', $obj));
 
 }
 
@@ -426,7 +426,10 @@ public function updateconfig()
     $news_state = (string)FormUtil::getPassedValue('news_state');
     $details = (string)FormUtil::getPassedValue('details');
     $wordpress = (int)FormUtil::getPassedValue('wordpress');
+    $wordpress_host = (string)FormUtil::getPassedValue('wordpress_host');
     $wordpress_db = (string)FormUtil::getPassedValue('wordpress_db');
+    $wordpress_user = (string)FormUtil::getPassedValue('wordpress_user');
+    $wordpress_pw = (string)FormUtil::getPassedValue('wordpress_pw');
     $wordpress_prefix = (string)FormUtil::getPassedValue('wordpress_prefix');
     $wordpress_ezcomments = (int)FormUtil::getPassedValue('wordpress_ezcomments');
     $image_path2 = (string)FormUtil::getPassedValue('image_path2');
@@ -472,9 +475,18 @@ public function updateconfig()
     if (!isset($wordpress) || !is_numeric($wordpress)) {
         $wordpress = 0;       
     }
+    if (!isset($wordpress_host) || !is_string($wordpress_host)) {
+        $wordpress_host = '';       
+    } 
     if (!isset($wordpress_db) || !is_string($wordpress_db)) {
         $wordpress_db = '';       
-    }  
+    }
+    if (!isset($wordpress_user) || !is_string($wordpress_user)) {
+        $wordpress_user = '';       
+    }
+    if (!isset($wordpress_pw) || !is_string($wordpress_pw)) {
+        $wordpress_pw = '';       
+    }      
     if (!isset($wordpress_prefix) || !is_string($wordpress_prefix)) {
         $wordpress_prefix = '';       
     }
@@ -499,7 +511,10 @@ public function updateconfig()
     $this->setVar('news_state', $news_state);
     $this->setVar('details', $details);
     $this->setVar('wordpress', $wordpress);
+    $this->setVar('wordpress_host', $wordpress_host);
     $this->setVar('wordpress_db', $wordpress_db);
+    $this->setVar('wordpress_user', $wordpress_user);
+    $this->setVar('wordpress_pw', $wordpress_pw);
     $this->setVar('wordpress_prefix', $wordpress_prefix);
     $this->setVar('wordpress_ezcomments', $wordpress_ezcomments);
     $this->setVar('image_path2', $image_path2);
@@ -511,7 +526,7 @@ public function updateconfig()
     // the module configuration has been updated successfuly
     LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-    return pnRedirect(ModUtil::url('MUTransport', 'admin', 'main'));
+    return System::redirect(ModUtil::url('MUTransport', 'admin', 'main'));
 }
 
 }
