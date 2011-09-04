@@ -1,6 +1,6 @@
 {* purpose of this template: view template for admin area *}
 
-{include file="MUTransport_admin_header.htm"}
+{include file="MUTransport_admin_header.tpl"}
 
 {gt text='List of Modules' assign='templatetitle'} {gt text='Get and update Pages of Modul' assign='editTitle'}
 {gt text='Delete Pages of Modul' assign='deleteTitle'} {gt text='active' assign='active'}
@@ -69,4 +69,4 @@
 
 {pager rowcount=$pager.numitems limit=$pager.itemsperpage}</div>
 
-{include file="MUTransport_admin_footer.htm"}
+{include file="MUTransport_admin_footer.tpl"}

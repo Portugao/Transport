@@ -9,7 +9,7 @@
 {if $news_state eq 6}
 {gt text='draft' assign='newsstate'}
 {/if}
-{include file="MUTransport_admin_header.htm"}
+{include file="MUTransport_admin_header.tpl"}
 <div class="z-admincontainer">
 <div class="z-adminpageicon">{pnimg modname=core src=configure.gif set=icons/large __alt='Settings' }</div>
 <h2>{gt text="Settings"}</h2>
@@ -102,11 +102,29 @@ size="20" /> {else} <input id="MUTransport_imagepath"
 </fieldset>
 <div id="mutransport_wordpress_details">
 <fieldset><legend>{gt text="Specific settings for wordpress"}</legend>
-<div class="z-formrow"><label for="MUTransport_db">{gt text="The name of the DB in the config"}</label>
+<div class="z-formrow"><label for="MUTransport_host">{gt text="The name of the host"}</label>
+{if $wordpress_host} <input id="MUTransport_host"
+	class="mutransport_form" name="wordpress_host" type="text" value="{$wordpress_host}"
+size="20" /> {else} <input id="MUTransport_host"
+	class="mutransport_form" name="wordpress_host" type="text" value=""
+	size="20" /> {/if}</div>
+<div class="z-formrow"><label for="MUTransport_db">{gt text="The name of the database"}</label>
 {if $wordpress_db} <input id="MUTransport_db"
 	class="mutransport_form" name="wordpress_db" type="text" value="{$wordpress_db}"
 size="20" /> {else} <input id="MUTransport_db"
 	class="mutransport_form" name="wordpress_db" type="text" value=""
+	size="20" /> {/if}</div>
+<div class="z-formrow"><label for="MUTransport_user">{gt text="The name of the database user"}</label>
+{if $wordpress_user} <input id="MUTransport_user"
+	class="mutransport_form" name="wordpress_user" type="text" value="{$wordpress_user}"
+size="20" /> {else} <input id="MUTransport_user"
+	class="mutransport_form" name="wordpress_user" type="text" value=""
+	size="20" /> {/if}</div>
+<div class="z-formrow"><label for="MUTransport_pw">{gt text="The password of the database"}</label>
+{if $wordpress_pw} <input id="MUTransport_pw"
+	class="mutransport_form" name="wordpress_pw" type="password" value="{$wordpress_pw}"
+size="20" /> {else} <input id="MUTransport_pw"
+	class="mutransport_form" name="wordpress_pw" type="password" value=""
 	size="20" /> {/if}</div>
 <div class="z-formrow"><label for="MUTransport_db">{gt text="The prefix of the wordpress database"}</label>
 {if $wordpress_prefix} <input id="MUTransport_prefix"
@@ -169,4 +187,4 @@ size="20" /> {else} <input id="MUTransport_imagepath2"
 </div>
 </form>
 </div>
-{include file='MUTransport_admin_footer.htm'}
+{include file='MUTransport_admin_footer.tpl'}

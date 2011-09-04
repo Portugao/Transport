@@ -1,6 +1,6 @@
 {* purpose of this template: view template for admin area *}
 {pnajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true}
-{include file="MUTransport_admin_header.htm"}
+{include file="MUTransport_admin_header.tpl"}
 
 {gt text='List of User' assign='templatetitle'} {gt text='Get and update Pages of Modul' assign='editTitle'}
 {gt text='Delete Pages of Modul' assign='deleteTitle'} {gt text='active' assign='active'}
@@ -86,4 +86,4 @@
 </form>
 {pager rowcount=$pager.numitems limit=$pager.itemsperpage}</div>
 
-{include file="MUTransport_admin_footer.htm"}
+{include file="MUTransport_admin_footer.tpl"}

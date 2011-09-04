@@ -1,6 +1,6 @@
 {* purpose of this template: view template for admin area *}
 {pnajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true}
-{include file="MUTransport_admin_header.htm"}
+{include file="MUTransport_admin_header.tpl"}
 
 {gt text='List of Pages' assign='templatetitle'} 
 {gt text='not transported' assign='nottransported'}
@@ -101,4 +101,4 @@ disabled> {/if} <input type="reset" value="{gt text="Reset"}"">
 </form>
 {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1 img_prev=images/icons/extrasmall/previous.gif img_next=images/icons/extrasmall/next.gif}
 </div>
-{include file="MUTransport_admin_footer.htm"}
+{include file="MUTransport_admin_footer.tpl"}
