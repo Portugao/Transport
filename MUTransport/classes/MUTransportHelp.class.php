@@ -615,7 +615,7 @@ class MUTransportHelp
         $pass = DataUtil::hash($input, $method);
 
         // if username must be in lowercase
-        if (pnModGetVar('Users', 'lowercaseuname') == 1) {
+        if (ModUtil::getVar('Users', 'lowercaseuname') == 1) {
 
             $uname = strtolower($uname);
         }
@@ -643,7 +643,7 @@ class MUTransportHelp
             'hashmethod'     => $method,
         );
 
-        // W e insert the usr into the DB
+        // We insert the user into the DB
 
         $ok = DBUtil::insertObject($user, 'users', 'uid');
         if ($ok == true) {
