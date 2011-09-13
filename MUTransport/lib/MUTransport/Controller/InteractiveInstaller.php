@@ -29,7 +29,7 @@ class MUTransport_Controller_Interactiveinstaller extends Zikula_Controller_Abst
         return LogUtil::registerPermissionError();
     }
     
-    return $this->view->fetch('MUTransport_init_interactive.htm');
+    return $this->view->fetch('MUTransport_init_interactive.tpl');
     }
     
 /**
@@ -47,7 +47,7 @@ public function step2()
     $activate = (bool) FormUtil::getPassedValue('activate', false, 'POST');
     $this->view->assign('authid', SecurityUtil::generateAuthKey('Modules'));
     $this->view->assign('activate', $activate);
-    return $this->view->fetch('MUTransport_init_step2.htm');
+    return $this->view->fetch('MUTransport_init_step2.tpl');
 }
 
 /**
@@ -65,7 +65,7 @@ public function uninstall()
 //    $dom = ZLanguage::getModuleDomain('MUTransport');
 
     $this->assign('authid', SecurityUtil::generateAuthKey('Modules'));
-    return $this->view->fetch('MUTransport_init_delete.htm');
+    return $this->view->fetch('MUTransport_init_delete.tpl');
 }
 }
 
