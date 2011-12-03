@@ -28,7 +28,7 @@
 function smarty_function_mutransportLabelHelp($params, &$render)
 {
     $text = $params['text'];
-    $text = pnVarPrepHTMLDisplay(strlen($text)>0 && $text[0]=='_' ? constant($text) : $text);
+    $text = DataUtil::formatForDisplayHTML(strlen($text)>0 && $text[0]=='_' ? constant($text) : $text);
     $result = "<div class=\"mutransportLabelHelp\">$text</div>";
 
     if (array_key_exists('assign', $params)) {
