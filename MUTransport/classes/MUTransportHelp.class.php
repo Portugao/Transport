@@ -19,7 +19,7 @@ class MUTransportHelp
 
     /*----------------------FUNCTIONS FOR MODULES IN ZIKULA-----------------------------*/
 
-    // Fot performing transports only if the needed module are active ist for avoid faults in the DB
+    // For performing transports only if the needed module are active is for avoid faults in the DB
 
     /**
      * This function will check the module when the user  has started a transport
@@ -315,7 +315,7 @@ class MUTransportHelp
     function generateInputForNews($title, $author, $author2, $header, $result, $count, $from)
     {
 
-        $pntable = pnDBGetTables();
+        $pntable = DBUtil::DBGetTables();
         $newscolumn = $pntable['news_column'];
 
         /* First we check the Module Var 'news_state' of MUTransport:
