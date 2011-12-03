@@ -180,10 +180,20 @@ public function view($args)
       $status2 = 0;
     }
     
+    //get data form module pages
+    $where3 = "WHERE $modulescolumn[name] = '" . DataUtil::formatForStore("Pages") . "'";
+    $question3 = DBUtil::selectObjectArray('modules', $where3);
+    if (isset($question3[0])) {
+    	$status3 = $question3[0]['state'];
+    }
+    else {
+    	$status3 = 0;
+    }
+    
     // assign the state of content to rule the page view
     $this->view->assign('statuscontent', $status);
     $this->view->assign('statusnews', $status2);
-    
+    $this->view->assign('statuspages', $status3);    
     $this->view->clear_cache('MUTransport_admin_'.$objectType. '_view.tpl');                          
 
     // fetch and return the appropriate template
