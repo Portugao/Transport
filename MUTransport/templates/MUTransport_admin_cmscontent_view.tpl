@@ -1,4 +1,4 @@
- {* purpose of this template: view template for admin area *}
+{zdebug}{* purpose of this template: view template for admin area *}
 {pnajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true}
 {include file="MUTransport_admin_header.tpl"}
 
@@ -97,7 +97,7 @@
 	</tbody>
 </table>
 
-{if $statuscontent eq 3 || $statusnews eq 3} <input type="submit" value="{gt text='Transport'}">
+{if $statuspages eq 3} <input type="submit" value="{gt text='Transport'}">
 {else} <input type="submit" value="{gt text="Transport"}"
 disabled> {/if} <input type="reset" value="{gt text="Reset"}">
 </form>
