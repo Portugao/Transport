@@ -23,9 +23,6 @@ function MUTransport_modifyconfig_init_check()
     if ($('mutransport_wordpress_details')) {
     	mutransport_wordpress_init();
     }
-/*    if ($('yes[]')) {
-    	mutransport_all_boxes_init();
-    }*/
 }
 
 
