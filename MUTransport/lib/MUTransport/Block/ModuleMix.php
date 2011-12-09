@@ -79,7 +79,7 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
         }
         
         if (is_array($newsitems)) {
-        	$newsitems = array_slice($newsitems, 0, $vars['newsammount']);
+        	$newsitems = array_slice($newsitems, 0, $vars['newsamount']);
         }
         
             // check if the module ezcomments is available at all
@@ -124,6 +124,9 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
         // get current block content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         $vars['bid'] = $blockinfo['bid'];
+        
+        $newsavailable = ModUtil::available('News');
+        $ezcommentsavailable = ModUtil::available('EZComments');
 
         // set default values for all params which are not properly set
         if (!isset($vars['news']) || empty($vars['news'])) {
@@ -143,6 +146,10 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
 
         // assign the approriate values
         $this->view->assign($vars);
+        
+        // assign special vars
+        $this->view->assign('newsavailable',$newsavailable);
+        $this->view->assign('ezcommentsavailable',$ezcommentsavailable);
 
         // clear the block cache
         $this->view->clear_cache('block/modulemix.tpl');
@@ -164,8 +171,8 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
 
         $vars['news'] = $this->request->getPost()->filter('news', 2 , FILTER_SANITIZE_NUMBER_INT);
         $vars['newsamount'] = $this->request->getPost()->filter('newsamount', 5 , FILTER_SANITIZE_NUMBER_INT);
-        $vars['comments'] = $this->request->getPost()->filter('comments',2 , FILTER_SANITIZE_NUMBER_INT);
-        $vars['commentsamount'] = $this->request->getPost()->filter('commentsamount',5 , FILTER_SANITIZE_NUMBER_INT);
+        $vars['comments'] = $this->request->getPost()->filter('comments', 2 , FILTER_SANITIZE_NUMBER_INT);
+        $vars['commentsamount'] = $this->request->getPost()->filter('commentsamount', 5 , FILTER_SANITIZE_NUMBER_INT);
 
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
@@ -174,6 +181,17 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
         $this->view->clear_cache('block/modulemix.tpl');
 
         return $blockinfo;
+    }
+    
+    /**
+     * 
+     * Enter description here ...
+     */
+    
+    private function generateContent() {
+    	
+    	
+    	
     }
 
 }

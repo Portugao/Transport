@@ -1,3 +1,3 @@
 {* purpose of this template: main template for admin area *}
 
-{pnmodfunc modname="MUTransport" type="admin" func="view"}
+{modfunc modname="MUTransport" type="admin" func="view"}

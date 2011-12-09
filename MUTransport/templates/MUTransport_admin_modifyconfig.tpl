@@ -1,5 +1,5 @@
 {*  $Id: MUTransport_admin_modifyconfig.htm 2009-12-29 09:23:00 MU $  *}
-{pnajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true}
+{ajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true}
 {if $news_state eq 2}
 {gt text='published' assign='newsstate'}
 {/if}

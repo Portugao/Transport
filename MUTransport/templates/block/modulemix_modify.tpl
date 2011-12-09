@@ -1,5 +1,5 @@
 {* Purpose of this template: Edit block for generic item list *}
-
+{if $newsavailable == true}
 <div class="z-formrow">
     <label for="MUTransport_modules">{gt text='News'}:</label>
     {if $news eq 1}
@@ -12,6 +12,8 @@
     <label for="MUTransport_modules">{gt text='News Amount'}:</label>
     <input type="text" id="MUTransport_modules" name="newsamount" value="{$newsamount}">
 </div>
+{/if}
+{if $ezcommentsavailable == true}
 <div class="z-formrow">
     <label for="MUTransport_modules">{gt text='Comments'}:</label>
     {if $comments eq 1}
@@ -24,3 +26,4 @@
     <label for="MUTransport_modules">{gt text='Comments Amount'}:</label>
     <input type="text" id="MUTransport_modules" name="commentsamount" value="{$commentsamount}">
 </div>
+{/if}

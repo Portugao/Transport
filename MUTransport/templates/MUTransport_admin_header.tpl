@@ -2,8 +2,8 @@
 
 {admincategorymenu xhtml=1}
 
-<div class="pn-adminbox">
+<div class="z-adminbox">
 <h1>{gt text='The Module MUTransport'}</h1>
-<div class="pn-menu">{moduleadminlinks modname="MUTransport"}
+<div class="z-menu">{moduleadminlinks modname="MUTransport"}
 </div>
 </div>
