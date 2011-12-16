@@ -69,6 +69,8 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
             return false;
         }
         
+        if ($vars['news'] == 1 ) {
+        
         // check if the module news is available at all
         if (!ModUtil::available('News')) {
         	return LogUtil::registerError($this->__('Sorry. The module News is not available!'));
@@ -81,6 +83,9 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
         if (is_array($newsitems)) {
         	$newsitems = array_slice($newsitems, 0, $vars['newsamount']);
         }
+        }
+        
+        if ($vars['comments'] == 1) {
         
             // check if the module ezcomments is available at all
         if (!ModUtil::available('EZComments')) {
@@ -94,12 +99,18 @@ class MUTransport_Block_ModuleMix extends Zikula_Controller_AbstractBlock {
         if (is_array($ezcommentsitems)) {
         	$ezcommentsitems = array_slice($ezcommentsitems, 0, $vars['commentsamount']);
         }
+        }
 
         $this->view->setCaching(true);
 
         // assign block vars and fetched data
-        $this->view->assign('newsitems', $newsitems)
-            ->assign('ezcommentsitems', $ezcommentsitems);
+        if ($vars['news'] == 1) {
+        	$this->view->assign('newsitems', $newsitems);
+        }
+        
+        if ($vars['comments'] == 1) {
+        	$this->view->assign('ezcommentsitems', $ezcommentsitems);
+        }
 
         // set a block title
         if (empty($blockinfo['title'])) {
