@@ -28,6 +28,8 @@
 Loader::requireOnce('modules/MUTransport/common.php');
 // include pnForm in order to be able to inherit from pnFormHandler
 Loader::requireOnce('includes/pnForm.php');
+// include helper class
+Loader::LoadClass('MUTransportHelp', 'modules/MUTransport/classes/');
 
 class MUTransport_Controller_Admin extends Zikula_AbstractController 
 {
@@ -161,34 +163,16 @@ public function view($args)
     
     $modulescolumn = $pntable['modules_column'];
     $mutransportcolumn = $pntable['mutransport_modul_column'];
-    // get data from module content
-    $where = "WHERE $modulescolumn[name] = '" . DataUtil::formatForStore("content") . "'";  
-    $question = DBUtil::selectObjectArray('modules', $where);
-    if(isset($question[0])) {
-      $status = $question[0]['state'];
-    }
-    else {
-      $status = 0;
-    }
-    // get data from module news
-    $where2 = "WHERE $modulescolumn[name] = '" . DataUtil::formatForStore("News") . "'";  
-    $question2 = DBUtil::selectObjectArray('modules', $where2);
-    if(isset($question2[0])) {
-      $status2 = $question2[0]['state'];
-    }
-    else {
-      $status2 = 0;
-    }
     
-    //get data form module pages
-    $where3 = "WHERE $modulescolumn[name] = '" . DataUtil::formatForStore("Pages") . "'";
-    $question3 = DBUtil::selectObjectArray('modules', $where3);
-    if (isset($question3[0])) {
-    	$status3 = $question3[0]['state'];
-    }
-    else {
-    	$status3 = 0;
-    }
+    // get state from module content
+    
+    $status = MUTransportHelp::getState('content',2);
+
+    // get state from module news
+    $status2 = MUTransportHelp::getState('News', 2);
+    
+    //get state form module pages
+    $status3 = MUTransportHelp::getState('Pages', 2);
     
     // assign the state of content to rule the page view
     $this->view->assign('statuscontent', $status);

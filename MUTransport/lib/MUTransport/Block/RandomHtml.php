@@ -162,7 +162,7 @@ class MUTransport_Block_RandomHtml extends Zikula_Controller_AbstractBlock {
     private function getHtmlBlocksContent() {
         // get the content of html blocks
 
-		$where .= 'bkey = \'' . DataUtil::formatForStore('Html') . '\'';
+		$where  = 'bkey = \'' . DataUtil::formatForStore('Html') . '\' AND title = \'' . DataUtil::formatForStore('') . '\'';
 		$column = array('title', 'content');
         $html = DBUtil::selectObjectArray('blocks',$where);
 		//$html = DBUtil::marshallObjects($html);

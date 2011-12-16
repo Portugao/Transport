@@ -45,11 +45,13 @@ class MUTransportHelp
      * This function is reading in the states of modules for the module view
      * This function is for get the state of the needed module
      *
-     *@param $module          the relevant module
+     *@param module $module          the relevant module
+     *@param kind   $kind			 kind of result, 1 result of state as string
+     *												 2 result of stae as number 	
      *return $status
      */
 
-    public function getState($module)
+    public function getState($module, $kind = 1)
     {
 
         $dom = ZLanguage::getModuleDomain('MUTransport');
@@ -71,30 +73,38 @@ class MUTransportHelp
         // get state of the needed module
         if (isset($question[0])) {
             $status = $question[0]['state'];
-        } else {
-            $status = __('not available', $dom);
+        } 
+        else {
+        	if ($kind == 1)
+            	$status = $this->__('not available');
+            else {
+            	$status = '';
+            }
         }
+        
+        if ($kind == 1) {
 
         if ($status == 1)
-            $status = __('not installed', $dom);
+            $status = $this->__('not installed');
 
         if ($status == 2)
-            $status = __('inactive', $dom);
+            $status = $this->__('inactive');
 
         if ($status == 3)
-            $status = __('active', $dom);
+            $status = $this->__('active');
 
         if ($status == 4)
-            $status = __('files failed', $dom);
+            $status = $this->__('files failed');
 
         if ($status == 5)
-            $status = __('update available', $dom);
+            $status = $this->__('update available');
+        }
 
         return $status;
 
     }
 
-    /*----------------THE FOLLOWING MODULES ARE FOR GETTING THE LAST ID IN A MODULE------------*/
+    /*----------------THE FOLLOWING METHODS ARE FOR GETTING THE LAST ID IN A MODULE------------*/
 
     /**
      * This function is for get the id of the last page in content
