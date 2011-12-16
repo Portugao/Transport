@@ -74,7 +74,7 @@ public function view($args)
 
 
     // parameter specifying which type of objects we are treating
-    $objectType = FormUtil::getPassedValue('ot', 'modul', 'GET');
+    $objectType = $this->request->getGet()->filter('ot', 'modul', FILTER_SANITIZE_STRING);
 
     if (!in_array($objectType, MUTransport_getObjectTypes())) {
         $objectType = 'modul';
@@ -88,7 +88,7 @@ public function view($args)
     $objectArray = new $class();
 
     // parameter for used sorting field, will be further checked later
-    $sort = FormUtil::getPassedValue('sort', '', 'GET');
+    $sort = $this->request->getGet()->filter('sort', '', FILTER_SANITIZE_STRING);
     if (empty($sort)) {
         switch($objectType) {
             case 'modul': $sort = 'name'; break;
@@ -101,12 +101,14 @@ public function view($args)
     }
 
     // parameter for used sort order
-    $sdir = FormUtil::getPassedValue('sdir', '', 'GET');
-    if ($sdir != 'asc' && $sdir != 'desc') $sdir = 'asc';
+    $sdir = $this->request->getGet()->filter('sdir', '', FILTER_SANITIZE_STRING);
 
+    if ($sdir != 'asc' && $sdir != 'desc') {
+    	$sdir = 'asc';	
+    }
 
     // startnum is the current offset which is used to calculate the pagination
-    $startnum = (int) FormUtil::getPassedValue('startnum', 1, 'GET');
+    $startnum = $this->request->getGet()->filter('startnum', 1, FILTER_SANITIZE_NUMBER_INT);
 
     // pagesize is the number of items displayed on a page for pagination
     $pagesize = ModUtil::getVar('Admin_Messages', 'pagesize', 20);
@@ -135,9 +137,6 @@ public function view($args)
 
     // get total number of records for building the pagination by method call
     $objcount = $objectArray->getCount($where);
-
-    // get pnRender instance for this module
-    $render = pnRender::getInstance('MUTransport', false);
 
     // assign the object-array we loaded above
     $this->view->assign('objectArray', $objectData);
@@ -201,7 +200,7 @@ public function display($args)
 //    $dom = ZLanguage::getModuleDomain('MuTransport');
 
     // parameter specifying which type of objects we are treating
-    $objectType = FormUtil::getPassedValue('ot', 'modul', 'GET');
+    $objectType = $this->request->getGet()->filter('ot', 'modul', FILTER_SANITIZE_STRING);
 
     if (!in_array($objectType, MUTransport_getObjectTypes())) {
         $objectType = 'modul';
@@ -215,7 +214,7 @@ public function display($args)
     $idField = $object->getIDField();
 
     // retrieve the ID of the object we wish to view
-    $id = (int) FormUtil::getPassedValue($idField, isset($args[$idField]) && is_numeric($args[$idField]) ? $args[$idField] : 0, 'GET');
+    $id = $this->request->getGet()->filter($idField, isset($args[$idField]) && is_numeric($args[$idField]) ? $args[$idFiled] : 0, FILTER_SANITIZE_NUMBER_INT);
     if (!$id) {
         pn_exit('Invalid ' . $idField . ' [' . DataUtil::formatForDisplay($id) . '] received ...');
     }
@@ -224,9 +223,6 @@ public function display($args)
     // this performs a new database select operation
     // while the result will be saved within the object, we assign it to a local variable for convenience
     $objectData = $object->get($id, $idField);
-
-    // get pnRender instance for this module
-    $render = pnRender::getInstance('MUTransport', false);
 
     // assign the object we loaded above.
     // since the same code is used the handle the entry of the new object,
@@ -256,7 +252,7 @@ public function edit($args)
 // DEBUG: permission check aspect ends
 
     // parameter specifying which type of objects we are treating
-    $objectType = FormUtil::getPassedValue('ot', 'modul', 'GET');
+    $objectType = $this->request->getGet()->filter('ot', 'modul', FILTER_SANITIZE_STRING);
 
     if (!in_array($objectType, MUTransport_getObjectTypes())) {
         $objectType = 'modul';
@@ -373,7 +369,7 @@ public function delete($args)
 //    $dom = ZLanguage::getModuleDomain('MUTransport');
 
     // parameter specifying which type of objects we are treating
-    $objectType = FormUtil::getPassedValue('ot', 'modul', 'GET');
+    $objectType = $this->request->getGet()->filter('ot', 'modul', FILTER_SANITIZE_STRING);
 
     if (!in_array($objectType, MUTransport_getObjectTypes())) {
         $objectType = 'modul';
