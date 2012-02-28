@@ -82,14 +82,14 @@ class MUTransport_Block_RandomHtml extends Zikula_Controller_AbstractBlock {
         // we take the content after dicing
         $htmlcontent = $content[$die];
 
-        $this->view->setCaching(true);
+        $this->view->setCaching(false);
 
         // assign block vars and fetched data
         $this->view->assign('htmlcontent', $htmlcontent);
 
         // set a block title
         if (empty($blockinfo['title'])) {
-            $blockinfo['title'] = $this->__('Module Mix');
+            $blockinfo['title'] = $this->__('MUTransport Random Html');
         }
         
         //$blockinfo['content'] = $htmlcontent;
@@ -154,7 +154,7 @@ class MUTransport_Block_RandomHtml extends Zikula_Controller_AbstractBlock {
         $blockinfo['content'] = BlockUtil::varsToContent($vars);*/
 
         // clear the block cache
-        $this->view->clear_cache('block/modulemix.tpl');
+        $this->view->clear_cache('block/randomhtml.tpl');
 
         return $blockinfo;
     }
