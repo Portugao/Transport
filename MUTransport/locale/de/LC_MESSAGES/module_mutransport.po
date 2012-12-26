@@ -438,9 +438,8 @@ msgid "Show different Module Content."
 msgstr "Verschiedenen Inhalt anzeigen."
 
 #: lib/MUTransport/Block/ModuleMix.php:76
-#, fuzzy
 msgid "Sorry. The module News is not available!"
-msgstr "Sorry ! Das Zielmodul News ist nicht aktiv!"
+msgstr "Sorry! Das Zielmodul News ist nicht aktiv!"
 
 #: lib/MUTransport/Block/ModuleMix.php:92
 msgid "Sorry. The module EZComments is not available!"
@@ -600,7 +599,6 @@ msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: templates/MUTransport_admin_header.tpl:6
-#, fuzzy
 msgid "The Module MUTransport"
 msgstr "Das Modul MUTransport"
 
@@ -932,7 +930,6 @@ msgid "Finish the installation of modul ?"
 msgstr "Installation abschliessen ?"
 
 #: templates/MUTransport_init_step2.tpl:9
-#, fuzzy
 msgid "Complete the installation"
 msgstr "Installation fortsetzen"
 
