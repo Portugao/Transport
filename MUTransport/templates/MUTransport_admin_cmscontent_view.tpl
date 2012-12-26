@@ -1,5 +1,5 @@
-{zdebug}{* purpose of this template: view template for admin area *}
-{pnajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true}
+{* purpose of this template: view template for admin area *}
+{ajaxheader modname='MUTransport' filename='MUTransport_admin_modifyconfig.js' effects=true nobehaviour=true noscriptaculous=true}
 {include file="MUTransport_admin_header.tpl"}
 
 {gt text='List of Content' assign='templatetitle'} 
