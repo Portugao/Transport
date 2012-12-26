@@ -247,7 +247,7 @@ class MUTransportHelp
 
         $page = array('page'     => array('title'      => $title,
             'urlname'    => '',
-            'layout'     => 'column1',
+            'layout'     => 'Column1',
             'categoryId' => '',
 
         ),
