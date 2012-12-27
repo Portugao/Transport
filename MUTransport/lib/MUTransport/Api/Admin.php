@@ -1853,7 +1853,7 @@ class MUTransport_Api_Admin extends Zikula_AbstractApi {
 											 
 											// for each chapter found in PagEd generate a textblock
 
-											MUTransportHelp::buildArrayForContent($text, $format, $relation_id, 'html');
+											MUTransportHelp::buildArrayForContent($text, $format, $relation_id, 'Html');
 
 											// if subtitle generate a header
 
@@ -2026,12 +2026,12 @@ class MUTransport_Api_Admin extends Zikula_AbstractApi {
 											($this->__('reviewer')) . ": " . $question_page[reviewer] . "<br /><br />" .
 											($this->__('points')) . ": " . $question_page[score] . "<br /><br />" .
 											($this->__('hits')). ": " . $question_page[hits];
-									MUTransportHelp::buildArrayForContent($reviewsdetails, $format, $relation_id, 'html');
+									MUTransportHelp::buildArrayForContent($reviewsdetails, $format, $relation_id, 'Html');
 								}
 
 								// build the array for the content for the transport into Content
 
-								MUTransportHelp::buildArrayForContent($question_page[text], $format, $relation_id, 'html');
+								MUTransportHelp::buildArrayForContent($question_page[text], $format, $relation_id, 'Html');
 
 
 
