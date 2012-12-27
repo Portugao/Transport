@@ -719,7 +719,7 @@ msgstr "Der Name des Datenbank Benutzers"
 
 #: templates/MUTransport_admin_modifyconfig.tpl:123
 msgid "The password of the database"
-msgstr "Das Prasswort der Datenbank"
+msgstr "Das Passwort der Datenbank"
 
 #: templates/MUTransport_admin_modifyconfig.tpl:129
 msgid "The prefix of the wordpress database"
