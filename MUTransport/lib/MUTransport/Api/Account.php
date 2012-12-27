@@ -29,7 +29,7 @@ class MUTransport_Api_Account extends Zikula_AbstractApi
             $items['0'] = array('url' => ModUtil::url('MUTransport', 'admin', 'main'),
                     'module' => 'MUTransport',
                     'title' => $this->__('MUTransport'),
-                    'icon' => 'admin.gif');
+                    'icon' => 'admin.png');
         }
 
         // Return the items
