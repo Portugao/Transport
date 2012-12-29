@@ -325,7 +325,7 @@ class MUTransportHelp
     function generateInputForNews($title, $author, $author2, $header, $result, $count, $from)
     {
 
-        $pntable = DBUtil::DBGetTables();
+        $pntable = DBUtil::getTables();
         $newscolumn = $pntable['news_column'];
 
         /* First we check the Module Var 'news_state' of MUTransport:
