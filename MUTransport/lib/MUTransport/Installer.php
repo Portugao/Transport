@@ -139,11 +139,11 @@ class MUTransport_Installer extends Zikula_AbstractInstaller
 				}
 
 			case '1.3.0':
-				// set new modvar
-
-				$this->setVar('wordpress_host','');
-				$this->setVar('wordpress_user', '');
-				$this->setVar('wordpress_pw', '');
+				// we need no special upgrade routine
+				// the user can uninstall and reinstall the module
+				
+			case '1.3.1':
+				// future upgrade
 				 
 		}
 
@@ -155,7 +155,7 @@ class MUTransport_Installer extends Zikula_AbstractInstaller
 	 * delete the MUTransport module
 	 * This function is only ever called once during the lifetime of a particular
 	 * module instance
-	 * This function MUST exist in the pninit file for a module
+	 * This function MUST exist in the installer file for a module
 	 *
 	 * @author       Michael Ueberschaer
 	 * @return       bool       true on success, false otherwise
@@ -180,8 +180,6 @@ class MUTransport_Installer extends Zikula_AbstractInstaller
 		if (!DBUtil::dropTable('mutransport_user')) {
 			return false;
 		}
-
-
 
 		// remove all module vars
 		$this->delVars();
