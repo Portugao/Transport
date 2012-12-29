@@ -42,9 +42,9 @@ function MUTransport_tables()
 
     // set the column names
     $columns = array(
-        'modulid' => 'pn_modulid',
-        'name' => 'pn_name',
-        'state' => 'pn_state');
+        'modulid' => 'modulid',
+        'name' => 'name',
+        'state' => 'state');
     $dbtable['mutransport_modul_column'] = $columns;
 
     // set the data dictionary for the table columns
@@ -81,13 +81,13 @@ function MUTransport_tables()
 
     // set the column names
     $columns = array(
-        'id'  => 'pn_id',
-        'pageid' => 'pn_pageid',
-        'title' => 'pn_title',
-        'text' => 'pn_text',
-        'number_characters' => 'pn_number_characters',
-        'transport' => 'pn_transport',
-        'modulid' => 'pn_modulid');
+        'id'  => 'id',
+        'pageid' => 'pageid',
+        'title' => 'title',
+        'text' => 'text',
+        'number_characters' => 'number_characters',
+        'transport' => 'transport',
+        'modulid' => 'modulid');
     $dbtable['mutransport_page_column'] = $columns;
 
     // set the data dictionary for the table columns
@@ -139,9 +139,9 @@ function MUTransport_tables()
 
     // set the column names
     $columns = array(
-        'cmsid' => 'pn_cmsid',
-        'name' => 'pn_name',
-        'state' => 'pn_state');
+        'cmsid' => 'cmsid',
+        'name' => 'name',
+        'state' => 'state');
     $dbtable['mutransport_cms_column'] = $columns;
 
     // set the data dictionary for the table columns
@@ -176,13 +176,13 @@ function MUTransport_tables()
 
     // set the column names
     $columns = array(
-        'id'  => 'pn_id',
-        'contentid' => 'pn_contentid',
-        'title' => 'pn_title',
-        'text' => 'pn_text',
-        'number_characters' => 'pn_number_characters',
-        'transport' => 'pn_transport',
-        'cmsid' => 'pn_cmsid');
+        'id'  => 'id',
+        'contentid' => 'contentid',
+        'title' => 'title',
+        'text' => 'text',
+        'number_characters' => 'number_characters',
+        'transport' => 'transport',
+        'cmsid' => 'cmsid');
     $dbtable['mutransport_cmscontent_column'] = $columns;
 
     // set the data dictionary for the table columns
@@ -230,11 +230,11 @@ function MUTransport_tables()
 
     // set the column names
     $columns = array(
-        'id' => 'pn_id',
-        'userid' => 'pn_userid',
-        'uname' => 'pn_uname',
-        'email' => 'pn_email',
-        'cmsid' => 'pn_cmsid');
+        'id' => 'id',
+        'userid' => 'userid',
+        'uname' => 'uname',
+        'email' => 'email',
+        'cmsid' => 'cmsid');
     $dbtable['mutransport_user_column'] = $columns;
 
     // set the data dictionary for the table columns
