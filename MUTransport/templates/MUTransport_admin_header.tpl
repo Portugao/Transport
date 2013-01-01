@@ -1,10 +1,12 @@
 {* purpose of this template: header for admin area *}
 
-{admincategorymenu xhtml=1}
+{pageaddvar name='javascript' value='prototype'}
+{pageaddvar name='javascript' value='validation'}
+{pageaddvar name='javascript' value='zikula'}
+{pageaddvar name='javascript' value='livepipe'}
+{pageaddvar name='javascript' value='zikula.ui'}
+{pageaddvar name='javascript' value='zikula.imageviewer'}
 
-<div class="z-adminbox">
-<img src="modules/MUTransport/images/admin.png" />
-<h1>{gt text='The Module MUTransport'}</h1>
-<div class="z-menu">{moduleadminlinks modname="MUTransport"}
-</div>
-</div>
+{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+{adminheader}
+{/if}
