@@ -78,6 +78,7 @@ function mutransport_reviews_init()
 {
     if ($('MUTransport_reviewstocontent').checked == false) {
         $('mutransport_reviews_details').hide();
+        $state = 'hide';
     }  
     Event.observe('MUTransport_reviewstocontent', 'change', mutransport_reviews_onchange);
 }
