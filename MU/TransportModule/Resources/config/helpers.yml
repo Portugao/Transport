@@ -1,0 +1,61 @@
+services:
+    # Helper services
+    mu_transport_module.collection_filter_helper:
+        class: MU\TransportModule\Helper\CollectionFilterHelper
+        arguments:
+            - "@request_stack"
+            - "@zikula_users_module.current_user"
+            - "@=service('zikula_extensions_module.api.variable').get('MUTransportModule', 'showOnlyOwnEntries', false)"
+    
+    mu_transport_module.controller_helper:
+        class: MU\TransportModule\Helper\ControllerHelper
+        arguments:
+            - "@request_stack"
+            - "@form.factory"
+            - "@zikula_extensions_module.api.variable"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.collection_filter_helper"
+            - "@mu_transport_module.model_helper"
+    
+    mu_transport_module.entity_display_helper:
+        class: MU\TransportModule\Helper\EntityDisplayHelper
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.listentries_helper"
+    
+    mu_transport_module.hook_helper:
+        class: MU\TransportModule\Helper\HookHelper
+        arguments:
+            - "@hook_dispatcher"
+    
+    mu_transport_module.listentries_helper:
+        class: MU\TransportModule\Helper\ListEntriesHelper
+        arguments:
+            - "@translator.default"
+    
+    mu_transport_module.model_helper:
+        class: MU\TransportModule\Helper\ModelHelper
+        arguments:
+            - "@mu_transport_module.entity_factory"
+    
+    mu_transport_module.view_helper:
+        class: MU\TransportModule\Helper\ViewHelper
+        arguments:
+            - "@twig"
+            - "@twig.loader"
+            - "@request_stack"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_core.common.theme.pagevars"
+            - "@mu_transport_module.controller_helper"
+    
+    mu_transport_module.workflow_helper:
+        class: MU\TransportModule\Helper\WorkflowHelper
+        arguments:
+            - "@translator.default"
+            - "@workflow.registry"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.listentries_helper"

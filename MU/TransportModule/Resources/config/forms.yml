@@ -1,0 +1,102 @@
+services:
+    # Form types
+    
+    mu_transport_module.form.type.tablequicknav:
+        class: MU\TransportModule\Form\Type\QuickNavigation\TableQuickNavType
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@mu_transport_module.entity_display_helper"
+            - "@mu_transport_module.listentries_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_transport_module.form.type.databasequicknav:
+        class: MU\TransportModule\Form\Type\QuickNavigation\DatabaseQuickNavType
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.listentries_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_transport_module.form.type.fieldquicknav:
+        class: MU\TransportModule\Form\Type\QuickNavigation\FieldQuickNavType
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@mu_transport_module.entity_display_helper"
+            - "@mu_transport_module.listentries_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_transport_module.form.handler.table:
+        class: MU\TransportModule\Form\Handler\Table\EditHandler
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.controller_helper"
+            - "@mu_transport_module.model_helper"
+            - "@mu_transport_module.workflow_helper"
+            - "@mu_transport_module.hook_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+        tags:
+            - { name: form.type }
+    
+    mu_transport_module.form.type.table:
+        class: MU\TransportModule\Form\Type\TableType
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.collection_filter_helper"
+            - "@mu_transport_module.entity_display_helper"
+            - "@mu_transport_module.listentries_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_transport_module.form.handler.database:
+        class: MU\TransportModule\Form\Handler\Database\EditHandler
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.controller_helper"
+            - "@mu_transport_module.model_helper"
+            - "@mu_transport_module.workflow_helper"
+            - "@mu_transport_module.hook_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+        tags:
+            - { name: form.type }
+    
+    mu_transport_module.form.type.database:
+        class: MU\TransportModule\Form\Type\DatabaseType
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.collection_filter_helper"
+            - "@mu_transport_module.entity_display_helper"
+            - "@mu_transport_module.listentries_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_transport_module.form.type.config:
+        class: MU\TransportModule\Form\Type\ConfigType
+        arguments:
+            - "@translator.default"
+            - "@=service('zikula_extensions_module.api.variable').getAll('MUTransportModule')"
+        tags:
+            - { name: form.type }

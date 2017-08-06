@@ -1,0 +1,83 @@
+{# purpose of this template: databases display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'MUTransportModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ database|mutransportmodule_formattedTitle|default(__('Database')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = database|mutransportmodule_formattedTitle|default(__('Database')) %}
+    {{ templateTitle|notifyFilters('mutransportmodule.filter_hooks.databases.filter')|safeHtml }}
+    {% set itemActions = knp_menu_get('MUTransportModule:ItemActionsMenu:menu', [], {entity: database, area: routeArea, context: 'display'}) %}
+    <div class="dropdown">
+        <a id="itemActions{{ database.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
+    </div>
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="mutransportmodule-database mutransportmodule-display">
+
+    <div class="row">
+        <div class="col-sm-9">
+    <dl>
+        {% if database.name is not empty %}
+            <dt>{{ __('Name') }}</dt>
+            <dd>{{ database.name }}</dd>
+        {% endif %}
+        {% if database.dbName is not empty %}
+            <dt>{{ __('Db name') }}</dt>
+            <dd>{{ database.dbName }}</dd>
+        {% endif %}
+        {% if database.dbUser is not empty %}
+            <dt>{{ __('Db user') }}</dt>
+            <dd>{{ database.dbUser }}</dd>
+        {% endif %}
+        {% if database.dbPassword is not empty %}
+            <dt>{{ __('Db password') }}</dt>
+            <dd></dd>
+        {% endif %}
+        {% if database.host is not empty %}
+            <dt>{{ __('Host') }}</dt>
+            <dd>{{ database.host }}</dd>
+        {% endif %}
+        
+    </dl>
+
+    {{ include('@MUTransportModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: database}) }}
+
+    {{ block('display_hooks') }}
+        </div>
+        <div class="col-sm-3">
+            {{ block('related_items') }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block related_items %}
+    {% if routeArea == 'admin' %}
+        <h4>{{ __('Tables') }}</h4>
+    {% else %}
+        <h3>{{ __('Tables') }}</h3>
+    {% endif %}
+    
+    {% if database.tables|default %}
+        {{ include(
+            '@MUTransportModule/Table/includeDisplayItemListMany.html.twig',
+            {items: database.tables}
+        ) }}
+    {% endif %}
+    
+    {% set mayManage = hasPermission('MUTransportModule:Table:', '::', 'ACCESS_EDIT') %}
+    {% if mayManage %}
+        <p class="managelink">
+            {% set createTitle = __('Create table') %}
+            <a href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'edit', {database: database.getKey()}) }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+        </p>
+    {% endif %}
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.databases.display_view', id=database.getKey(), urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        <h4>{{ providerArea }}</h4>
+        {{ hook }}
+    {% endfor %}
+{% endblock %}

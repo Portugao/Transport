@@ -1,0 +1,28 @@
+{# purpose of this template: inclusion template for managing related database #}
+{% if displayMode is not defined or displayMode is empty %}
+    {% set displayMode = 'choices' %}
+{% endif %}
+{% if tabs|default(false) == true %}
+    <div role="tabpanel" class="tab-pane fade" id="tabDatabase" aria-labelledby="databaseTab">
+        <h3>{{ __('Database') }}</h3>
+{% else %}
+    <fieldset class="database">
+{% endif %}
+    <legend>{{ __('Database') }}</legend>
+    {% if displayMode == 'choices' %}
+        {{ form_row(attribute(form, alias)) }}
+    {% elseif displayMode == 'autocomplete' %}
+        {{ form_row(attribute(form, alias)) }}
+        <div class="mutransportmodule-relation-leftside">
+            {{ include(
+                '@MUTransportModule/Database/includeSelectItemListOne.html.twig',
+                attribute(linkingItem, alias) is defined ? {item: attribute(linkingItem, alias)} : {}
+            ) }}
+        </div>
+        <br style="clear: both" />
+    {% endif %}
+{% if tabs|default(false) == true %}
+    </div>
+{% else %}
+    </fieldset>
+{% endif %}

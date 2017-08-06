@@ -1,0 +1,9 @@
+{# purpose of this template: show output of copy values from database to database action in field area #}
+{% extends routeArea == 'admin' ? 'MUTransportModule::adminBase.html.twig' : 'MUTransportModule::base.html.twig' %}
+{% block title __('Copy values from database to database') %}
+{% block admin_page_icon 'square' %}
+{% block content %}
+    <div class="mutransportmodule-field mutransportmodule-copyvaluesfromdatabasetodatabase">
+        <p>Please override this template by moving it from <em>/modules/MU/TransportModule/Resources/views/Field/copyValuesFromDatabaseToDatabase.html.twig</em> to either <em>/themes/YourTheme/Resources/MUTransportModule/views/Field/copyValuesFromDatabaseToDatabase.html.twig</em> or <em>/app/Resources/MUTransportModule/views/Field/copyValuesFromDatabaseToDatabase.html.twig</em>.</p>
+    </div>
+{% endblock %}

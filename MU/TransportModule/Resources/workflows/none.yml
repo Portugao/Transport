@@ -1,0 +1,26 @@
+workflow:
+    workflows:
+        mutransportmodule_none:
+            type: state_machine
+            marking_store:
+                type: single_state
+                arguments:
+                    - workflowState
+            supports:
+                - MU\TransportModule\Entity\TableEntity
+                - MU\TransportModule\Entity\DatabaseEntity
+                - MU\TransportModule\Entity\FieldEntity
+            places:
+                - initial
+                - approved
+                - deleted
+            transitions:
+                submit:
+                    from: initial
+                    to: approved
+                updateapproved:
+                    from: approved
+                    to: approved
+                delete:
+                    from: approved
+                    to: deleted

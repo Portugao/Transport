@@ -1,0 +1,120 @@
+application "Transport" {
+    vendor "MU"
+    author "Michael Ueberschaer"
+    email "info@homepages-mit-zikula.de"
+    url "https://homepages-mit-zikula.de"
+    version "1.4.0"
+    prefix "transport"
+    generatorSettings {
+        settingsContainer "Settings"
+        targetCoreVersion ZK15
+        generateAccountApi false
+        generateSearchApi false
+        generateListBlock false
+        generateModerationBlock false
+        generateListContentType false
+        generateDetailContentType false
+        generateModerationPanel false
+        generatePendingContentSupport false
+        generateExternalControllerAndFinder false
+        generateScribitePlugins false
+        generateRssTemplates false
+        generateAtomTemplates false
+        generateCsvTemplates false
+        generateXmlTemplates false
+        generateJsonTemplates false
+        generateKmlTemplates false
+        generateIcsTemplates false
+        versionAllGeneratedFiles false
+        generatePoweredByBacklinksIntoFooterTemplates false
+        generateTests false
+        markFiles "Controller/TableController.php,\r\nHelper/ModelHelper.php,\r\nMenu/ItemActionsMenu.php,\r\nResources/views/Table/getTables.html.twig"
+    }
+    entities {
+        entity "table" {
+            nameMultiple "tables"
+            displayPattern "#name#"
+            fields {
+                string "name",
+                text "description" {
+                    mandatory false
+                }
+            }
+            actions {
+                mainAction "Index",
+                viewAction "View",
+                editAction "Edit"
+            ,
+                deleteAction "Delete",
+                customAction "GetTables",
+                customAction "SelectSourceAndTargetTable" {
+                    documentation "Pull the tables in the container for source and traget."
+                }
+            }
+        },
+        entity "database" leading {
+            nameMultiple "databases"
+            displayPattern "#name#"
+            fields {
+                string "name",
+                string "dbName" unique,
+                string "dbUser"
+            ,
+                string "dbPassword" {
+                    mandatory false
+                    role PASSWORD
+                },
+                string "host"
+            }
+            actions {
+                mainAction "Index",
+                viewAction "View",
+                displayAction "Display",
+                editAction "Edit"
+            ,
+                deleteAction "Delete",
+                customAction "Select2Databases"
+            }
+        },
+        entity "field" {
+            nameMultiple "fields"
+            displayPattern "#fieldName#"
+            fields {
+                string "fieldName",
+                string "fieldValue",
+                string "fieldLength",
+                string "fieldType",
+                string "fieldAttributes" {
+                    mandatory false
+                },
+                boolean "nullAllowed" {
+                    mandatory false
+                },
+                string "comments" {
+                    mandatory false
+                },
+                string "extra"
+            }
+            actions {
+                viewAction "View",
+                deleteAction "Delete",
+                customAction "GetFields",
+                customAction "CopyValuesFromDatabaseToDatabase"
+            }
+        }
+    }
+    relations {
+        one2many bidirectional {
+            source "database"
+            sourceAlias "database"
+            target "table"
+            targetAlias "tables"
+        },
+        one2many bidirectional {
+            source "table"
+            sourceAlias "table"
+            target "field"
+            targetAlias "fields"
+        }
+    }
+}

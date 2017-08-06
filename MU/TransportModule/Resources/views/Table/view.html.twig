@@ -1,0 +1,140 @@
+{# purpose of this template: tables list view #}
+{% extends routeArea == 'admin' ? 'MUTransportModule::adminBase.html.twig' : 'MUTransportModule::base.html.twig' %}
+{% block title own ? __('My tables') : __('Tables list') %}
+{% block admin_page_icon 'list-alt' %}
+{% block content %}
+<div class="mutransportmodule-table mutransportmodule-view">
+
+    {{ block('page_nav_links') }}
+
+    {{ include('@MUTransportModule/Table/viewQuickNav.html.twig', {workflowStateFilter: false}) }}{# see template file for available options #}
+
+    {% if routeArea == 'admin' %}
+    <form action="{{ path('mutransportmodule_table_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="tablesViewForm" class="form-horizontal" role="form">
+        <div>
+    {% endif %}
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover{% if routeArea == 'admin' %} table-condensed{% endif %}">
+            <colgroup>
+                {% if routeArea == 'admin' %}
+                    <col id="cSelect" />
+                {% endif %}
+                <col id="cItemActions" />
+                <col id="cName" />
+                <col id="cDescription" />
+                <col id="cDatabase" />
+            </colgroup>
+            <thead>
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                        <input type="checkbox" class="mutransport-mass-toggle" />
+                    </th>
+                {% endif %}
+                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                <th id="hName" scope="col" class="text-left">
+                    <a href="{{ sort.name.url }}" title="{{ __f('Sort by %s', {'%s': 'name'}) }}" class="{{ sort.name.class }}">{{ __('Name') }}</a>
+                </th>
+                <th id="hDescription" scope="col" class="text-left">
+                    <a href="{{ sort.description.url }}" title="{{ __f('Sort by %s', {'%s': 'description'}) }}" class="{{ sort.description.class }}">{{ __('Description') }}</a>
+                </th>
+                <th id="hDatabase" scope="col" class="text-left">
+                    <a href="{{ sort.database.url }}" title="{{ __f('Sort by %s', {'%s': 'database'}) }}" class="{{ sort.database.class }}">{{ __('Database') }}</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+        
+        {% for table in items %}
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <td headers="hSelect" class="fixed-column text-center z-w02">
+                        <input type="checkbox" name="items[]" value="{{ table.getKey() }}" class="mutransport-toggle-checkbox" />
+                    </td>
+                {% endif %}
+                <td id="itemActions{{ table.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('MUTransportModule:ItemActionsMenu:menu', [], {entity: table, area: routeArea, context: 'view'}) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ table.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
+                    </div>
+                </td>
+                <td headers="hName" class="text-left">
+                    {{ table.name|notifyFilters('mutransportmodule.filterhook.tables')|safeHtml }}
+                </td>
+                <td headers="hDescription" class="text-left">
+                    {{ table.description|striptags|truncate(50) }}
+                </td>
+                <td headers="hDatabase" class="text-left">
+                    {% if table.database|default %}
+                        <a href="{{ path('mutransportmodule_database_' ~ routeArea ~ 'display', {'id': table.database.getId()}) }}">{% spaceless %}
+                          {{ table.database|mutransportmodule_formattedTitle }}
+                        {% endspaceless %}</a>
+                        <a id="databaseItem{{ table.getKey() }}_rel_{{ table.database.getKey() }}Display" href="{{ path('mutransportmodule_database_' ~ routeArea ~ 'display', {'id': table.database.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="mutransport-inline-window hidden" data-modal-title="{{ table.database|mutransportmodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                    {% else %}
+                        {{ __('Not set.') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}5{% else %}4{% endif %}">
+            {{ __('No tables found.') }}
+              </td>
+            </tr>
+        {% endfor %}
+        
+            </tbody>
+        </table>
+        </div>
+        
+        {% if all != 1 and pager|default %}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'mutransportmodule_table_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
+    {% if routeArea == 'admin' %}
+            <fieldset>
+                <label for="mUTransportModuleAction" class="col-sm-3 control-label">{{ __('With selected tables') }}</label>
+                <div class="col-sm-6">
+                    <select id="mUTransportModuleAction" name="action" class="form-control input-sm">
+                        <option value="">{{ __('Choose action') }}</option>
+                        <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="submit" value="{{ __('Submit') }}" class="btn btn-default btn-sm" />
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    {% endif %}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block page_nav_links %}
+    <p>
+        {% if canBeCreated %}
+            {% if hasPermission('MUTransportModule:Table:', '::', 'ACCESS_EDIT') %}
+                {% set createTitle = __('Create table') %}
+                <a href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            {% endif %}
+        {% endif %}
+        {% if all == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            <a href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            <a href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'view', {all: 1}) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% endif %}
+    </p>
+{% endblock %}
+{% block display_hooks %}
+    
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.tables.display_view', urlObject=currentUrlObject) %}
+        {% for providerArea, hook in hooks %}
+            {{ hook }}
+        {% endfor %}
+    {% endif % #}
+{% endblock %}

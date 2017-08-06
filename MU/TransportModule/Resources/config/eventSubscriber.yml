@@ -1,0 +1,78 @@
+services:
+    # Event subscribers and listeners
+    mu_transport_module.entity_lifecycle_listener:
+        class: MU\TransportModule\Listener\EntityLifecycleListener
+        arguments:
+            - "@service_container"
+            - "@event_dispatcher"
+            - "@logger"
+        tags:
+            - { name: doctrine.event_subscriber }
+    
+    mu_transport_module.kernel_listener:
+        class: MU\TransportModule\Listener\KernelListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.installer_listener:
+        class: MU\TransportModule\Listener\InstallerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.moduledispatch_listener:
+        class: MU\TransportModule\Listener\ModuleDispatchListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.mailer_listener:
+        class: MU\TransportModule\Listener\MailerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.theme_listener:
+        class: MU\TransportModule\Listener\ThemeListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.userlogin_listener:
+        class: MU\TransportModule\Listener\UserLoginListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.userlogout_listener:
+        class: MU\TransportModule\Listener\UserLogoutListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.user_listener:
+        class: MU\TransportModule\Listener\UserListener
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.entity_factory"
+            - "@zikula_users_module.current_user"
+            - "@logger"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.userregistration_listener:
+        class: MU\TransportModule\Listener\UserRegistrationListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.users_listener:
+        class: MU\TransportModule\Listener\UsersListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.group_listener:
+        class: MU\TransportModule\Listener\GroupListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_transport_module.workflow_events_listener:
+        class: MU\TransportModule\Listener\WorkflowEventsListener
+        arguments:
+            - "@zikula_permissions_module.api.permission"
+        tags:
+            - { name: kernel.event_subscriber }
+    

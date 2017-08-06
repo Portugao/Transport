@@ -1,0 +1,12 @@
+services:
+    # Entity factory
+    mu_transport_module.entity_factory:
+        class: MU\TransportModule\Entity\Factory\EntityFactory
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@mu_transport_module.entity_initialiser"
+            - "@mu_transport_module.collection_filter_helper"
+    
+    # Entity initialiser
+    mu_transport_module.entity_initialiser:
+        class: MU\TransportModule\Entity\Factory\EntityInitialiser

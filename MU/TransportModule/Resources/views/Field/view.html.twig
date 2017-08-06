@@ -1,0 +1,177 @@
+{# purpose of this template: fields list view #}
+{% extends routeArea == 'admin' ? 'MUTransportModule::adminBase.html.twig' : 'MUTransportModule::base.html.twig' %}
+{% block title own ? __('My fields') : __('Fields list') %}
+{% block admin_page_icon 'list-alt' %}
+{% block content %}
+<div class="mutransportmodule-field mutransportmodule-view">
+
+    {{ block('page_nav_links') }}
+
+    {{ include('@MUTransportModule/Field/viewQuickNav.html.twig', {workflowStateFilter: false}) }}{# see template file for available options #}
+
+    {% if routeArea == 'admin' %}
+    <form action="{{ path('mutransportmodule_field_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="fieldsViewForm" class="form-horizontal" role="form">
+        <div>
+    {% endif %}
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <colgroup>
+                {% if routeArea == 'admin' %}
+                    <col id="cSelect" />
+                {% endif %}
+                <col id="cItemActions" />
+                <col id="cFieldName" />
+                <col id="cFieldValue" />
+                <col id="cFieldLength" />
+                <col id="cFieldType" />
+                <col id="cFieldAttributes" />
+                <col id="cNullAllowed" />
+                <col id="cComments" />
+                <col id="cExtra" />
+                <col id="cTable" />
+            </colgroup>
+            <thead>
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                        <input type="checkbox" class="mutransport-mass-toggle" />
+                    </th>
+                {% endif %}
+                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                <th id="hFieldName" scope="col" class="text-left">
+                    <a href="{{ sort.fieldName.url }}" title="{{ __f('Sort by %s', {'%s': 'field name'}) }}" class="{{ sort.fieldName.class }}">{{ __('Field name') }}</a>
+                </th>
+                <th id="hFieldValue" scope="col" class="text-left">
+                    <a href="{{ sort.fieldValue.url }}" title="{{ __f('Sort by %s', {'%s': 'field value'}) }}" class="{{ sort.fieldValue.class }}">{{ __('Field value') }}</a>
+                </th>
+                <th id="hFieldLength" scope="col" class="text-left">
+                    <a href="{{ sort.fieldLength.url }}" title="{{ __f('Sort by %s', {'%s': 'field length'}) }}" class="{{ sort.fieldLength.class }}">{{ __('Field length') }}</a>
+                </th>
+                <th id="hFieldType" scope="col" class="text-left">
+                    <a href="{{ sort.fieldType.url }}" title="{{ __f('Sort by %s', {'%s': 'field type'}) }}" class="{{ sort.fieldType.class }}">{{ __('Field type') }}</a>
+                </th>
+                <th id="hFieldAttributes" scope="col" class="text-left">
+                    <a href="{{ sort.fieldAttributes.url }}" title="{{ __f('Sort by %s', {'%s': 'field attributes'}) }}" class="{{ sort.fieldAttributes.class }}">{{ __('Field attributes') }}</a>
+                </th>
+                <th id="hNullAllowed" scope="col" class="text-center">
+                    <a href="{{ sort.nullAllowed.url }}" title="{{ __f('Sort by %s', {'%s': 'null allowed'}) }}" class="{{ sort.nullAllowed.class }}">{{ __('Null allowed') }}</a>
+                </th>
+                <th id="hComments" scope="col" class="text-left">
+                    <a href="{{ sort.comments.url }}" title="{{ __f('Sort by %s', {'%s': 'comments'}) }}" class="{{ sort.comments.class }}">{{ __('Comments') }}</a>
+                </th>
+                <th id="hExtra" scope="col" class="text-left">
+                    <a href="{{ sort.extra.url }}" title="{{ __f('Sort by %s', {'%s': 'extra'}) }}" class="{{ sort.extra.class }}">{{ __('Extra') }}</a>
+                </th>
+                <th id="hTable" scope="col" class="text-left">
+                    <a href="{{ sort.table.url }}" title="{{ __f('Sort by %s', {'%s': 'table'}) }}" class="{{ sort.table.class }}">{{ __('Table') }}</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+        
+        {% for field in items %}
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <td headers="hSelect" class="fixed-column text-center z-w02">
+                        <input type="checkbox" name="items[]" value="{{ field.getKey() }}" class="mutransport-toggle-checkbox" />
+                    </td>
+                {% endif %}
+                <td id="itemActions{{ field.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('MUTransportModule:ItemActionsMenu:menu', [], {entity: field, area: routeArea, context: 'view'}) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ field.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
+                    </div>
+                </td>
+                <td headers="hFieldName" class="text-left">
+                    {{ field.fieldName }}
+                </td>
+                <td headers="hFieldValue" class="text-left">
+                    {{ field.fieldValue }}
+                </td>
+                <td headers="hFieldLength" class="text-left">
+                    {{ field.fieldLength }}
+                </td>
+                <td headers="hFieldType" class="text-left">
+                    {{ field.fieldType }}
+                </td>
+                <td headers="hFieldAttributes" class="text-left">
+                    {{ field.fieldAttributes }}
+                </td>
+                <td headers="hNullAllowed" class="text-center">
+                    {% if field.nullAllowed %}
+                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                    {% endif %}
+                </td>
+                <td headers="hComments" class="text-left">
+                    {{ field.comments }}
+                </td>
+                <td headers="hExtra" class="text-left">
+                    {{ field.extra }}
+                </td>
+                <td headers="hTable" class="text-left">
+                    {% if field.table|default %}
+                          {{ field.table|mutransportmodule_formattedTitle }}
+                    {% else %}
+                        {{ __('Not set.') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}11{% else %}10{% endif %}">
+            {{ __('No fields found.') }}
+              </td>
+            </tr>
+        {% endfor %}
+        
+            </tbody>
+        </table>
+        </div>
+        
+        {% if all != 1 and pager|default %}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'mutransportmodule_field_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
+    {% if routeArea == 'admin' %}
+            <fieldset>
+                <label for="mUTransportModuleAction" class="col-sm-3 control-label">{{ __('With selected fields') }}</label>
+                <div class="col-sm-6">
+                    <select id="mUTransportModuleAction" name="action" class="form-control input-sm">
+                        <option value="">{{ __('Choose action') }}</option>
+                        <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="submit" value="{{ __('Submit') }}" class="btn btn-default btn-sm" />
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    {% endif %}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block page_nav_links %}
+    <p>
+        {% if all == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'view', {all: 1}) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% endif %}
+    </p>
+{% endblock %}
+{% block display_hooks %}
+    
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.fields.display_view', urlObject=currentUrlObject) %}
+        {% for providerArea, hook in hooks %}
+            {{ hook }}
+        {% endfor %}
+    {% endif % #}
+{% endblock %}

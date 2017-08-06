@@ -1,0 +1,5 @@
+{# purpose of this template: inclusion template for display of related fields #}
+{% set hasAdminPermission = hasPermission('MUTransportModule:Field:', '::', 'ACCESS_EDIT') %}
+<h4>
+    {{ item|mutransportmodule_formattedTitle }}
+</h4>

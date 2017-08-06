@@ -1,0 +1,64 @@
+services:
+    mu_transport_module.hook_subscriber.filter_hooks.tables:
+        class: MU\TransportModule\HookSubscriber\TableFilterHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.filter_hooks.tables' }
+
+    mu_transport_module.hook_subscriber.form_aware_hook.tables:
+        class: MU\TransportModule\HookSubscriber\TableFormAwareHookSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.form_aware_hook.tables' }
+
+    mu_transport_module.hook_subscriber.ui_hooks.tables:
+        class: MU\TransportModule\HookSubscriber\TableUiHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.ui_hooks.tables' }
+
+    mu_transport_module.hook_subscriber.filter_hooks.databases:
+        class: MU\TransportModule\HookSubscriber\DatabaseFilterHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.filter_hooks.databases' }
+
+    mu_transport_module.hook_subscriber.form_aware_hook.databases:
+        class: MU\TransportModule\HookSubscriber\DatabaseFormAwareHookSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.form_aware_hook.databases' }
+
+    mu_transport_module.hook_subscriber.ui_hooks.databases:
+        class: MU\TransportModule\HookSubscriber\DatabaseUiHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.ui_hooks.databases' }
+
+    mu_transport_module.hook_subscriber.filter_hooks.fields:
+        class: MU\TransportModule\HookSubscriber\FieldFilterHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.filter_hooks.fields' }
+
+    mu_transport_module.hook_subscriber.form_aware_hook.fields:
+        class: MU\TransportModule\HookSubscriber\FieldFormAwareHookSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.form_aware_hook.fields' }
+
+    mu_transport_module.hook_subscriber.ui_hooks.fields:
+        class: MU\TransportModule\HookSubscriber\FieldUiHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.mutransportmodule.ui_hooks.fields' }
+
