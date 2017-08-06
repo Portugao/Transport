@@ -4,14 +4,13 @@
 {% block admin_page_icon 'square' %}
 {% block content %}
     <div class="mutransportmodule-field mutransportmodule-getfields">
-        <p>Please override this template by moving it from <em>/modules/MU/TransportModule/Resources/views/Field/getFields.html.twig</em> to either <em>/themes/YourTheme/Resources/MUTransportModule/views/Field/getFields.html.twig</em> or <em>/app/Resources/MUTransportModule/views/Field/getFields.html.twig</em>.</p>
-    </div>
     {% if fields is defined %}
-    {{ __('The following fields were found in the table and saved into the table fields in Transport. You can find them, if you call the display site of this table.') }}<br />
+    <p class="alert alert-success">{{ __('The following fields were found in the table and saved into the table fields in Transport. You can find them, if you call the display site of this table.') }}</p><br />
     <ul>
         {% for field in fields %}
             <li>{{ field.Field }}</li>
         {% endfor %}
     </ul>
     {% endif %}
+    </div>
 {% endblock %}

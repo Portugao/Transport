@@ -4,14 +4,13 @@
 {% block admin_page_icon 'square' %}
 {% block content %}
     <div class="mutransportmodule-table mutransportmodule-gettables">
-        <p>Please override this template by moving it from <em>/modules/MU/TransportModule/Resources/views/Table/getTables.html.twig</em> to either <em>/themes/YourTheme/Resources/MUTransportModule/views/Table/getTables.html.twig</em> or <em>/app/Resources/MUTransportModule/views/Table/getTables.html.twig</em>.</p>
-    </div>
     {% if tables is defined %}
-    {{ __('The following tables were found in the database and saved into the table tables in Transport. You can find them, if you call the display site of this database.') }}<br />
+    <p class="alert alert-success">{{ __('The following tables were found in the database and saved into the table tables in Transport. You can find them, if you call the display site of this database.') }}</p><br />
     <ul>
         {% for table in tables %}
             <li>{{ table }}</li>
         {% endfor %}
     </ul>
     {% endif %}
+    </div>
 {% endblock %}
