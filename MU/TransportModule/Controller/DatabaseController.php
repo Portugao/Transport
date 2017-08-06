@@ -324,6 +324,69 @@ class DatabaseController extends AbstractDatabaseController
     {
         return parent::handleSelectedEntriesAction($request);
     }
+    
+    /**
+     * This method includes the common implementation code for adminSelect2Databases() and select2Databases().
+     */
+    protected function select2DatabasesInternal(Request $request, $isAdmin = false)
+    {
+    	// parameter specifying which type of objects we are treating
+    	$objectType = 'database';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
+    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    
+    	$controllerHelper = $this->get('mu_transport_module.controller_helper');
+    	$templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
+    
+    	// delegate form processing to the form handler
+    	$formHandler = $this->get('mu_transport_module.form.handler.database');
+    	$result = $formHandler->processForm($templateParameters);
+    	if ($result instanceof RedirectResponse) {
+    		return $result;
+    	}
+    
+    	$templateParameters = $formHandler->getTemplateParameters();
+    
+    	// fetch and return the appropriate template
+    	return $this->get('mu_transport_module.view_helper')->processTemplate($objectType, 'select2databases', $templateParameters);
+ 
+    }
+    
+    /**
+     * This method includes the common implementation code for adminEdit() and edit().
+     */
+    protected function editInternal(Request $request, $isAdmin = false)
+    {
+    	// parameter specifying which type of objects we are treating
+    	$objectType = 'database';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
+    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    
+    	$controllerHelper = $this->get('mu_transport_module.controller_helper');
+    	$templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
+    
+    	// delegate form processing to the form handler
+    	$formHandler = $this->get('mu_transport_module.form.handler.database');
+    	$result = $formHandler->processForm($templateParameters);
+    	if ($result instanceof RedirectResponse) {
+    		return $result;
+    	}
+    
+    	$templateParameters = $formHandler->getTemplateParameters();
+    
+    	// fetch and return the appropriate template
+    	return $this->get('mu_transport_module.view_helper')->processTemplate($objectType, 'edit', $templateParameters);
+    }
 
     // feel free to add your own controller methods here
 }
