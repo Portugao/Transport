@@ -200,11 +200,12 @@ class FieldController extends AbstractFieldController
                 $length = str_replace(')', '', $length);
                 $newField->setFieldLength($length);
                 $type = explode('(', $field['Type']);
-                $type = $type[0];
-                $newField->setFieldType($type[1]);
+                $newField->setFieldType($type[0]);
     		} else {
     			$newField->setFieldType($field['Type']);
     		}
+    		$newField->setNullAllowed($field['Null']);
+    		$newField->setExtra($field['Extra']);
     		$newField->setTable($table);
     		$newField->setWorkflowState('approved');
     		$entityManager->flush();
