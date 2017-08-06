@@ -6,4 +6,63 @@
     <div class="mutransportmodule-database mutransportmodule-select2databases">
         <p>Please override this template by moving it from <em>/modules/MU/TransportModule/Resources/views/Database/select2Databases.html.twig</em> to either <em>/themes/YourTheme/Resources/MUTransportModule/views/Database/select2Databases.html.twig</em> or <em>/app/Resources/MUTransportModule/views/Database/select2Databases.html.twig</em>.</p>
     </div>
+    
+    
+    <div class="mutransportmodule-database mutransportmodule-edit">
+        {% form_theme form with [
+            '@MUTransportModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form, {attr: {id: 'databaseEditForm', class: 'mutransport-edit-form'}}) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('Content') }}</legend>
+            {{ form_row(form.name) }}
+            {{ form_row(form.dbName) }}
+            {{ form_row(form.dbUser) }}
+            {{ form_row(form.dbPassword) }}
+            {{ form_row(form.host) }}
+        </fieldset>
+        
+        {% if mode != 'create' %}
+            {{ include('@MUTransportModule/Helper/includeStandardFieldsEdit.html.twig', {obj: database}) }}
+        {% endif %}
+        
+        {% if formHookTemplates|length > 0 %}
+            <fieldset>
+                {% for hookTemplate in formHookTemplates %}
+                    {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
+                {% endfor %}
+            </fieldset>
+        {% endif %}
+        
+        {% if form.moderationSpecificCreator is defined %}
+            <fieldset id="moderationFieldsSection">
+                <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
+                <div id="moderationFieldsContent">
+                    {{ form_row(form.moderationSpecificCreator) }}
+                    {{ form_row(form.moderationSpecificCreationDate) }}
+                </div>
+            </fieldset>
+        {% endif %}
+        
+        {# include return control #}
+        {% if mode == 'create' %}
+            <fieldset>
+                <legend>{{ __('Return control') }}</legend>
+                {{ form_row(form.repeatCreation) }}
+            </fieldset>
+        {% endif %}
+        
+        {# include possible submit actions #}
+        <div class="form-group form-buttons">
+            <div class="col-sm-offset-3 col-sm-9">
+                {% for action in actions %}
+                    {{ form_widget(attribute(form, action.id)) }}
+                {% endfor %}
+                {{ form_widget(form.reset) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
 {% endblock %}
