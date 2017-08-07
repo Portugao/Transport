@@ -68,7 +68,7 @@ class TableController extends AbstractTableController
      * @inheritDoc
      *
      * @Route("/admin/tables/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -93,7 +93,7 @@ class TableController extends AbstractTableController
      * @inheritDoc
      *
      * @Route("/tables/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -236,56 +236,53 @@ class TableController extends AbstractTableController
      */
     public function getTablesAction(Request $request)
     {
-    	return parent::getTablesAction($request);
+        return parent::getTablesAction($request);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @Route("/admin/table/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        defaults = {"_format" = "html"},
+     *        methods = {"GET"}
+     * )
+     * @Theme("admin")
+     *
+     * @param Request $request Current request instance
+     * @param TableEntity $table Treated table instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if table to be displayed isn't found
+     */
+    public function adminDisplayAction(Request $request, TableEntity $table)
+    {
+        return parent::adminDisplayAction($request, $table);
     }
     
     /**
-     * This method includes the common implementation code for adminGetTables() and getTables().
+     * @inheritDoc
+     *
+     * @Route("/table/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        defaults = {"_format" = "html"},
+     *        methods = {"GET"}
+     * )
+     *
+     * @param Request $request Current request instance
+     * @param TableEntity $table Treated table instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if table to be displayed isn't found
      */
-    protected function getTablesInternal(Request $request, $isAdmin = false)
+    public function displayAction(Request $request, TableEntity $table)
     {
-    	// parameter specifying which type of objects we are treating
-    	$objectType = 'table';
-    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-    		throw new AccessDeniedException();
-    	}
-    
-    	$templateParameters = [
-    			'routeArea' => $isAdmin ? 'admin' : ''
-    	];
-    	
-    	// we get two helpers
-    	$controllerHelper = $this->get('mu_transport_module.controller_helper');
-    	$modelHelper = $this->get('mu_transport_module.model_helper');
-    	// we get the relevant database id
-    	$databaseId = $controllerHelper->getParameter('database');
-    	// we get a database repository
-    	$databaseRepository = $modelHelper->getRepository('database');
-    	// we get the database object
-    	$database = $databaseRepository->findOneBy(array('id' => $databaseId));
-    	$conn = new \PDO('mysql:dbname=' . $database['dbName'] . ';host=' . $database['host'], $database['dbUser'], $database['dbPassword']);
-    	$result = $conn->query('SHOW TABLES');
-    	while ($row = $result->fetch(PDO::FETCH_NUM)) {
-    		$tableList[] = $row[0];
-    	}
-    	
-    	$entityManager = $this->container->get('doctrine.entitymanager');
-
-    	foreach ($tableList as $table) {
-    		$newTable = new TableEntity();
-    		$newTable->setName($table);
-    		$newTable->setDatabase($database);
-    		$newTable->setWorkflowState('approved');
-    		$entityManager->flush();
-    		$entityManager->persist($newTable);
-    	}
-    	$templateParameters['tables'] = $tableList;
-    
-    	// return template
-    	return $this->render('@MUTransportModule/Table/getTables.html.twig', $templateParameters);
+        return parent::displayAction($request, $table);
     }
-        
 
     /**
      * Process status changes for multiple items.
@@ -328,6 +325,53 @@ class TableController extends AbstractTableController
     public function handleSelectedEntriesAction(Request $request)
     {
         return parent::handleSelectedEntriesAction($request);
+    }
+    
+    /**
+     * This method includes the common implementation code for adminGetTables() and getTables().
+     */
+    protected function getTablesInternal(Request $request, $isAdmin = false)
+    {
+    	// parameter specifying which type of objects we are treating
+    	$objectType = 'table';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
+    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    	 
+    	// we get two helpers
+    	$controllerHelper = $this->get('mu_transport_module.controller_helper');
+    	$modelHelper = $this->get('mu_transport_module.model_helper');
+    	// we get the relevant database id
+    	$databaseId = $controllerHelper->getParameter('database');
+    	// we get a database repository
+    	$databaseRepository = $modelHelper->getRepository('database');
+    	// we get the database object
+    	$database = $databaseRepository->findOneBy(array('id' => $databaseId));
+    	$conn = new \PDO('mysql:dbname=' . $database['dbName'] . ';host=' . $database['host'], $database['dbUser'], $database['dbPassword']);
+    	$result = $conn->query('SHOW TABLES');
+    	while ($row = $result->fetch(PDO::FETCH_NUM)) {
+    		$tableList[] = $row[0];
+    	}
+    	 
+    	$entityManager = $this->container->get('doctrine.entitymanager');
+    
+    	foreach ($tableList as $table) {
+    		$newTable = new TableEntity();
+    		$newTable->setName($table);
+    		$newTable->setDatabase($database);
+    		$newTable->setWorkflowState('approved');
+    		$entityManager->flush();
+    		$entityManager->persist($newTable);
+    	}
+    	$templateParameters['tables'] = $tableList;
+    
+    	// return template
+    	return $this->render('@MUTransportModule/Table/getTables.html.twig', $templateParameters);
     }
 
     // feel free to add your own controller methods here
