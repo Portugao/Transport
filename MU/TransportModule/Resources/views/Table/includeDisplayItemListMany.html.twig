@@ -1,12 +1,24 @@
 {# purpose of this template: inclusion template for display of related tables #}
 {% set hasAdminPermission = hasPermission('MUTransportModule:Table:', '::', 'ACCESS_EDIT') %}
+{% if noLink is not defined %}
+    {% set noLink = false %}
+{% endif %}
 {% if items|default and items|length > 0 %}
 <ul class="list-group mutransportmodule-related-item-list table">
 {% for item in items %}
     {% if hasAdminPermission or item.workflowState == 'approved' %}
     <li class="list-group-item">
 <h4 class="list-group-item-heading">
+{% spaceless %}
+{% if not noLink %}
+    <a href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'display', {'id': item.getId()}) }}" title="{{ item|mutransportmodule_formattedTitle|e('html_attr') }}">
+{% endif %}
     {{ item|mutransportmodule_formattedTitle }}
+{% if not noLink %}
+    </a>
+    <a id="tableItem{{ item.getKey() }}Display" href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'display', {'id': item.getId(), raw: 1}) }}" title="{{ __('Open quick view window') }}" class="mutransport-inline-window hidden" data-modal-title="{{ item|mutransportmodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+{% endif %}
+{% endspaceless %}
 </h4>
     </li>
     {% endif %}
