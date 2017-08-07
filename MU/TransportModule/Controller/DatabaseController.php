@@ -344,7 +344,7 @@ class DatabaseController extends AbstractDatabaseController
     	$templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
     
     	// delegate form processing to the form handler
-    	$formHandler = $this->get('mu_transport_module.form.handler.database');
+    	$formHandler = $this->get('mu_transport_module.form.handler.databaseselect');
     	$result = $formHandler->processForm($templateParameters);
     	if ($result instanceof RedirectResponse) {
     		return $result;
