@@ -131,3 +131,8 @@ div.mutransportmodule-view .avatar img {
     width: auto;
     max-height: 24px;
 }
+
+.ui-sortable .btn {
+	width: 100%;
+	margin: 0 0 15px 0;
+}
