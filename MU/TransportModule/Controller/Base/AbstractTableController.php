@@ -448,6 +448,72 @@ abstract class AbstractTableController extends AbstractController
         // return template
         return $this->render('@MUTransportModule/Table/selectSourceAndTargetTable.html.twig', $templateParameters);
     }
+    /**
+     * This action provides a item detail view in the admin area.
+     * @ParamConverter("table", class="MUTransportModule:TableEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
+     *
+     * @param Request $request Current request instance
+     * @param TableEntity $table Treated table instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if table to be displayed isn't found
+     */
+    public function adminDisplayAction(Request $request, TableEntity $table)
+    {
+        return $this->displayInternal($request, $table, true);
+    }
+    
+    /**
+     * This action provides a item detail view.
+     * @ParamConverter("table", class="MUTransportModule:TableEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
+     *
+     * @param Request $request Current request instance
+     * @param TableEntity $table Treated table instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if table to be displayed isn't found
+     */
+    public function displayAction(Request $request, TableEntity $table)
+    {
+        return $this->displayInternal($request, $table, false);
+    }
+    
+    /**
+     * This method includes the common implementation code for adminDisplay() and display().
+     */
+    protected function displayInternal(Request $request, TableEntity $table, $isAdmin = false)
+    {
+        // parameter specifying which type of objects we are treating
+        $objectType = 'table';
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
+        if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+            throw new AccessDeniedException();
+        }
+        // create identifier for permission check
+        $instanceId = $table->getKey();
+        if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
+            throw new AccessDeniedException();
+        }
+        
+        $templateParameters = [
+            'routeArea' => $isAdmin ? 'admin' : '',
+            $objectType => $table
+        ];
+        
+        $controllerHelper = $this->get('mu_transport_module.controller_helper');
+        $templateParameters = $controllerHelper->processDisplayActionParameters($objectType, $templateParameters, true);
+        
+        // fetch and return the appropriate template
+        $response = $this->get('mu_transport_module.view_helper')->processTemplate($objectType, 'display', $templateParameters);
+        
+        return $response;
+    }
 
     /**
      * Process status changes for multiple items.

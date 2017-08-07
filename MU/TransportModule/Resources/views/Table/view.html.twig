@@ -60,7 +60,7 @@
                     </div>
                 </td>
                 <td headers="hName" class="text-left">
-                    {{ table.name|notifyFilters('mutransportmodule.filterhook.tables')|safeHtml }}
+                    <a href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'display', {'id': table.getId()}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ table.name|notifyFilters('mutransportmodule.filterhook.tables')|safeHtml }}</a>
                 </td>
                 <td headers="hDescription" class="text-left">
                     {{ table.description|striptags|truncate(50) }}

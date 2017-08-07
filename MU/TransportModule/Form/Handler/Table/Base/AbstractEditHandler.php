@@ -124,6 +124,10 @@ abstract class AbstractEditHandler extends EditHandler
         $codes[] = 'userOwnView';
         // admin list of own tables
         $codes[] = 'adminOwnView';
+        // user detail page of treated table
+        $codes[] = 'userDisplay';
+        // admin detail page of treated table
+        $codes[] = 'adminDisplay';
     
         // user list of databases
         $codes[] = 'userViewDatabases';
@@ -307,6 +311,13 @@ abstract class AbstractEditHandler extends EditHandler
             case 'userOwnView':
             case 'adminOwnView':
                 return $this->router->generate($routePrefix . 'view', [ 'own' => 1 ]);
+            case 'userDisplay':
+            case 'adminDisplay':
+                if ($args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel')) {
+                    return $this->router->generate($routePrefix . 'display', $this->entityRef->createUrlArgs());
+                }
+    
+                return $this->getDefaultReturnUrl($args);
             case 'userViewDatabases':
             case 'adminViewDatabases':
                 return $this->router->generate('mutransportmodule_database_' . $routeArea . 'view');

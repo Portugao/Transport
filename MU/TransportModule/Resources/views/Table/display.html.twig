@@ -1,0 +1,76 @@
+{# purpose of this template: tables display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'MUTransportModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ table|mutransportmodule_formattedTitle|default(__('Table')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = table|mutransportmodule_formattedTitle|default(__('Table')) %}
+    {{ templateTitle|notifyFilters('mutransportmodule.filter_hooks.tables.filter')|safeHtml }}
+    {% set itemActions = knp_menu_get('MUTransportModule:ItemActionsMenu:menu', [], {entity: table, area: routeArea, context: 'display'}) %}
+    <div class="dropdown">
+        <a id="itemActions{{ table.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
+    </div>
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="mutransportmodule-table mutransportmodule-display">
+
+    <div class="row">
+        <div class="col-sm-9">
+    <dl>
+        {% if table.name is not empty %}
+            <dt>{{ __('Name') }}</dt>
+            <dd>{{ table.name }}</dd>
+        {% endif %}
+        {% if table.description is not empty %}
+            <dt>{{ __('Description') }}</dt>
+            <dd>{{ table.description|safeHtml }}</dd>
+        {% endif %}
+        {% if table.database|default %}
+            <dt>{{ __('Database') }}</dt>
+            <dd>
+              {% if not isQuickView %}
+                  <a href="{{ path('mutransportmodule_database_' ~ routeArea ~ 'display', {'id': table.database.getId()}) }}">{% spaceless %}
+                    {{ table.database|mutransportmodule_formattedTitle }}
+                  {% endspaceless %}</a>
+                  <a id="databaseItem{{ table.database.getKey() }}Display" href="{{ path('mutransportmodule_database_' ~ routeArea ~ 'display', {'id': table.database.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="mutransport-inline-window hidden" data-modal-title="{{ table.database|mutransportmodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+              {% else %}
+                  {{ table.database|mutransportmodule_formattedTitle }}
+              {% endif %}
+            </dd>
+        {% endif %}
+        
+    </dl>
+
+    {{ include('@MUTransportModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: table}) }}
+
+    {{ block('display_hooks') }}
+        </div>
+        <div class="col-sm-3">
+            {{ block('related_items') }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block related_items %}
+    {% if routeArea == 'admin' %}
+        <h4>{{ __('Fields') }}</h4>
+    {% else %}
+        <h3>{{ __('Fields') }}</h3>
+    {% endif %}
+    
+    {% if table.fields|default %}
+        {{ include(
+            '@MUTransportModule/Field/includeDisplayItemListMany.html.twig',
+            {items: table.fields}
+        ) }}
+    {% endif %}
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.tables.display_view', id=table.getKey(), urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        <h4>{{ providerArea }}</h4>
+        {{ hook }}
+    {% endfor %}
+{% endblock %}
