@@ -40,7 +40,7 @@ class LinkContainer extends AbstractLinkContainer
         
         if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
         	$links[] = [
-        			'url' => $this->router->generate('mutransportmodule_database_' . $routeArea . 'select2databases'),
+        			'url' => $this->router->generate('mutransportmodule_transport_select2databases'),
         			'text' => $this->__('Database select', 'mutransportmodule'),
         			'title' => $this->__('Select 2 databases for transport of datas', 'mutransportmodule'),
         			'icon' => 'wrench'
