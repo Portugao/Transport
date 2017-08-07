@@ -193,6 +193,7 @@ class FieldController extends AbstractFieldController
     	foreach ($result as $field) {
     		$newField = new FieldEntity();
     		$newField->setFieldName($field['Field']);
+    		$newField->setFieldKey($field['Key']);
     		$pos = strpos($field['Type'], '(');
     		if ($pos != false) {
                 $length = strstr($field['Type'], '(');
@@ -204,8 +205,9 @@ class FieldController extends AbstractFieldController
     		} else {
     			$newField->setFieldType($field['Type']);
     		}
-    		$newField->setNullAllowed($field['Null']);
-    		$newField->setExtra($field['Extra']);
+    		$newField->setFieldDefault($field['Default']);
+    		$newField->setFieldNull($field['Null']);
+    		$newField->setFieldExtra($field['Extra']);
     		$newField->setTable($table);
     		$newField->setWorkflowState('approved');
     		$entityManager->flush();

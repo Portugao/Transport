@@ -96,13 +96,12 @@ abstract class AbstractFieldController extends AbstractController
         
         $sortableColumns->addColumns([
             new Column('fieldName'),
-            new Column('fieldValue'),
-            new Column('fieldLength'),
+            new Column('fieldKey'),
             new Column('fieldType'),
-            new Column('fieldAttributes'),
-            new Column('nullAllowed'),
-            new Column('comments'),
-            new Column('extra'),
+            new Column('fieldLength'),
+            new Column('fieldNull'),
+            new Column('fieldDefault'),
+            new Column('fieldExtra'),
             new Column('table'),
             new Column('createdBy'),
             new Column('createdDate'),

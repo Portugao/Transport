@@ -21,13 +21,12 @@
                 {% endif %}
                 <col id="cItemActions" />
                 <col id="cFieldName" />
-                <col id="cFieldValue" />
-                <col id="cFieldLength" />
+                <col id="cFieldKey" />
                 <col id="cFieldType" />
-                <col id="cFieldAttributes" />
-                <col id="cNullAllowed" />
-                <col id="cComments" />
-                <col id="cExtra" />
+                <col id="cFieldLength" />
+                <col id="cFieldNull" />
+                <col id="cFieldDefault" />
+                <col id="cFieldExtra" />
                 <col id="cTable" />
             </colgroup>
             <thead>
@@ -41,26 +40,23 @@
                 <th id="hFieldName" scope="col" class="text-left">
                     <a href="{{ sort.fieldName.url }}" title="{{ __f('Sort by %s', {'%s': 'field name'}) }}" class="{{ sort.fieldName.class }}">{{ __('Field name') }}</a>
                 </th>
-                <th id="hFieldValue" scope="col" class="text-left">
-                    <a href="{{ sort.fieldValue.url }}" title="{{ __f('Sort by %s', {'%s': 'field value'}) }}" class="{{ sort.fieldValue.class }}">{{ __('Field value') }}</a>
-                </th>
-                <th id="hFieldLength" scope="col" class="text-left">
-                    <a href="{{ sort.fieldLength.url }}" title="{{ __f('Sort by %s', {'%s': 'field length'}) }}" class="{{ sort.fieldLength.class }}">{{ __('Field length') }}</a>
+                <th id="hFieldKey" scope="col" class="text-left">
+                    <a href="{{ sort.fieldKey.url }}" title="{{ __f('Sort by %s', {'%s': 'field key'}) }}" class="{{ sort.fieldKey.class }}">{{ __('Field key') }}</a>
                 </th>
                 <th id="hFieldType" scope="col" class="text-left">
                     <a href="{{ sort.fieldType.url }}" title="{{ __f('Sort by %s', {'%s': 'field type'}) }}" class="{{ sort.fieldType.class }}">{{ __('Field type') }}</a>
                 </th>
-                <th id="hFieldAttributes" scope="col" class="text-left">
-                    <a href="{{ sort.fieldAttributes.url }}" title="{{ __f('Sort by %s', {'%s': 'field attributes'}) }}" class="{{ sort.fieldAttributes.class }}">{{ __('Field attributes') }}</a>
+                <th id="hFieldLength" scope="col" class="text-left">
+                    <a href="{{ sort.fieldLength.url }}" title="{{ __f('Sort by %s', {'%s': 'field length'}) }}" class="{{ sort.fieldLength.class }}">{{ __('Field length') }}</a>
                 </th>
-                <th id="hNullAllowed" scope="col" class="text-center">
-                    <a href="{{ sort.nullAllowed.url }}" title="{{ __f('Sort by %s', {'%s': 'null allowed'}) }}" class="{{ sort.nullAllowed.class }}">{{ __('Null allowed') }}</a>
+                <th id="hFieldNull" scope="col" class="text-left">
+                    <a href="{{ sort.fieldNull.url }}" title="{{ __f('Sort by %s', {'%s': 'field null'}) }}" class="{{ sort.fieldNull.class }}">{{ __('Field null') }}</a>
                 </th>
-                <th id="hComments" scope="col" class="text-left">
-                    <a href="{{ sort.comments.url }}" title="{{ __f('Sort by %s', {'%s': 'comments'}) }}" class="{{ sort.comments.class }}">{{ __('Comments') }}</a>
+                <th id="hFieldDefault" scope="col" class="text-left">
+                    <a href="{{ sort.fieldDefault.url }}" title="{{ __f('Sort by %s', {'%s': 'field default'}) }}" class="{{ sort.fieldDefault.class }}">{{ __('Field default') }}</a>
                 </th>
-                <th id="hExtra" scope="col" class="text-left">
-                    <a href="{{ sort.extra.url }}" title="{{ __f('Sort by %s', {'%s': 'extra'}) }}" class="{{ sort.extra.class }}">{{ __('Extra') }}</a>
+                <th id="hFieldExtra" scope="col" class="text-left">
+                    <a href="{{ sort.fieldExtra.url }}" title="{{ __f('Sort by %s', {'%s': 'field extra'}) }}" class="{{ sort.fieldExtra.class }}">{{ __('Field extra') }}</a>
                 </th>
                 <th id="hTable" scope="col" class="text-left">
                     <a href="{{ sort.table.url }}" title="{{ __f('Sort by %s', {'%s': 'table'}) }}" class="{{ sort.table.class }}">{{ __('Table') }}</a>
@@ -86,34 +82,30 @@
                 <td headers="hFieldName" class="text-left">
                     {{ field.fieldName }}
                 </td>
-                <td headers="hFieldValue" class="text-left">
-                    {{ field.fieldValue }}
-                </td>
-                <td headers="hFieldLength" class="text-left">
-                    {{ field.fieldLength }}
+                <td headers="hFieldKey" class="text-left">
+                    {{ field.fieldKey }}
                 </td>
                 <td headers="hFieldType" class="text-left">
                     {{ field.fieldType }}
                 </td>
-                <td headers="hFieldAttributes" class="text-left">
-                    {{ field.fieldAttributes }}
+                <td headers="hFieldLength" class="text-left">
+                    {{ field.fieldLength }}
                 </td>
-                <td headers="hNullAllowed" class="text-center">
-                    {% if field.nullAllowed %}
-                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                    {% else %}
-                        <i class="fa fa-times" title="{{ __('No') }}"></i>
-                    {% endif %}
+                <td headers="hFieldNull" class="text-left">
+                    {{ field.fieldNull }}
                 </td>
-                <td headers="hComments" class="text-left">
-                    {{ field.comments }}
+                <td headers="hFieldDefault" class="text-left">
+                    {{ field.fieldDefault }}
                 </td>
-                <td headers="hExtra" class="text-left">
-                    {{ field.extra }}
+                <td headers="hFieldExtra" class="text-left">
+                    {{ field.fieldExtra }}
                 </td>
                 <td headers="hTable" class="text-left">
                     {% if field.table|default %}
+                        <a href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'display', {'id': field.table.getId()}) }}">{% spaceless %}
                           {{ field.table|mutransportmodule_formattedTitle }}
+                        {% endspaceless %}</a>
+                        <a id="tableItem{{ field.getKey() }}_rel_{{ field.table.getKey() }}Display" href="{{ path('mutransportmodule_table_' ~ routeArea ~ 'display', {'id': field.table.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="mutransport-inline-window hidden" data-modal-title="{{ field.table|mutransportmodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
                     {% else %}
                         {{ __('Not set.') }}
                     {% endif %}
@@ -121,7 +113,7 @@
             </tr>
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}11{% else %}10{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}10{% else %}9{% endif %}">
             {{ __('No fields found.') }}
               </td>
             </tr>

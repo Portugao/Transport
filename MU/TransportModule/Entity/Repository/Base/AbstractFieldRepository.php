@@ -56,13 +56,12 @@ abstract class AbstractFieldRepository extends EntityRepository
     {
         return [
             'fieldName',
-            'fieldValue',
-            'fieldLength',
+            'fieldKey',
             'fieldType',
-            'fieldAttributes',
-            'nullAllowed',
-            'comments',
-            'extra',
+            'fieldLength',
+            'fieldNull',
+            'fieldDefault',
+            'fieldExtra',
             'createdBy',
             'createdDate',
             'updatedBy',

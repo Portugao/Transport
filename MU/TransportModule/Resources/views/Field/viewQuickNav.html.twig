@@ -47,13 +47,6 @@
             {% if pageSizeSelector is defined and pageSizeSelector != true %}
                 </div>
             {% endif %}
-            {% if nullAllowedFilter is defined and nullAllowedFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.nullAllowed) }}
-            {% if nullAllowedFilter is defined and nullAllowedFilter != true %}
-                </div>
-            {% endif %}
             {{ form_widget(quickNavForm.updateview) }}
         </fieldset>
     </div>

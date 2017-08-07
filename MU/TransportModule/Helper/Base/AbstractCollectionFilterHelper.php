@@ -194,7 +194,6 @@ abstract class AbstractCollectionFilterHelper
         $parameters['table'] = $this->request->query->get('table', 0);
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
         $parameters['q'] = $this->request->query->get('q', '');
-        $parameters['nullAllowed'] = $this->request->query->get('nullAllowed', '');
     
         return $parameters;
     }
@@ -314,13 +313,6 @@ abstract class AbstractCollectionFilterHelper
                 // quick search
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter('field', $qb, $v);
-                }
-            } elseif (in_array($k, ['nullAllowed'])) {
-                // boolean filter
-                if ($v == 'no') {
-                    $qb->andWhere('tbl.' . $k . ' = 0');
-                } elseif ($v == 'yes' || $v == '1') {
-                    $qb->andWhere('tbl.' . $k . ' = 1');
                 }
             } else if (!is_array($v)) {
                 // field filter
@@ -467,18 +459,18 @@ abstract class AbstractCollectionFilterHelper
         if ($objectType == 'field') {
             $filters[] = 'tbl.fieldName LIKE :searchFieldName';
             $parameters['searchFieldName'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.fieldValue LIKE :searchFieldValue';
-            $parameters['searchFieldValue'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.fieldLength LIKE :searchFieldLength';
-            $parameters['searchFieldLength'] = '%' . $fragment . '%';
+            $filters[] = 'tbl.fieldKey LIKE :searchFieldKey';
+            $parameters['searchFieldKey'] = '%' . $fragment . '%';
             $filters[] = 'tbl.fieldType LIKE :searchFieldType';
             $parameters['searchFieldType'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.fieldAttributes LIKE :searchFieldAttributes';
-            $parameters['searchFieldAttributes'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.comments LIKE :searchComments';
-            $parameters['searchComments'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.extra LIKE :searchExtra';
-            $parameters['searchExtra'] = '%' . $fragment . '%';
+            $filters[] = 'tbl.fieldLength LIKE :searchFieldLength';
+            $parameters['searchFieldLength'] = '%' . $fragment . '%';
+            $filters[] = 'tbl.fieldNull LIKE :searchFieldNull';
+            $parameters['searchFieldNull'] = '%' . $fragment . '%';
+            $filters[] = 'tbl.fieldDefault LIKE :searchFieldDefault';
+            $parameters['searchFieldDefault'] = '%' . $fragment . '%';
+            $filters[] = 'tbl.fieldExtra LIKE :searchFieldExtra';
+            $parameters['searchFieldExtra'] = '%' . $fragment . '%';
         }
     
         $qb->andWhere('(' . implode(' OR ', $filters) . ')');

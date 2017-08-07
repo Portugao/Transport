@@ -149,7 +149,7 @@ abstract class AbstractEntityDisplayHelper
             return 'dbName';
         }
         if ($objectType == 'field') {
-            return 'fieldValue';
+            return 'fieldKey';
         }
     
         return '';

@@ -67,11 +67,19 @@ abstract class AbstractFieldEntity extends EntityAccess
     
     /**
      * @ORM\Column(length=255)
+     * @Assert\NotNull()
+     * @Assert\Length(min="0", max="255")
+     * @var string $fieldKey
+     */
+    protected $fieldKey = '';
+    
+    /**
+     * @ORM\Column(length=255)
      * @Assert\NotBlank()
      * @Assert\Length(min="0", max="255")
-     * @var string $fieldValue
+     * @var string $fieldType
      */
-    protected $fieldValue = '';
+    protected $fieldType = '';
     
     /**
      * @ORM\Column(length=255)
@@ -85,41 +93,25 @@ abstract class AbstractFieldEntity extends EntityAccess
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
      * @Assert\Length(min="0", max="255")
-     * @var string $fieldType
+     * @var string $fieldNull
      */
-    protected $fieldType = '';
+    protected $fieldNull = '';
     
     /**
      * @ORM\Column(length=255)
      * @Assert\NotNull()
      * @Assert\Length(min="0", max="255")
-     * @var string $fieldAttributes
+     * @var string $fieldDefault
      */
-    protected $fieldAttributes = '';
-    
-    /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
-     * @Assert\Type(type="bool")
-     * @var boolean $nullAllowed
-     */
-    protected $nullAllowed = false;
-    
-    /**
-     * @ORM\Column(length=255)
-     * @Assert\NotNull()
-     * @Assert\Length(min="0", max="255")
-     * @var string $comments
-     */
-    protected $comments = '';
+    protected $fieldDefault = '';
     
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
      * @Assert\Length(min="0", max="255")
-     * @var string $extra
+     * @var string $fieldExtra
      */
-    protected $extra = '';
+    protected $fieldExtra = '';
     
     
     /**
@@ -242,50 +234,26 @@ abstract class AbstractFieldEntity extends EntityAccess
     }
     
     /**
-     * Returns the field value.
+     * Returns the field key.
      *
      * @return string
      */
-    public function getFieldValue()
+    public function getFieldKey()
     {
-        return $this->fieldValue;
+        return $this->fieldKey;
     }
     
     /**
-     * Sets the field value.
+     * Sets the field key.
      *
-     * @param string $fieldValue
+     * @param string $fieldKey
      *
      * @return void
      */
-    public function setFieldValue($fieldValue)
+    public function setFieldKey($fieldKey)
     {
-        if ($this->fieldValue !== $fieldValue) {
-            $this->fieldValue = isset($fieldValue) ? $fieldValue : '';
-        }
-    }
-    
-    /**
-     * Returns the field length.
-     *
-     * @return string
-     */
-    public function getFieldLength()
-    {
-        return $this->fieldLength;
-    }
-    
-    /**
-     * Sets the field length.
-     *
-     * @param string $fieldLength
-     *
-     * @return void
-     */
-    public function setFieldLength($fieldLength)
-    {
-        if ($this->fieldLength !== $fieldLength) {
-            $this->fieldLength = isset($fieldLength) ? $fieldLength : '';
+        if ($this->fieldKey !== $fieldKey) {
+            $this->fieldKey = isset($fieldKey) ? $fieldKey : '';
         }
     }
     
@@ -314,98 +282,98 @@ abstract class AbstractFieldEntity extends EntityAccess
     }
     
     /**
-     * Returns the field attributes.
+     * Returns the field length.
      *
      * @return string
      */
-    public function getFieldAttributes()
+    public function getFieldLength()
     {
-        return $this->fieldAttributes;
+        return $this->fieldLength;
     }
     
     /**
-     * Sets the field attributes.
+     * Sets the field length.
      *
-     * @param string $fieldAttributes
+     * @param string $fieldLength
      *
      * @return void
      */
-    public function setFieldAttributes($fieldAttributes)
+    public function setFieldLength($fieldLength)
     {
-        if ($this->fieldAttributes !== $fieldAttributes) {
-            $this->fieldAttributes = isset($fieldAttributes) ? $fieldAttributes : '';
+        if ($this->fieldLength !== $fieldLength) {
+            $this->fieldLength = isset($fieldLength) ? $fieldLength : '';
         }
     }
     
     /**
-     * Returns the null allowed.
+     * Returns the field null.
      *
-     * @return boolean
+     * @return string
      */
-    public function getNullAllowed()
+    public function getFieldNull()
     {
-        return $this->nullAllowed;
+        return $this->fieldNull;
     }
     
     /**
-     * Sets the null allowed.
+     * Sets the field null.
      *
-     * @param boolean $nullAllowed
+     * @param string $fieldNull
      *
      * @return void
      */
-    public function setNullAllowed($nullAllowed)
+    public function setFieldNull($fieldNull)
     {
-        if (boolval($this->nullAllowed) !== boolval($nullAllowed)) {
-            $this->nullAllowed = boolval($nullAllowed);
+        if ($this->fieldNull !== $fieldNull) {
+            $this->fieldNull = isset($fieldNull) ? $fieldNull : '';
         }
     }
     
     /**
-     * Returns the comments.
+     * Returns the field default.
      *
      * @return string
      */
-    public function getComments()
+    public function getFieldDefault()
     {
-        return $this->comments;
+        return $this->fieldDefault;
     }
     
     /**
-     * Sets the comments.
+     * Sets the field default.
      *
-     * @param string $comments
+     * @param string $fieldDefault
      *
      * @return void
      */
-    public function setComments($comments)
+    public function setFieldDefault($fieldDefault)
     {
-        if ($this->comments !== $comments) {
-            $this->comments = isset($comments) ? $comments : '';
+        if ($this->fieldDefault !== $fieldDefault) {
+            $this->fieldDefault = isset($fieldDefault) ? $fieldDefault : '';
         }
     }
     
     /**
-     * Returns the extra.
+     * Returns the field extra.
      *
      * @return string
      */
-    public function getExtra()
+    public function getFieldExtra()
     {
-        return $this->extra;
+        return $this->fieldExtra;
     }
     
     /**
-     * Sets the extra.
+     * Sets the field extra.
      *
-     * @param string $extra
+     * @param string $fieldExtra
      *
      * @return void
      */
-    public function setExtra($extra)
+    public function setFieldExtra($fieldExtra)
     {
-        if ($this->extra !== $extra) {
-            $this->extra = isset($extra) ? $extra : '';
+        if ($this->fieldExtra !== $fieldExtra) {
+            $this->fieldExtra = isset($fieldExtra) ? $fieldExtra : '';
         }
     }
     
