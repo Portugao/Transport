@@ -1,0 +1,39 @@
+{# purpose of this template: module configuration page #}
+{% extends 'MUTransportModule::adminBase.html.twig' %}
+{% block title __('Select 2 tables') %}
+{% block admin_page_icon 'square' %}
+{% block content %}
+
+    <div class="mutransportmodule-database mutransportmodule-edit">
+        {% form_theme form with [
+            '@MUTransportModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form, {attr: {id: 'databaseEditForm', class: 'mutransport-edit-form'}}) }}
+        {{ form_errors(form) }}
+        <div class="row">
+        <div class="col-md-6">
+        <fieldset>
+            <legend>{{ __('Source table') }}</legend>
+            {{ form_row(form.sourceTable) }}
+
+        </fieldset>
+        </div>
+        <div class="col-md-6">
+        <fieldset>
+            <legend>{{ __('Target table') }}</legend>
+            {{ form_row(form.targetTable) }}
+
+        </fieldset>        
+        </div>
+        
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.select) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+{% endblock %}
