@@ -95,7 +95,6 @@ abstract class AbstractFieldQuickNavType extends AbstractType
         $this->addSearchField($builder, $options);
         $this->addSortingFields($builder, $options);
         $this->addAmountField($builder, $options);
-        $this->addBooleanFields($builder, $options);
         $builder->add('updateview', SubmitType::class, [
             'label' => $this->__('OK'),
             'attr' => [
@@ -205,13 +204,12 @@ abstract class AbstractFieldQuickNavType extends AbstractType
                 ],
                 'choices' =>             [
                     $this->__('Field name') => 'fieldName',
-                    $this->__('Field value') => 'fieldValue',
-                    $this->__('Field length') => 'fieldLength',
+                    $this->__('Field key') => 'fieldKey',
                     $this->__('Field type') => 'fieldType',
-                    $this->__('Field attributes') => 'fieldAttributes',
-                    $this->__('Null allowed') => 'nullAllowed',
-                    $this->__('Comments') => 'comments',
-                    $this->__('Extra') => 'extra',
+                    $this->__('Field length') => 'fieldLength',
+                    $this->__('Field null') => 'fieldNull',
+                    $this->__('Field default') => 'fieldDefault',
+                    $this->__('Field extra') => 'fieldExtra',
                     $this->__('Creation date') => 'createdDate',
                     $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate',
@@ -264,29 +262,6 @@ abstract class AbstractFieldQuickNavType extends AbstractType
             'choices_as_values' => true,
             'required' => false,
             'expanded' => false
-        ]);
-    }
-
-    /**
-     * Adds boolean fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
-     */
-    public function addBooleanFields(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('nullAllowed', ChoiceType::class, [
-            'label' => $this->__('Null allowed'),
-            'attr' => [
-                'class' => 'input-sm'
-            ],
-            'required' => false,
-            'placeholder' => $this->__('All'),
-            'choices' => [
-                $this->__('No') => 'no',
-                $this->__('Yes') => 'yes'
-            ],
-            'choices_as_values' => true
         ]);
     }
 
