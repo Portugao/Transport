@@ -29,6 +29,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields="dbName", ignoreNull="false")
  */
 class DatabaseEntity extends BaseEntity
-{
+{	
     // feel free to add your own methods here
 }
