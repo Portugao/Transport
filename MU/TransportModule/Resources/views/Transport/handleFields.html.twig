@@ -5,12 +5,8 @@
 {% block content %}
 
     <div class="mutransportmodule-database mutransportmodule-edit">
-    <div class="col-md-1">
-    
-    </div>
-    <div class="col-md-4">
-    <ul class="ui-sortable">
-    
+    <div class="col-md-5">
+    <ul id="sourcelist">  
     {% for source in sources %}
     {% set color = 'btn-default' %}
     {% if source.fieldType == 'int' %}
@@ -25,17 +21,15 @@
     {% if source.fieldType == 'tinyint' %}
         {% set color = 'btn-info' %}
     {% endif %}
-        <li class="btn {{ color }} draggable">{{ source.fieldName }}
+        <li class="btn btn-sm {{ color }}">{{ source.fieldName }}
         <span class="badge">{{ source.fieldType }}</span>
         <span class="badge">{{ source.fieldLength }}</span></li>
     {% endfor %}
     </ul>
+
     </div>
-    <div class="col-md-2">
-    
-    </div>
-    <div class="col-md-4">
-    <ul class="ui-sortable">
+    <div class="col-md-7">
+    <ul id="targetlist">
     {% for target in targets %}
     {% set color = 'btn-default' %}
     {% if target.fieldType == 'int' %}
@@ -50,26 +44,26 @@
     {% if target.fieldType == 'tinyint' %}
         {% set color = 'btn-info' %}
     {% endif %}
-        <li class="btn {{ color }} draggable">{{ target.fieldName }}
+    <div class="col-md-4 {{ color }}">
+    <div class="btn field">
+        <span class="target">{{ target.fieldName }}
         <span class="badge">{{ target.fieldType }}</span>
-        <span class="badge">{{ target.fieldLength }}</span></li>
+        <span class="badge">{{ target.fieldLength }}</span></span>
+    </div>  
+    <ul class="listforfields">  
+    </ul>
+    </div>
     {% endfor %}
     </ul>
     </div>
-    <div class="col-md-1">
+    <br />
     
-    </div>
         {% form_theme form with [
             '@MUTransportModule/Form/bootstrap_3.html.twig',
             'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
         ] %}
         {{ form_start(form, {attr: {id: 'databaseEditForm', class: 'mutransport-edit-form'}}) }}
-        {{ form_errors(form) }}
-        <div class="row">
-
-        
-        </div>
-        
+        {{ form_errors(form) }}        
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                 {{ form_widget(form.select) }}
@@ -81,15 +75,60 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    $( ".ui-sortable" ).sortable({
-      revert: true
-    });
-    $( "#draggable" ).draggable({
-      connectToSortable: "#sortable",
-      helper: "clone",
-      revert: "invalid"
-    });
-    $( "ul, li" ).disableSelection();
-  } );
+  // sourcelist item draggable machen
+  $('#sourcelist > li').draggable({
+    revert: 'invalid'
+  });
+  $('#sourcelist').droppable({
+    accept: ".dropped",
+      drop: function(evt, ui) {
+          ui.helper.attr("style", "position: relative").appendTo($(this));
+          // verschobenes Element draggable machen
+      }
+  })
+  
+  .sortable();
+  
+  // placeholder droppable machen
+  $('.listforfields').droppable({
+
+      accept: ".btn",
+      drop: function(evt, ui) {
+          ui.helper.addClass('dropped').attr("style","").appendTo($(this))
+          // verschobenes Element draggable machen
+          .draggable({
+              revert: 'invalid'
+          });
+      }
+  
+  }).sortable({
+      connectWidth: "#sourcelist"
+  });
+  
+  $('#targetlist').sortable();
+  
+  function session() {
+        var fieldstring = '';
+        var fields = [];
+        var targetfield = '';
+        var sourcefields = [];
+        var fieldinfo = [];
+        $('.field').each(function(i){
+        var field = $(this);
+        if($(this).has('li')) {
+            targetfield = $(this).next().val();
+            $(field > "ul > li").each(function(i) {
+            sourcefields[i] = $(this).text();
+        });
+        fieldinfo[0] = targetfield;
+        fieldinfo[1] = sourcefields;
+            fields[i] = fieldinfo;
+        }
+  });    
+  fieldstring = serialize(fields);
+  $.session.set("fields", fieldstring);
+  }
+
+  });
   </script>
 {% endblock %}
