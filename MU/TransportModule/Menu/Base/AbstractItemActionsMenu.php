@@ -73,6 +73,21 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $routePrefix = 'mutransportmodule_table_';
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
+            if ($routeArea == 'admin') {
+                $menu->addChild($this->__('Preview'), [
+                    'route' => $routePrefix . 'display',
+                    'routeParameters' => $entity->createUrlArgs()
+                ])->setAttribute('icon', 'fa fa-search-plus');
+                $menu[$this->__('Preview')]->setLinkAttribute('target', '_blank');
+                $menu[$this->__('Preview')]->setLinkAttribute('title', $this->__('Open preview page'));
+            }
+            if ($context != 'display') {
+                $menu->addChild($this->__('Details'), [
+                    'route' => $routePrefix . $routeArea . 'display',
+                    'routeParameters' => $entity->createUrlArgs()
+                ])->setAttribute('icon', 'fa fa-eye');
+                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+            }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
                 $menu->addChild($this->__('Edit'), [
                     'route' => $routePrefix . $routeArea . 'edit',
@@ -91,6 +106,13 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-trash-o');
                 $menu[$this->__('Delete')]->setLinkAttribute('title', $this->__('Delete this table'));
+            }
+            if ($context == 'display') {
+                $title = $this->__('Back to overview');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'view'
+                ])->setAttribute('icon', 'fa fa-reply');
+                $menu[$title]->setLinkAttribute('title', $title);
             }
         }
         if ($entity instanceof DatabaseEntity) {
