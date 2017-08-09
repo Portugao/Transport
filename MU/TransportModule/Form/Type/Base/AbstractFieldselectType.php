@@ -63,7 +63,7 @@ abstract class AbstractFieldselectType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->addListViewsFields($builder, $options);
+
 
         $builder
             ->add('select', SubmitType::class, [
@@ -92,25 +92,7 @@ abstract class AbstractFieldselectType extends AbstractType
      */
     public function addListViewsFields(FormBuilderInterface $builder, array $options)
     {
-    	$source = $this->controllerHelper->getParameter('source');
-    	$fieldRepository = $this->entityFactory->getRepository('field');
-    	$where = 'tbl.table = ' . $source;
-    	$listEntries = $fieldRepository->selectWhere();
-    	$choices = [];
-    	$choiceAttributes = [];
-    	foreach ($listEntries as $entry) {
-    		$choices[$entry['name']] = $entry['id'];
-    		$choiceAttributes[$entry['text']] = ['title' => $entry['title']];
-    	}
-    	// we get the target fields
-    	$target = $this->controllerHelper->getParameter('target');
-    	$listEntries2 = $fieldRepository->selectWhere();
-    	$choices2 = [];
-    	$choiceAttributes2 = [];
-    	foreach ($listEntries2 as $entry) {
-    		$choices2[$entry['name']] = $entry['id'];
-    		$choiceAttributes2[$entry['text']] = ['title' => $entry['title']];
-    	}
+
 
     }
 
