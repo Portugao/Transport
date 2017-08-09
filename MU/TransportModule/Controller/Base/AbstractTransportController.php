@@ -20,6 +20,7 @@ use Zikula\Core\RouteUrl;
 use MU\TransportModule\Entity\TableEntity;
 use MU\TransportModule\Form\Type\DatabaseselectType;
 use MU\TransportModule\Form\Type\TableselectType;
+use MU\TransportModule\Form\Type\FieldselectType;
 
 /**
  * Table controller base class.
@@ -63,7 +64,7 @@ abstract class AbstractTransportController extends AbstractController
 				'form' => $form->createView()
 		];
 	
-		// render the config form
+		// render the select 2 databases form
 		return $this->render('@MUTransportModule/Transport/select2Databases.html.twig', $templateParameters);
     }
     
@@ -96,15 +97,72 @@ abstract class AbstractTransportController extends AbstractController
     			$this->addFlash('status', $this->__('Operation cancelled.'));
     		}
     
-    		// redirect to config page again (to show with GET request)
-    		return $this->redirectToRoute('mutransportmodule_transport_select');
+    		// redirect to handle fields page again (to show with GET request)
+    		return $this->redirectToRoute('mutransportmodule_transport_handlefields', array('source' => $formData['sourceTable'], 'target' => $formData['targetTable']));
     	}
     
     	$templateParameters = [
     			'form' => $form->createView()
     	];
     
-    	// render the config form
+    	// render the select 2 tables form
     	return $this->render('@MUTransportModule/Transport/select2Tables.html.twig', $templateParameters);
+    }
+    
+    /**
+     * This method takes care of the application configuration.
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function select3Action(Request $request)
+    {
+    	if (!$this->hasPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+    		throw new AccessDeniedException();
+    	}
+    
+    	$form = $this->createForm(FieldselectType::class);
+    
+    	if ($form->handleRequest($request)->isValid()) {
+    		if ($form->get('select')->isClicked()) {
+    			$formData = $form->getData();
+    			$this->setVars($formData);
+    
+    			$this->addFlash('status', $this->__('Done! Module configuration updated.'));
+    			$userName = $this->get('zikula_users_module.current_user')->get('uname');
+    			$this->get('logger')->notice('{app}: User {user} updated the configuration.', ['app' => 'MUTransportModule', 'user' => $userName]);
+    		} elseif ($form->get('cancel')->isClicked()) {
+    			$this->addFlash('status', $this->__('Operation cancelled.'));
+    		}
+    
+    		// redirect to config page again (to show with GET request)
+    		return $this->redirectToRoute('mutransportmodule_transport_select2tables', array('source' => $formData['sourceDatabase'], 'target' => $formData['targetDatabase']));
+    	}
+    
+    	$templateParameters = [
+    			'form' => $form->createView()
+    	];
+    	
+    	$source = $request->query->getDigits('source');
+    	$target = $request->query->getDigits('target');
+    	
+    	// we get factory helper
+    	$entityFactory = $this->get('mu_transport_module.entity_factory');
+    	// we get field repository
+    	$fieldRepository = $entityFactory->getRepository('field');
+    	$where = 'tbl.table = ' . $source;
+    	$sourceFields = $fieldRepository->selectWhere($where);
+    	 
+    	$where2 = 'tbl.table = ' . $target;
+    	$targetFields = $fieldRepository->selectWhere($where2);
+    	 
+    	$templateParameters['sources'] = $sourceFields;
+    	$templateParameters['targets'] = $targetFields;
+    
+    	// render the select 2 databases form
+    	return $this->render('@MUTransportModule/Transport/handleFields.html.twig', $templateParameters);
     }
 }

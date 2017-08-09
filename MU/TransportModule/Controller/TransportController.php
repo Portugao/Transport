@@ -69,6 +69,25 @@ class TransportController extends AbstractTransportController
 	{
 		return parent::select2Action($request);
 	}
+	
+	/**
+	 * This method takes care of the application configuration.
+	 *
+	 * @Route("/handlefields",
+	 *        methods = {"GET", "POST"}
+	 * )
+	 * @Theme("admin")
+	 *
+	 * @param Request $request Current request instance
+	 *
+	 * @return Response Output
+	 *
+	 * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+	 */
+	public function handleFieldsAction(Request $request)
+	{
+		return parent::select3Action($request);
+	}
 
     // feel free to add your own controller methods here
 }
