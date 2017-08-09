@@ -28,7 +28,7 @@ application "Transport" {
         versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false
-        markFiles "Controller/TableController.php,\r\nHelper/ModelHelper.php,\r\nMenu/ItemActionsMenu.php,\r\nResources/views/Table/getTables.html.twig"
+        markFiles "Controller/DatabaseController.php,\r\nController/FieldController.php,\r\nController/TableController.php,\r\nHelper/ControllerHelper.php,\r\nHelper/ModelHelper.php,\r\nMenu/ItemActionsMenu.php,\r\nResources/views/Field/getFields.html.twig,\r\nResources/views/Table/getTables.html.twig"
     }
     entities {
         entity "table" {
@@ -50,6 +50,8 @@ application "Transport" {
                 customAction "SelectSourceAndTargetTable" {
                     documentation "Pull the tables in the container for source and traget."
                 }
+            ,
+                displayAction "Display"
             }
         },
         entity "database" leading {
@@ -81,19 +83,16 @@ application "Transport" {
             displayPattern "#fieldName#"
             fields {
                 string "fieldName",
-                string "fieldValue",
-                string "fieldLength",
+                string "fieldKey" {
+                    mandatory false
+                },
                 string "fieldType",
-                string "fieldAttributes" {
+                string "fieldLength",
+                string "fieldNull",
+                string "fieldDefault" {
                     mandatory false
                 },
-                boolean "nullAllowed" {
-                    mandatory false
-                },
-                string "comments" {
-                    mandatory false
-                },
-                string "extra"
+                string "fieldExtra"
             }
             actions {
                 viewAction "View",
