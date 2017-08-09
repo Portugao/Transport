@@ -100,3 +100,28 @@ services:
             - "@=service('zikula_extensions_module.api.variable').getAll('MUTransportModule')"
         tags:
             - { name: form.type }
+            
+    mu_transport_module.form.type.databaseselect:
+        class: MU\TransportModule\Form\Type\DatabaseselectType
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.entity_factory"
+        tags:
+            - { name: form.type }
+            
+    mu_transport_module.form.type.tableselect:
+        class: MU\TransportModule\Form\Type\TableselectType
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.controller_helper"
+        tags:
+            - { name: form.type }
+            
+    mu_transport_module.form.type.fieldseselect:
+        class: MU\TransportModule\Form\Type\FieldselectType
+        arguments:
+            - "@translator.default"
+            - "@mu_transport_module.entity_factory"
+        tags:
+            - { name: form.type }
