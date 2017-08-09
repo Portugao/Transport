@@ -132,7 +132,34 @@ div.mutransportmodule-view .avatar img {
     max-height: 24px;
 }
 
-.ui-sortable .btn {
-	width: 100%;
+
+
+#sourcelist .btn,
+.target {
+	width: 180px;
 	margin: 0 0 15px 0;
+}
+#container1 {
+	width: 100%;
+	min-height: 100px;
+	background: #eee;
+	margin: 15px 0;
+}
+
+.dropped {
+	width: 100%;
+	float: left;
+	position: relative;
+}
+
+.listforfields {
+	min-height: 100px;
+	border: 2px solid #eee;
+	position: relative;
+}
+
+.placeholder ul {
+	margin: 15px;
+	overflow: auto;
+	background: #eee;
 }
