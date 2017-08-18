@@ -139,6 +139,10 @@ div.mutransportmodule-view .avatar img {
 	width: 180px;
 	margin: 0 0 15px 0;
 }
+
+.target p {
+	display: inline;
+}
 #container1 {
 	width: 100%;
 	min-height: 100px;
@@ -162,4 +166,20 @@ div.mutransportmodule-view .avatar img {
 	margin: 15px;
 	overflow: auto;
 	background: #eee;
+}
+
+ul {
+    -webkit-margin-before: 0em;
+    -webkit-padding-start: 0;
+}
+
+.listtitle {
+	display: inline;
+	}
+	
+.closebutton {
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 50;
 }
