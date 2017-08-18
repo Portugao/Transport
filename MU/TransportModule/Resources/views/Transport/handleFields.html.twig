@@ -3,9 +3,9 @@
 {% block title __('Create the assignment') %}
 {% block admin_page_icon 'square' %}
 {% block content %}
-
     <div class="mutransportmodule-database mutransportmodule-edit">
-    <div class="col-md-5">
+    <div class="col-md-4">
+    <h4>{{ source.database.name }} -> {{ source.name }}</h4>
     <ul id="sourcelist">  
     {% for source in sources %}
     {% set color = 'btn-default' %}
@@ -21,14 +21,17 @@
     {% if source.fieldType == 'tinyint' %}
         {% set color = 'btn-info' %}
     {% endif %}
-        <li class="btn btn-sm {{ color }}">{{ source.fieldName }}
+        <li class="btn btn-sm {{ color }}" value="{{source.fieldName}}">
+        <i class="fa fa-times closebutton" aria-hidden="true"></i>
+        <p class="listtitle">{{ source.fieldName }}</p>
         <span class="badge">{{ source.fieldType }}</span>
         <span class="badge">{{ source.fieldLength }}</span></li>
     {% endfor %}
     </ul>
 
     </div>
-    <div class="col-md-7">
+    <div class="col-md-8">
+    <h4>{{ target.database.name }} -> {{ target.name }}</h4>
     <ul id="targetlist">
     {% for target in targets %}
     {% set color = 'btn-default' %}
@@ -38,26 +41,27 @@
     {% if target.fieldType == 'datetime' %}
         {% set color = 'btn-success' %}
     {% endif %}
-    {% if target.fieldType == 'text' %}
+    {% if target.fieldType == 'text' or target.fieldType == 'longtext' %}
         {% set color = 'btn-danger' %}
     {% endif %}
     {% if target.fieldType == 'tinyint' %}
         {% set color = 'btn-info' %}
     {% endif %}
-    <div class="col-md-4 {{ color }}">
-    <div class="btn field">
-        <span class="target">{{ target.fieldName }}
+    <div class="col-md-3 {{ color }} field">
+    <div class="btn">
+        <span class="target"><p>{{ target.fieldName }}</p>
         <span class="badge">{{ target.fieldType }}</span>
         <span class="badge">{{ target.fieldLength }}</span></span>
-    </div>  
+    </div> 
     <ul class="listforfields">  
     </ul>
+ 
     </div>
     {% endfor %}
     </ul>
     </div>
     <br />
-    
+
         {% form_theme form with [
             '@MUTransportModule/Form/bootstrap_3.html.twig',
             'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
@@ -70,65 +74,80 @@
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
+        {{ form_widget(form.fieldCombination) }}
         {{ form_end(form) }}
-          <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   <script>
-  $( function() {
-  // sourcelist item draggable machen
-  $('#sourcelist > li').draggable({
+  var MU = jQuery.noConflict();  
+  MU(document).ready(function() {
+  
+  MU('.btn > .closebutton').click(function(e) {
+      e.preventDefault();
+      MU(this).prev().fadeOut();  
+      }); 
+  
+  // make sourcelist item draggable
+  MU('#sourcelist > li').draggable({
     revert: 'invalid'
   });
-  $('#sourcelist').droppable({
-    accept: ".dropped",
-      drop: function(evt, ui) {
-          ui.helper.attr("style", "position: relative").appendTo($(this));
-          // verschobenes Element draggable machen
+  // make source list droppable
+  MU('#sourcelist').droppable({
+      accept: ".dropped",
+      drop: function(event, ui) {
+          ui.helper.attr("style", "position: relative").removeClass('dropped').removeClass('btn-xs').addClass('btn-sm').appendTo(MU(this));
+          // make moved elements draggable
       }
   })
+  // make source list sortable
+  .sortable().disableSelection();
   
-  .sortable();
-  
-  // placeholder droppable machen
-  $('.listforfields').droppable({
-
+  // make list for fields droppable
+  MU('.listforfields').droppable({
       accept: ".btn",
-      drop: function(evt, ui) {
-          ui.helper.addClass('dropped').attr("style","").appendTo($(this))
+      drop: function(event, ui) {
+          ui.helper.addClass('dropped').addClass('btn-xs').removeClass('btn-sm').attr("style","").appendTo(MU(this))
           // verschobenes Element draggable machen
           .draggable({
               revert: 'invalid'
           });
+          var fieldvalue = '';
+          var fieldSourceValue = '';
+          MU(".listforfields").each(function() {
+              if(MU(this).has('li').length > 0) {
+                  if(fieldvalue == '') {
+                      fieldvalue = MU(this).parent('.field').find('.target p').text();
+                      fieldvalue = fieldvalue + ';';
+                      var listitems = MU(this).find('li');
+                      listitems.each(function() {
+                          fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text() + ',';
+                      })
+                      
+                      fieldvalue = fieldvalue + fieldSourceValue;
+                      fieldSourceValue = '';
+                  } else {
+                      fieldvalue = fieldvalue + '|' + MU(this).parent('.field').find('.target p').text();
+                      fieldvalue = fieldvalue + ';';
+                      var listitems = MU(this).find('li');
+                          listitems.each(function() {
+                              fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text() + ',';
+                      })
+                      fieldvalue = fieldvalue + fieldSourceValue;
+                      fieldSourceValue = '';
+                  }
+                  MU('input[id=mutransportmodule_transport_fieldCombination]').val(fieldvalue);
+              }
+          })
       }
-  
+ 
+  // make list for fields sortable
   }).sortable({
       connectWidth: "#sourcelist"
   });
   
-  $('#targetlist').sortable();
-  
-  function session() {
-        var fieldstring = '';
-        var fields = [];
-        var targetfield = '';
-        var sourcefields = [];
-        var fieldinfo = [];
-        $('.field').each(function(i){
-        var field = $(this);
-        if($(this).has('li')) {
-            targetfield = $(this).next().val();
-            $(field > "ul > li").each(function(i) {
-            sourcefields[i] = $(this).text();
-        });
-        fieldinfo[0] = targetfield;
-        fieldinfo[1] = sourcefields;
-            fields[i] = fieldinfo;
-        }
-  });    
-  fieldstring = serialize(fields);
-  $.session.set("fields", fieldstring);
-  }
-
+  // make target list sortable
+  MU('#targetlist').sortable();
+  // Cookies.set("fields", 'Hallo');
+   
   });
   </script>
 {% endblock %}

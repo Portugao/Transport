@@ -129,8 +129,31 @@ abstract class AbstractTransportController extends AbstractController
     	if ($form->handleRequest($request)->isValid()) {
     		if ($form->get('select')->isClicked()) {
     			$formData = $form->getData();
-    			$this->setVars($formData);
-    
+    			$fieldCombination = $formData['fieldCombination'];
+    			$fieldCombination = explode('|',$fieldCombination);
+                $countCombination = count($fieldCombination);
+                $count = 0;
+    			// we initialise the into value
+    			$intoValue = '';
+    			// we initialize the value value
+    			$valueValue = '';
+    			foreach ($fieldCombination as $combination) {
+    				$combinationDatas = explode(';', $combination);
+    				$target = $combinationDatas[0];
+    				if ($countCombination > $count) {			
+    				    $intoValue .= $target . ', ' ;
+    				} else {
+    					$intoValue .= $target ;
+    				}
+    				$sources = explode(',', $combinationDatas[1]);
+    				foreach ($sources as $source) {
+    					$valueValue = $valueValue . $source;
+    				}
+    				
+
+    			}
+                //die($valueValue);
+               
     			$this->addFlash('status', $this->__('Done! Module configuration updated.'));
     			$userName = $this->get('zikula_users_module.current_user')->get('uname');
     			$this->get('logger')->notice('{app}: User {user} updated the configuration.', ['app' => 'MUTransportModule', 'user' => $userName]);
@@ -151,6 +174,12 @@ abstract class AbstractTransportController extends AbstractController
     	
     	// we get factory helper
     	$entityFactory = $this->get('mu_transport_module.entity_factory');
+    	// we get a table controller
+    	$tableRepository = $entityFactory->getRepository('table');
+    	// we get the source table
+    	$sourceTable = $tableRepository->selectById($source);
+    	// we get the target table
+    	$targetTable = $tableRepository->selectById($target);
     	// we get field repository
     	$fieldRepository = $entityFactory->getRepository('field');
     	$where = 'tbl.table = ' . $source;
@@ -158,6 +187,9 @@ abstract class AbstractTransportController extends AbstractController
     	 
     	$where2 = 'tbl.table = ' . $target;
     	$targetFields = $fieldRepository->selectWhere($where2);
+    	
+    	$templateParameters['source'] = $sourceTable;
+    	$templateParameters['target'] = $targetTable;
     	 
     	$templateParameters['sources'] = $sourceFields;
     	$templateParameters['targets'] = $targetFields;
