@@ -15,11 +15,13 @@ namespace MU\TransportModule\Form\Type\Base;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use MU\TransportModule\Entity\Factory\EntityFactory;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 
 /**
@@ -33,19 +35,27 @@ abstract class AbstractFieldselectType extends AbstractType
      * @var EntityFactory
      */
     protected $entityFactory;
+    
+    /**
+     * @var Request;
+     */
+    protected $request;
 
     /**
      * DatabaseType constructor.
      *
      * @param TranslatorInterface $translator    Translator service instance
      * @param EntityFactory $entityFactory EntityFactory service instance
-     */
+     * @param RequestStack $request RequestStack instance
+     */ 
     public function __construct(
         TranslatorInterface $translator,
-        EntityFactory $entityFactory
+        EntityFactory $entityFactory,
+    	RequestStack $requestStack
     ) {
         $this->setTranslator($translator);
         $this->entityFactory = $entityFactory;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     /**
@@ -63,8 +73,7 @@ abstract class AbstractFieldselectType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-
+    	$this->addListViewsFields($builder, $options);
         $builder
             ->add('select', SubmitType::class, [
                 'label' => $this->__('Select and go further'),
@@ -91,8 +100,18 @@ abstract class AbstractFieldselectType extends AbstractType
      * @param array                $options The options
      */
     public function addListViewsFields(FormBuilderInterface $builder, array $options)
-    {
-
+    {    	
+    		$builder->add('fieldCombination', HiddenType::class, [
+    				'data' => '0'
+    		]);
+    		$source = $this->request->query->getDigits('source');
+    		$builder->add('source', HiddenType::class, [   		
+    				'data' => $source
+    		]);
+    		$target = $this->request->query->getDigits('target');
+    		$builder->add('target', HiddenType::class, [ 		
+    				'data' => $target
+    		]);
 
     }
 
@@ -103,4 +122,5 @@ abstract class AbstractFieldselectType extends AbstractType
     {
         return 'mutransportmodule_transport';
     }
+    
 }
