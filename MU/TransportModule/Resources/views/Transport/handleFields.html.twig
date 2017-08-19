@@ -118,9 +118,13 @@
                       fieldvalue = MU(this).parent('.field').find('.target p').text();
                       fieldvalue = fieldvalue + ';';
                       var listitems = MU(this).find('li');
-                      listitems.each(function() {
-                          fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text() + ',';
-                      })
+                      var count = listitems.length;
+                      listitems.each(function(i) {
+                              fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text();
+                              if(i < count - 1) {
+                                  fieldSourceValue = fieldSourceValue + ',';
+                              }
+                          })
                       
                       fieldvalue = fieldvalue + fieldSourceValue;
                       fieldSourceValue = '';
@@ -128,8 +132,12 @@
                       fieldvalue = fieldvalue + '|' + MU(this).parent('.field').find('.target p').text();
                       fieldvalue = fieldvalue + ';';
                       var listitems = MU(this).find('li');
-                          listitems.each(function() {
-                              fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text() + ',';
+                      var count = listitems.length;
+                          listitems.each(function(i) {
+                              fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text();
+                              if(i < count - 1) {
+                                  fieldSourceValue = fieldSourceValue + ',';
+                              }
                       })
                       fieldvalue = fieldvalue + fieldSourceValue;
                       fieldSourceValue = '';
@@ -146,7 +154,6 @@
   
   // make target list sortable
   MU('#targetlist').sortable();
-  // Cookies.set("fields", 'Hallo');
    
   });
   </script>
