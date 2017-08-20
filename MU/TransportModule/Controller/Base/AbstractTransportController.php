@@ -150,19 +150,22 @@ abstract class AbstractTransportController extends AbstractController
     			// we get the source entries
     			$conn = new \PDO('mysql:dbname=' . $sourceDatabase['dbName'] . ';host=' . $sourceDatabase['host'], $sourceDatabase['dbUser'], $sourceDatabase['dbPassword']);
     			$result = $conn->query('SELECT * FROM ' . $sourceTable['name']);
-    			while ($row = $result->fetchALL()) {
-    				$sourceEntries[] = $row[0];
+    			while ($row = $result->fetch()) {
+    				$sourceEntries[] = $row;
     			}
-    			//die($sourceEntries[0]['field7']); TODO
     			// we get the field combination string
     			$fieldCombination = $formData['fieldCombination'];
     			$fieldCombination = explode('|',$fieldCombination);
                 $countCombination = count($fieldCombination);
                 $count = 0;
+                // we initialize the string var
+                $stringValue = '';
     			// we initialise the into value
     			$intoValue = '';
     			// we initialize the value value
     			$valueValue = '';
+    			// we initialize the placeholder var
+    			$placeholder = '';
     			// we get the into string
     			foreach ($fieldCombination as $combination) {
     				$combinationDatas = explode(';', $combination);
@@ -172,52 +175,56 @@ abstract class AbstractTransportController extends AbstractController
     				} else {
     					$intoValue .= $target;
     				}
+    
+    				$placeholder .= '?';
+    				if($countCombination - 1 > $count) {
+    					$placeholder .= ',';
+    				}		
     				$count++;
     			}
-    			
-    			$count2 = 0;
-    			$countFieldCombination = count($fieldCombination);    			
-    			foreach ($fieldCombination as $combination) {
-    				$combinationDatas = explode(';', $combination);
-    				$sources = $combinationDatas[1];
-    				$sources = explode(',', $sources);
-    				$countSources = count($sources);
-    				if (is_array($sources)) {
-    					$count1 = 0;
-    				    foreach ($sources as $source) {
-    					    $valueValue .= '$entry["' . $source . '"]';
-    					    if ($countSources - 1 > $count1) {
-    					        $valueValue .= ' . ';
-    					    }
-    					    $count1++;
-    				    }
-    				    } else {
-    					    $valueValue = '$entry["' . $source . '"]';
-    				    }
-    				if ($countFieldCombination - 1 > $count2) {
-    				    $valueValue = $valueValue . ', ';
-    				}
-    				$placeholder = '?';
-    				if($countFieldCombination - 1 > $count2) {
-    					$placeholder .= ',';
-    				}			
-    				$count2++;
-    			}
+
     			
     			$conn2 = new \PDO('mysql:dbname=' . $targetDatabase['dbName'] . ';host=' . $targetDatabase['host'], $targetDatabase['dbUser'], $targetDatabase['dbPassword']);
     			
+    			$countCopy = 0;
+    			// foreach for copy of sourceEntries to to the target table
     			foreach ($sourceEntries as $entry) { 			
     			    $statement2 = $conn2->prepare("INSERT INTO " . $targetTable['name'] . " (" . $intoValue . ") VALUES ($placeholder)");
-    			    $copyState = $statement2->execute(array($valueValue));
+    			    $count2 = 0;
+    			    // foreach for value array
+    			    foreach ($fieldCombination as $combination) {
+    			    	$combinationDatas = explode(';', $combination);
+    			    	$sources = $combinationDatas[1];
+    			    	$sources = explode(',', $sources);
+    			    	$countSources = count($sources);
+    			    	if (is_array($sources)) {
+    			    		$count1 = 0;
+    			    		foreach ($sources as $source) {
+    			    			$stringValue .= $entry[$source];
+    			    			if ($countSources - 1 > $count1) {
+    			    				$stringValue .= ' . ';
+    			    			}
+    			    			$valueValue[] = $stringValue;
+    			    			$stringValue = '';
+    			    			$count1++;
+    			    		}
+    			    	} else {
+    			    		$valueValue[] = $entry["' . $source . '"];
+    			    	}
+    			    	$count2++;
+    			    }   			    
+    			       			    
+    			    $copyState = $statement2->execute($valueValue);
+    			    $valueValue = ''; 
     			    if ($copyState == false) {
     			    	$this->addFlash('error', $this->__('error'));
     			    }
+    			    $countCopy++;
     			}
                
     			$this->addFlash('status', $this->__('Done! The data have been copied from the source table to the target table.'));
-    			$userName = $this->get('zikula_users_module.current_user')->get('uname');
-    			$this->get('logger')->notice('{app}: User {user} updated the configuration.', ['app' => 'MUTransportModule', 'user' => $userName]);
-    		} elseif ($form->get('cancel')->isClicked()) {
+    			$this->addFlash('status', $countCopy . ' ' . $this->__('data sets was copied'));
+                } elseif ($form->get('cancel')->isClicked()) {
     			$this->addFlash('status', $this->__('Operation cancelled.'));
     		}
     
