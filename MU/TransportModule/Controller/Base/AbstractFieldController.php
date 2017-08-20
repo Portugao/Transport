@@ -455,6 +455,6 @@ abstract class AbstractFieldController extends AbstractController
             $hookHelper->callProcessHooks($entity, $hookType, $url);
         }
         
-        return $this->redirectToRoute('mutransportmodule_field_' . ($isAdmin ? 'admin' : '') . 'index');
+        return $this->redirectToRoute('mutransportmodule_field_' . ($isAdmin ? 'admin' : '') . 'view');
     }
 }
