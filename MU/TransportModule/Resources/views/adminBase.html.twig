@@ -4,6 +4,9 @@
     {% if not app.request.query.getBoolean('raw', false) %}
         {{ adminHeader() }}
     {% endif %}
+    <p class="alert alert-info">{{ ('The procedure with Transport is: Create the databases you wish to use as source and as target. Enter the relevant datas for each database.') }}</p>
+    <p class="alert alert-info">{{ ('If you call the overview of databases, you will find the action link Get tables. For tables you will find in the overview the action link Get fields.') }}</p>
+    <p class="alert alert-info">{{ ('If you have all fields for your databases, you should delete the fields you do not need on the source table. Then you can start to copy your datas using the link Database select.') }}</p>
     {{ parent() }}
 {% endblock %}
 {% block appTitle %}{# empty on purpose #}{% endblock %}
