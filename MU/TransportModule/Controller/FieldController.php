@@ -190,31 +190,55 @@ class FieldController extends AbstractFieldController
     	 
     	$entityManager = $this->container->get('doctrine.entitymanager');
     	
+    	$count = 0;
+    	
     	foreach ($result as $field) {
     		$newField = new FieldEntity();
     		$newField->setFieldName($field['Field']);
+    		if ($field['Key'] != '') { 
     		$newField->setFieldKey($field['Key']);
+    		} else {
+    			$newField->setFieldKey('');
+    		}
     		$pos = strpos($field['Type'], '(');
     		if ($pos != false) {
                 $length = strstr($field['Type'], '(');
                 $length = str_replace('(', '', $length);
                 $length = str_replace(')', '', $length);
+                if ($length != '') {
                 $newField->setFieldLength($length);
+                } else {
+                	$newField->setFieldLength('');
+                }
                 $type = explode('(', $field['Type']);
                 $newField->setFieldType($type[0]);
     		} else {
     			$newField->setFieldType($field['Type']);
     		}
+    		if ($field['Default'] != '') {
     		$newField->setFieldDefault($field['Default']);
+    		} else {
+    			$newField->setFieldDefault('');
+    		}
+    		if ($field['Null'] != '') {
     		$newField->setFieldNull($field['Null']);
+    		} else {
+    			$newField->setFieldNull('');
+    		}
+    		if ($field['Extra'] != '') {
     		$newField->setFieldExtra($field['Extra']);
+    		} else {
+    			$newField->setFieldExtra('');
+    		}
     		$newField->setTable($table);
     		$newField->setWorkflowState('approved');
     		$entityManager->flush();
     		$entityManager->persist($newField);
+    		$count++;
     		$fieldList[] = $field;
     	}
     	$templateParameters['fields'] = $fieldList;
+    	$templateParameters['count'] = $count;
     
     	// return template
     	return $this->render('@MUTransportModule/Field/getFields.html.twig', $templateParameters);

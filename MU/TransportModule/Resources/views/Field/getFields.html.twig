@@ -5,7 +5,7 @@
 {% block content %}
     <div class="mutransportmodule-field mutransportmodule-getfields">
     {% if fields is defined %}
-    <p class="alert alert-success">{{ __('The following fields were found in the table and saved into the table fields in Transport. You can find them, if you call the display site of this table.') }}</p><br />
+    <p class="alert alert-success">{{ __f('The following %s fields were found in the table and should be saved into the table fields in Transport. You can find them, if you call the display site of this table.', {'%s': count}) }}</p><br />
     <ul>
         {% for field in fields %}
             <li>{{ field.Field }}</li>
