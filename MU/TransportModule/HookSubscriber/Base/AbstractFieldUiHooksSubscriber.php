@@ -68,6 +68,8 @@ abstract class AbstractFieldUiHooksSubscriber implements HookSubscriberInterface
         return [
             // Display hook for view/display templates.
             UiHooksCategory::TYPE_DISPLAY_VIEW => 'mutransportmodule.ui_hooks.fields.display_view',
+            // Display hook for create/edit forms.
+            UiHooksCategory::TYPE_FORM_EDIT => 'mutransportmodule.ui_hooks.fields.form_edit',
             // Validate input from an item to be edited.
             UiHooksCategory::TYPE_VALIDATE_EDIT => 'mutransportmodule.ui_hooks.fields.validate_edit',
             // Perform the final update actions for an edited item.
