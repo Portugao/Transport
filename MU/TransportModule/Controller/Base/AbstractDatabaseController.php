@@ -420,6 +420,7 @@ abstract class AbstractDatabaseController extends AbstractController
         // fetch and return the appropriate template
         return $this->get('mu_transport_module.view_helper')->processTemplate($objectType, 'delete', $templateParameters);
     }
+    
     /**
      * This is a custom action in the admin area.
      *
@@ -431,7 +432,7 @@ abstract class AbstractDatabaseController extends AbstractController
      */
     public function adminSelect2DatabasesAction(Request $request)
     {
-        return $this->select2DatabasesInternal($request, true);
+    	return $this->select2DatabasesInternal($request, true);
     }
     
     /**
@@ -445,7 +446,7 @@ abstract class AbstractDatabaseController extends AbstractController
      */
     public function select2DatabasesAction(Request $request)
     {
-        return $this->select2DatabasesInternal($request, false);
+    	return $this->select2DatabasesInternal($request, false);
     }
     
     /**
@@ -453,19 +454,19 @@ abstract class AbstractDatabaseController extends AbstractController
      */
     protected function select2DatabasesInternal(Request $request, $isAdmin = false)
     {
-        // parameter specifying which type of objects we are treating
-        $objectType = 'database';
-        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-            throw new AccessDeniedException();
-        }
-        
-        $templateParameters = [
-            'routeArea' => $isAdmin ? 'admin' : ''
-        ];
-        
-        // return template
-        return $this->render('@MUTransportModule/Database/select2Databases.html.twig', $templateParameters);
+    	// parameter specifying which type of objects we are treating
+    	$objectType = 'database';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
+    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    
+    	// return template
+    	return $this->render('@MUTransportModule/Database/select2Databases.html.twig', $templateParameters);
     }
 
     /**

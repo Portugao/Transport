@@ -183,7 +183,6 @@ abstract class AbstractTransportController extends AbstractController
     				if($countCombination - 1 > $count) {
     					$placeholder .= ',';
     				}		
-
     				$count++;
     			}
     			
