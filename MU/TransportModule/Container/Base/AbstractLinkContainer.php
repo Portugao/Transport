@@ -120,7 +120,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('mutransportmodule_table_' . $routeArea . 'view'),
                 'text' => $this->__('Tables', 'mutransportmodule'),
-                'title' => $this->__('Table list', 'mutransportmodule')
+                'title' => $this->__('Tables list', 'mutransportmodule')
             ];
         }
         if (in_array('database', $allowedObjectTypes)
@@ -128,7 +128,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('mutransportmodule_database_' . $routeArea . 'view'),
                 'text' => $this->__('Databases', 'mutransportmodule'),
-                'title' => $this->__('Database list', 'mutransportmodule')
+                'title' => $this->__('Databases list', 'mutransportmodule')
             ];
         }
         if (in_array('field', $allowedObjectTypes)
@@ -136,7 +136,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('mutransportmodule_field_' . $routeArea . 'view'),
                 'text' => $this->__('Fields', 'mutransportmodule'),
-                'title' => $this->__('Field list', 'mutransportmodule')
+                'title' => $this->__('Fields list', 'mutransportmodule')
             ];
         }
         if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

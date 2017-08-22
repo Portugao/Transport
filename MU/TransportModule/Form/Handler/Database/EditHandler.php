@@ -15,7 +15,7 @@ namespace MU\TransportModule\Form\Handler\Database;
 use MU\TransportModule\Form\Handler\Database\Base\AbstractEditHandler;
 
 /**
- * This handler class handles the page events of the Form called by the mUTransportModule_database_edit() function.
+ * This handler class handles the page events of editing forms.
  * It aims on the database object type.
  */
 class EditHandler extends AbstractEditHandler
