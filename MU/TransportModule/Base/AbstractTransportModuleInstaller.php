@@ -124,14 +124,8 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
      */
     protected function updateModVarsTo14()
     {
-        $dbName = $this->getDbName();
         $conn = $this->getConnection();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.module_vars
-            SET modname = 'MUTransportModule'
-            WHERE modname = 'Transport';
-        ");
+        $conn->update('module_vars', ['modname' => 'MUTransportModule'], ['modname' => 'Transport']);
     }
     
     /**
@@ -140,14 +134,7 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
     protected function updateExtensionInfoFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.modules
-            SET name = 'MUTransportModule',
-                directory = 'MU/TransportModule'
-            WHERE name = 'Transport';
-        ");
+        $conn->update('modules', ['name' => 'MUTransportModule', 'directory' => 'MU/TransportModule'], ['name' => 'Transport']);
     }
     
     /**
@@ -156,12 +143,10 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
     protected function renamePermissionsFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
         $componentLength = strlen('Transport') + 1;
     
         $conn->executeQuery("
-            UPDATE $dbName.group_perms
+            UPDATE group_perms
             SET component = CONCAT('MUTransportModule', SUBSTRING(component, $componentLength))
             WHERE component LIKE 'Transport%';
         ");
@@ -173,7 +158,6 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
     protected function renameTablesFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
     
         $oldPrefix = 'transport_';
         $oldPrefixLength = strlen($oldPrefix);
@@ -190,8 +174,8 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
             $newTableName = str_replace($oldPrefix, $newPrefix, $tableName);
     
             $conn->executeQuery("
-                RENAME TABLE $dbName.$tableName
-                TO $dbName.$newTableName;
+                RENAME TABLE $tableName
+                TO $newTableName;
             ");
         }
     }
@@ -210,49 +194,32 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
     protected function updateHookNamesFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_area
-            SET owner = 'MUTransportModule'
-            WHERE owner = 'Transport';
-        ");
+        $conn->update('hook_area', ['owner' => 'MUTransportModule'], ['owner' => 'Transport']);
     
         $componentLength = strlen('subscriber.transport') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_area
+            UPDATE hook_area
             SET areaname = CONCAT('subscriber.mutransportmodule', SUBSTRING(areaname, $componentLength))
             WHERE areaname LIKE 'subscriber.transport%';
         ");
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_binding
-            SET sowner = 'MUTransportModule'
-            WHERE sowner = 'Transport';
-        ");
+        $conn->update('hook_binding', ['sowner' => 'MUTransportModule'], ['sowner' => 'Transport']);
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_runtime
-            SET sowner = 'MUTransportModule'
-            WHERE sowner = 'Transport';
-        ");
+        $conn->update('hook_runtime', ['sowner' => 'MUTransportModule'], ['sowner' => 'Transport']);
     
         $componentLength = strlen('transport') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_runtime
+            UPDATE hook_runtime
             SET eventname = CONCAT('mutransportmodule', SUBSTRING(eventname, $componentLength))
             WHERE eventname LIKE 'transport%';
         ");
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_subscriber
-            SET owner = 'MUTransportModule'
-            WHERE owner = 'Transport';
-        ");
+        $conn->update('hook_subscriber', ['owner' => 'MUTransportModule'], ['owner' => 'Transport']);
     
         $componentLength = strlen('transport') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_subscriber
+            UPDATE hook_subscriber
             SET eventname = CONCAT('mutransportmodule', SUBSTRING(eventname, $componentLength))
             WHERE eventname LIKE 'transport%';
         ");
@@ -264,13 +231,10 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
     protected function updateWorkflowsFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.workflows
-            SET module = 'MUTransportModule'
-            WHERE module = 'Transport';
-        ");
+        $conn->update('workflows', ['module' => 'MUTransportModule'], ['module' => 'Transport']);
+        $conn->update('workflows', ['obj_table' => 'TableEntity'], ['module' => 'MUTransportModule', 'obj_table' => 'table']);
+        $conn->update('workflows', ['obj_table' => 'DatabaseEntity'], ['module' => 'MUTransportModule', 'obj_table' => 'database']);
+        $conn->update('workflows', ['obj_table' => 'FieldEntity'], ['module' => 'MUTransportModule', 'obj_table' => 'field']);
     }
     
     /**
