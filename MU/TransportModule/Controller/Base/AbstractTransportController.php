@@ -111,11 +111,11 @@ abstract class AbstractTransportController extends AbstractController
     }
     
     /**
-     * This method takes care of the application configuration.
+     * This method takes care of the cpoying of datas from a source table to a target table
      *
      * @param Request $request Current request instance
      *
-     * @return Response Output
+     * @return redirect
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -160,6 +160,8 @@ abstract class AbstractTransportController extends AbstractController
                 $count = 0;
                 // we initialize the string var
                 $stringValue = '';
+                // we initialize the text var
+                $textValue = '';
     			// we initialise the into value
     			$intoValue = '';
     			// we initialize the value value
@@ -170,19 +172,20 @@ abstract class AbstractTransportController extends AbstractController
     			foreach ($fieldCombination as $combination) {
     				$combinationDatas = explode(';', $combination);
     				$target = $combinationDatas[0];
+
     				if ($countCombination - 1 > $count) {			
     				    $intoValue .= $target . ', ' ;
     				} else {
     					$intoValue .= $target;
     				}
-    
+
     				$placeholder .= '?';
     				if($countCombination - 1 > $count) {
     					$placeholder .= ',';
     				}		
+
     				$count++;
     			}
-
     			
     			$conn2 = new \PDO('mysql:dbname=' . $targetDatabase['dbName'] . ';host=' . $targetDatabase['host'], $targetDatabase['dbUser'], $targetDatabase['dbPassword']);
     			
@@ -198,16 +201,12 @@ abstract class AbstractTransportController extends AbstractController
     			    	$sources = explode(',', $sources);
     			    	$countSources = count($sources);
     			    	if (is_array($sources)) {
-    			    		$count1 = 0;
+    			    		//$count1 = 0;
     			    		foreach ($sources as $source) {
-    			    			$stringValue .= $entry[$source];
-    			    			if ($countSources - 1 > $count1) {
-    			    				$stringValue .= ' . ';
-    			    			}
-    			    			$valueValue[] = $stringValue;
-    			    			$stringValue = '';
-    			    			$count1++;
+    			    			$textValue .= $entry[$source] . ' ';   			    		
     			    		}
+    			    		$valueValue[] = $textValue;
+    			    		$textValue = '';
     			    	} else {
     			    		$valueValue[] = $entry["' . $source . '"];
     			    	}
@@ -217,13 +216,16 @@ abstract class AbstractTransportController extends AbstractController
     			    $copyState = $statement2->execute($valueValue);
     			    $valueValue = ''; 
     			    if ($copyState == false) {
-    			    	$this->addFlash('error', $this->__('error'));
+    			    	$this->addFlash('error', $this->__('There was an error during the copying!'));
+    			    } else {
+    			        $countCopy++;
     			    }
-    			    $countCopy++;
     			}
-               
-    			$this->addFlash('status', $this->__('Done! The data have been copied from the source table to the target table.'));
-    			$this->addFlash('status', $countCopy . ' ' . $this->__('data sets was copied'));
+                if ($countCopy > 0) {
+    			$this->addFlash('status', $this->__('Done! The data have been copied from the source table to the target table.')); 
+                } else {
+    			$this->addFlash('error', $countCopy . ' ' . $this->__('data sets was copied'));
+                }
                 } elseif ($form->get('cancel')->isClicked()) {
     			$this->addFlash('status', $this->__('Operation cancelled.'));
     		}
