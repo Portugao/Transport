@@ -114,6 +114,19 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 ])->setAttribute('icon', 'fa fa-reply');
                 $menu[$title]->setLinkAttribute('title', $title);
             }
+            
+            // more actions for adding new related items
+            
+            $relatedComponent = 'MUTransportModule:Field:';
+            $relatedInstance = $entity->getKey() . '::';
+            if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
+                $title = $this->__('Create field');
+                $menu->addChild($title, [
+                    'route' => 'mutransportmodule_field_' . $routeArea . 'edit',
+                    'routeParameters' => ['table' => $entity->getKey()]
+                ])->setAttribute('icon', 'fa fa-plus');
+                $menu[$title]->setLinkAttribute('title', $title);
+            }
         }
         if ($entity instanceof DatabaseEntity) {
             $component = 'MUTransportModule:Database:';
@@ -182,6 +195,18 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $routePrefix = 'mutransportmodule_field_';
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
+            if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
+                $menu->addChild($this->__('Edit'), [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => $entity->createUrlArgs()
+                ])->setAttribute('icon', 'fa fa-pencil-square-o');
+                $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this field'));
+                $menu->addChild($this->__('Reuse'), [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => ['astemplate' => $entity->getKey()]
+                ])->setAttribute('icon', 'fa fa-files-o');
+                $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new field'));
+            }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
                 $menu->addChild($this->__('Delete'), [
                     'route' => $routePrefix . $routeArea . 'delete',

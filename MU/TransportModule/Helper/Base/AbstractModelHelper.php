@@ -61,6 +61,9 @@ abstract class AbstractModelHelper
             case 'database':
                 $result = true;
                 break;
+            case 'field':
+                $result = true;
+                break;
         }
     
         return $result;

@@ -28,7 +28,7 @@ application "Transport" {
         versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false
-        markFiles "Controller/DatabaseController.php,\r\nController/FieldController.php,\r\nController/TableController.php,\r\nHelper/ControllerHelper.php,\r\nHelper/ModelHelper.php,\r\nMenu/ItemActionsMenu.php,\r\nResources/views/Field/getFields.html.twig,\r\nResources/views/Table/getTables.html.twig"
+        markFiles "Container/LinkContainer.php,\r\nController/DatabaseController.php,\r\nController/FieldController.php,\r\nController/TableController.php,\r\nHelper/ControllerHelper.php,\r\nHelper/ModelHelper.php,\r\nMenu/ItemActionsMenu.php,\r\nResources/config/forms.yml,\r\nResources/public/images/admin.png,\r\nResources/public/images/admin_b.png,\r\nResources/public/images/admin_w.png,\r\nResources/views/Field/getFields.html.twig,\r\nResources/views/Table/getTables.html.twig"
     }
     entities {
         entity "table" {
@@ -47,10 +47,6 @@ application "Transport" {
             ,
                 deleteAction "Delete",
                 customAction "GetTables",
-                customAction "SelectSourceAndTargetTable" {
-                    documentation "Pull the tables in the container for source and traget."
-                }
-            ,
                 displayAction "Display"
             }
         },
@@ -74,8 +70,7 @@ application "Transport" {
                 displayAction "Display",
                 editAction "Edit"
             ,
-                deleteAction "Delete",
-                customAction "Select2Databases"
+                deleteAction "Delete"
             }
         },
         entity "field" {
@@ -97,8 +92,9 @@ application "Transport" {
             actions {
                 viewAction "View",
                 deleteAction "Delete",
-                customAction "GetFields",
-                customAction "CopyValuesFromDatabaseToDatabase"
+                customAction "GetFields"
+            ,
+                editAction "Edit"
             }
         }
     }

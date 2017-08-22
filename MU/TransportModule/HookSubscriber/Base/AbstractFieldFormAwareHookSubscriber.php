@@ -66,6 +66,10 @@ abstract class AbstractFieldFormAwareHookSubscriber implements HookSubscriberInt
     public function getEvents()
     {
         return [
+            // Display hook for create/edit forms.
+            FormAwareCategory::TYPE_EDIT => 'mutransportmodule.form_aware_hook.fields.edit',
+            // Process the results of the edit form after the main form is processed.
+            FormAwareCategory::TYPE_PROCESS_EDIT => 'mutransportmodule.form_aware_hook.fields.process_edit',
             // Display hook for delete forms.
             FormAwareCategory::TYPE_DELETE => 'mutransportmodule.form_aware_hook.fields.delete',
             // Process the results of the delete form after the main form is processed.
