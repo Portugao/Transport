@@ -148,6 +148,12 @@
 {% endblock %}
 {% block page_nav_links %}
     <p>
+        {% if canBeCreated %}
+            {% if hasPermission('MUTransportModule:Field:', '::', 'ACCESS_EDIT') %}
+                {% set createTitle = __('Create field') %}
+                <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            {% endif %}
+        {% endif %}
         {% if all == 1 %}
             {% set linkTitle = __('Back to paginated view') %}
             <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>

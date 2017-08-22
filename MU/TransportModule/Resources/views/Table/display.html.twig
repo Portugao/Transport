@@ -66,6 +66,14 @@
             {items: table.fields}
         ) }}
     {% endif %}
+    
+    {% set mayManage = hasPermission('MUTransportModule:Field:', '::', 'ACCESS_EDIT') %}
+    {% if mayManage %}
+        <p class="managelink">
+            {% set createTitle = __('Create field') %}
+            <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'edit', {table: table.getKey()}) }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+        </p>
+    {% endif %}
 {% endblock %}
 {% block display_hooks %}
     {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.tables.display_view', id=table.getKey(), urlObject=currentUrlObject) %}
