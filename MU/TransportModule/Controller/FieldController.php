@@ -232,8 +232,9 @@ class FieldController extends AbstractFieldController
     		}
     		$newField->setTable($table);
     		$newField->setWorkflowState('approved');
-    		$entityManager->flush();
     		$entityManager->persist($newField);
+    		$entityManager->flush();
+
     		$count++;
     		$fieldList[] = $field;
     	}

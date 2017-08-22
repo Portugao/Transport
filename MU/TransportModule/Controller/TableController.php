@@ -365,8 +365,8 @@ class TableController extends AbstractTableController
     		$newTable->setName($table);
     		$newTable->setDatabase($database);
     		$newTable->setWorkflowState('approved');
-    		$entityManager->flush();
     		$entityManager->persist($newTable);
+    		$entityManager->flush();
     	}
     	$templateParameters['tables'] = $tableList;
     
