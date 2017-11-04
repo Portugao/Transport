@@ -15,6 +15,8 @@ namespace MU\TransportModule\Controller;
 use MU\TransportModule\Controller\Base\AbstractDatabaseController;
 
 use RuntimeException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -33,6 +35,7 @@ class DatabaseController extends AbstractDatabaseController
      * @Route("/admin/databases",
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+7 days", public=true)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -52,6 +55,7 @@ class DatabaseController extends AbstractDatabaseController
      * @Route("/databases",
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -71,6 +75,7 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -96,6 +101,7 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -119,6 +125,8 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -142,6 +150,8 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param DatabaseEntity $database Treated database instance
@@ -163,6 +173,7 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -186,6 +197,7 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      *
      * @param Request $request Current request instance
      *
@@ -207,6 +219,8 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -231,6 +245,8 @@ class DatabaseController extends AbstractDatabaseController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param DatabaseEntity $database Treated database instance
@@ -244,42 +260,6 @@ class DatabaseController extends AbstractDatabaseController
     public function deleteAction(Request $request, DatabaseEntity $database)
     {
         return parent::deleteAction($request, $database);
-    }
-    /**
-     * @inheritDoc
-     *
-     * @Route("/admin/databases/select2Databases",
-     *        methods = {"GET", "POST"}
-     * )
-     * @Theme("admin")
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminSelect2DatabasesAction(Request $request)
-    {
-        return parent::adminSelect2DatabasesAction($request);
-    }
-    
-    /**
-     * @inheritDoc
-     *
-     * @Route("/databases/select2Databases",
-     *        methods = {"GET", "POST"}
-     * )
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function select2DatabasesAction(Request $request)
-    {
-        return parent::select2DatabasesAction($request);
     }
 
     /**
@@ -386,6 +366,43 @@ class DatabaseController extends AbstractDatabaseController
     
     	// fetch and return the appropriate template
     	return $this->get('mu_transport_module.view_helper')->processTemplate($objectType, 'edit', $templateParameters);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/admin/databases/select2Databases",
+     *        methods = {"GET", "POST"}
+     * )
+     * @Theme("admin")
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function adminSelect2DatabasesAction(Request $request)
+    {
+    	return parent::adminSelect2DatabasesAction($request);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/databases/select2Databases",
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function select2DatabasesAction(Request $request)
+    {
+    	return parent::select2DatabasesAction($request);
     }
 
     // feel free to add your own controller methods here
