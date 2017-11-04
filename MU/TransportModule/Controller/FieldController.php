@@ -15,6 +15,8 @@ namespace MU\TransportModule\Controller;
 use MU\TransportModule\Controller\Base\AbstractFieldController;
 
 use RuntimeException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -36,6 +38,7 @@ class FieldController extends AbstractFieldController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -61,6 +64,7 @@ class FieldController extends AbstractFieldController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -84,6 +88,8 @@ class FieldController extends AbstractFieldController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("field", class="MUTransportModule:FieldEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="field.getUpdatedDate()", ETag="'Field' ~ field.getid() ~ field.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -108,6 +114,8 @@ class FieldController extends AbstractFieldController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("field", class="MUTransportModule:FieldEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="field.getUpdatedDate()", ETag="'Field' ~ field.getid() ~ field.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param FieldEntity $field Treated field instance
@@ -122,12 +130,17 @@ class FieldController extends AbstractFieldController
     {
         return parent::deleteAction($request, $field);
     }
+
+    
     /**
      * @inheritDoc
      *
-     * @Route("/admin/fields/getFields",
+     * @Route("/admin/field/edit/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -135,151 +148,35 @@ class FieldController extends AbstractFieldController
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if field to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function adminGetFieldsAction(Request $request)
+    public function adminEditAction(Request $request)
     {
-        return parent::adminGetFieldsAction($request);
+        return parent::adminEditAction($request);
     }
     
     /**
      * @inheritDoc
      *
-     * @Route("/fields/getFields",
+     * @Route("/field/edit/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      *
      * @param Request $request Current request instance
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if field to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function getFieldsAction(Request $request)
+    public function editAction(Request $request)
     {
-        return parent::getFieldsAction($request);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminGetFields() and getFields().
-     */
-    protected function getFieldsInternal(Request $request, $isAdmin = false)
-    {
-    	// parameter specifying which type of objects we are treating
-    	$objectType = 'field';
-    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-    		throw new AccessDeniedException();
-    	}
-    
-    	$templateParameters = [
-    			'routeArea' => $isAdmin ? 'admin' : ''
-    	];
-    	
-    	$controllerHelper = $this->get('mu_transport_module.controller_helper');
-    	$modelHelper = $this->get('mu_transport_module.model_helper');
-    	
-    	$tableId = $controllerHelper->getParameter('table');
-
-    	$tableRepository = $modelHelper->getRepository('table');
-    	$table = $tableRepository->findOneBy(array('id' => $tableId));
-    	$database = $table['database'];
-
-    	$conn = new \PDO('mysql:dbname=' . $database['dbName'] . ';host=' . $database['host'], $database['dbUser'], $database['dbPassword']);
-    	$statement = $conn->query('DESCRIBE ' . $table['name']);
-    	$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-    	 
-    	$entityManager = $this->container->get('doctrine.entitymanager');
-    	
-    	$count = 0;
-    	
-    	foreach ($result as $field) {
-    		$newField = new FieldEntity();
-    		$newField->setFieldName($field['Field']);
-    		if ($field['Key'] != '') { 
-    		$newField->setFieldKey($field['Key']);
-    		} else {
-    			$newField->setFieldKey('');
-    		}
-    		$pos = strpos($field['Type'], '(');
-    		if ($pos != false) {
-                $length = strstr($field['Type'], '(');
-                $length = str_replace('(', '', $length);
-                $length = str_replace(')', '', $length);
-                if ($length != '') {
-                $newField->setFieldLength($length);
-                } else {
-                	$newField->setFieldLength('');
-                }
-                $type = explode('(', $field['Type']);
-                $newField->setFieldType($type[0]);
-    		} else {
-    			$newField->setFieldType($field['Type']);
-    		}
-    		if ($field['Default'] != '') {
-    		$newField->setFieldDefault($field['Default']);
-    		} else {
-    			$newField->setFieldDefault('');
-    		}
-    		if ($field['Null'] != '') {
-    		$newField->setFieldNull($field['Null']);
-    		} else {
-    			$newField->setFieldNull('');
-    		}
-    		if ($field['Extra'] != '') {
-    		$newField->setFieldExtra($field['Extra']);
-    		} else {
-    			$newField->setFieldExtra('');
-    		}
-    		$newField->setTable($table);
-    		$newField->setWorkflowState('approved');
-    		$entityManager->persist($newField);
-    		$entityManager->flush();
-
-    		$count++;
-    		$fieldList[] = $field;
-    	}
-    	$templateParameters['fields'] = $fieldList;
-    	$templateParameters['count'] = $count;
-    
-    	// return template
-    	return $this->render('@MUTransportModule/Field/getFields.html.twig', $templateParameters);
-    }
-    
-    /**
-     * @inheritDoc
-     *
-     * @Route("/admin/fields/copyValuesFromDatabaseToDatabase",
-     *        methods = {"GET", "POST"}
-     * )
-     * @Theme("admin")
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminCopyValuesFromDatabaseToDatabaseAction(Request $request)
-    {
-        return parent::adminCopyValuesFromDatabaseToDatabaseAction($request);
-    }
-    
-    /**
-     * @inheritDoc
-     *
-     * @Route("/fields/copyValuesFromDatabaseToDatabase",
-     *        methods = {"GET", "POST"}
-     * )
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function copyValuesFromDatabaseToDatabaseAction(Request $request)
-    {
-        return parent::copyValuesFromDatabaseToDatabaseAction($request);
+        return parent::editAction($request);
     }
 
     /**
@@ -323,6 +220,166 @@ class FieldController extends AbstractFieldController
     public function handleSelectedEntriesAction(Request $request)
     {
         return parent::handleSelectedEntriesAction($request);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/admin/fields/getFields",
+     *        methods = {"GET", "POST"}
+     * )
+     * @Theme("admin")
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function adminGetFieldsAction(Request $request)
+    {
+    	return parent::adminGetFieldsAction($request);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/fields/getFields",
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function getFieldsAction(Request $request)
+    {
+    	return parent::getFieldsAction($request);
+    }
+    
+    /**
+     * This method includes the common implementation code for adminGetFields() and getFields().
+     */
+    protected function getFieldsInternal(Request $request, $isAdmin = false)
+    {
+    	// parameter specifying which type of objects we are treating
+    	$objectType = 'field';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
+    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    	 
+    	$controllerHelper = $this->get('mu_transport_module.controller_helper');
+    	$modelHelper = $this->get('mu_transport_module.model_helper');
+    	 
+    	$tableId = $controllerHelper->getParameter('table');
+    
+    	$tableRepository = $modelHelper->getRepository('table');
+    	$table = $tableRepository->findOneBy(array('id' => $tableId));
+    	$database = $table['database'];
+    
+    	$conn = new \PDO('mysql:dbname=' . $database['dbName'] . ';host=' . $database['host'], $database['dbUser'], $database['dbPassword']);
+    	$statement = $conn->query('DESCRIBE ' . $table['name']);
+    	$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+    	$entityManager = $this->container->get('doctrine.entitymanager');
+    	 
+    	$count = 0;
+    	 
+    	foreach ($result as $field) {
+    		$newField = new FieldEntity();
+    		$newField->setFieldName($field['Field']);
+    		if ($field['Key'] != '') {
+    			$newField->setFieldKey($field['Key']);
+    		} else {
+    			$newField->setFieldKey('');
+    		}
+    		$pos = strpos($field['Type'], '(');
+    		if ($pos != false) {
+    			$length = strstr($field['Type'], '(');
+    			$length = str_replace('(', '', $length);
+    			$length = str_replace(')', '', $length);
+    			if ($length != '') {
+    				$newField->setFieldLength($length);
+    			} else {
+    				$newField->setFieldLength('');
+    			}
+    			$type = explode('(', $field['Type']);
+    			$newField->setFieldType($type[0]);
+    		} else {
+    			$newField->setFieldType($field['Type']);
+    		}
+    		if ($field['Default'] != '') {
+    			$newField->setFieldDefault($field['Default']);
+    		} else {
+    			$newField->setFieldDefault('');
+    		}
+    		if ($field['Null'] != '') {
+    			$newField->setFieldNull($field['Null']);
+    		} else {
+    			$newField->setFieldNull('');
+    		}
+    		if ($field['Extra'] != '') {
+    			$newField->setFieldExtra($field['Extra']);
+    		} else {
+    			$newField->setFieldExtra('');
+    		}
+    		$newField->setTable($table);
+    		$newField->setWorkflowState('approved');
+    		$entityManager->persist($newField);
+    		$entityManager->flush();
+    
+    		$count++;
+    		$fieldList[] = $field;
+    	}
+    	$templateParameters['fields'] = $fieldList;
+    	$templateParameters['count'] = $count;
+    
+    	// return template
+    	return $this->render('@MUTransportModule/Field/getFields.html.twig', $templateParameters);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/admin/fields/copyValuesFromDatabaseToDatabase",
+     *        methods = {"GET", "POST"}
+     * )
+     * @Theme("admin")
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function adminCopyValuesFromDatabaseToDatabaseAction(Request $request)
+    {
+    	return parent::adminCopyValuesFromDatabaseToDatabaseAction($request);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/fields/copyValuesFromDatabaseToDatabase",
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function copyValuesFromDatabaseToDatabaseAction(Request $request)
+    {
+    	return parent::copyValuesFromDatabaseToDatabaseAction($request);
     }
 
     // feel free to add your own controller methods here
