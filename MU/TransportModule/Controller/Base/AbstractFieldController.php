@@ -17,9 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Bundle\HookBundle\Category\FormAwareCategory;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Component\SortableColumns\Column;
@@ -35,7 +32,6 @@ abstract class AbstractFieldController extends AbstractController
 {
     /**
      * This action provides an item list overview in the admin area.
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -54,7 +50,6 @@ abstract class AbstractFieldController extends AbstractController
     
     /**
      * This action provides an item list overview.
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -117,8 +112,6 @@ abstract class AbstractFieldController extends AbstractController
     }
     /**
      * This action provides a handling of simple delete requests in the admin area.
-     * @ParamConverter("field", class="MUTransportModule:FieldEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="field.getUpdatedDate()", ETag="'Field' ~ field.getid() ~ field.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param FieldEntity $field Treated field instance
@@ -136,8 +129,6 @@ abstract class AbstractFieldController extends AbstractController
     
     /**
      * This action provides a handling of simple delete requests.
-     * @ParamConverter("field", class="MUTransportModule:FieldEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="field.getUpdatedDate()", ETag="'Field' ~ field.getid() ~ field.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param FieldEntity $field Treated field instance
@@ -294,51 +285,66 @@ abstract class AbstractFieldController extends AbstractController
         return $this->render('@MUTransportModule/Field/getFields.html.twig', $templateParameters);
     }
     /**
-     * This is a custom action in the admin area.
+     * This action provides a handling of edit requests in the admin area.
      *
      * @param Request $request Current request instance
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if field to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function adminCopyValuesFromDatabaseToDatabaseAction(Request $request)
+    public function adminEditAction(Request $request)
     {
-        return $this->copyValuesFromDatabaseToDatabaseInternal($request, true);
+        return $this->editInternal($request, true);
     }
     
     /**
-     * This is a custom action.
+     * This action provides a handling of edit requests.
      *
      * @param Request $request Current request instance
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if field to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function copyValuesFromDatabaseToDatabaseAction(Request $request)
+    public function editAction(Request $request)
     {
-        return $this->copyValuesFromDatabaseToDatabaseInternal($request, false);
+        return $this->editInternal($request, false);
     }
     
     /**
-     * This method includes the common implementation code for adminCopyValuesFromDatabaseToDatabase() and copyValuesFromDatabaseToDatabase().
+     * This method includes the common implementation code for adminEdit() and edit().
      */
-    protected function copyValuesFromDatabaseToDatabaseInternal(Request $request, $isAdmin = false)
+    protected function editInternal(Request $request, $isAdmin = false)
     {
         // parameter specifying which type of objects we are treating
         $objectType = 'field';
-        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
         if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
         
-        // return template
-        return $this->render('@MUTransportModule/Field/copyValuesFromDatabaseToDatabase.html.twig', $templateParameters);
+        $controllerHelper = $this->get('mu_transport_module.controller_helper');
+        $templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
+        
+        // delegate form processing to the form handler
+        $formHandler = $this->get('mu_transport_module.form.handler.field');
+        $result = $formHandler->processForm($templateParameters);
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
+        
+        $templateParameters = $formHandler->getTemplateParameters();
+        
+        // fetch and return the appropriate template
+        return $this->get('mu_transport_module.view_helper')->processTemplate($objectType, 'edit', $templateParameters);
     }
 
     /**

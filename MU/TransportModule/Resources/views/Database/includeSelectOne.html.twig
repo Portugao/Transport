@@ -4,11 +4,11 @@
 {% endif %}
 {% if tabs|default(false) == true %}
     <div role="tabpanel" class="tab-pane fade" id="tabDatabase" aria-labelledby="databaseTab">
-        <h3>{{ __('Database') }}</h3>
+        <h3>{{ heading|default ? heading : __('Database') }}</h3>
 {% else %}
     <fieldset class="database">
 {% endif %}
-    <legend>{{ __('Database') }}</legend>
+    <legend>{{ heading|default ? heading : __('Database') }}</legend>
     {% if displayMode == 'choices' %}
         {{ form_row(attribute(form, alias)) }}
     {% elseif displayMode == 'autocomplete' %}

@@ -34,7 +34,7 @@ function mUTransportInitQuickNavigation()
 /**
  * Simulates a simple alert using bootstrap.
  */
-function mUTransportSimpleAlert(beforeElem, title, content, alertId, cssClass)
+function mUTransportSimpleAlert(anchorElement, title, content, alertId, cssClass)
 {
     var alertBox;
 
@@ -45,8 +45,8 @@ function mUTransportSimpleAlert(beforeElem, title, content, alertId, cssClass)
           <p>' + content + '</p> \
         </div>';
 
-    // insert alert before the given element
-    beforeElem.before(alertBox);
+    // insert alert before the given anchor element
+    anchorElement.before(alertBox);
 
     jQuery('#' + alertId).delay(200).addClass('in').fadeOut(4000, function () {
         jQuery(this).remove();
@@ -163,7 +163,7 @@ function mUTransportInitInlineWindow(containerElem)
         // check if window exists already
         if (jQuery('#' + newWindowId).length < 1) {
             // create new window instance
-            jQuery('<div id="' + newWindowId + '"></div>')
+            jQuery('<div />', { id: newWindowId })
                 .append(
                     jQuery('<iframe width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" />')
                         .attr('src', containerElem.attr('href'))

@@ -34,7 +34,7 @@
                   <a href="{{ path('mutransportmodule_database_' ~ routeArea ~ 'display', {'id': table.database.getId()}) }}">{% spaceless %}
                     {{ table.database|mutransportmodule_formattedTitle }}
                   {% endspaceless %}</a>
-                  <a id="databaseItem{{ table.database.getKey() }}Display" href="{{ path('mutransportmodule_database_' ~ routeArea ~ 'display', {'id': table.database.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="mutransport-inline-window hidden" data-modal-title="{{ table.database|mutransportmodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                  <a id="databaseItem{{ table.database.getKey() }}Display" href="{{ path('mutransportmodule_database_' ~ routeArea ~ 'display', {'id': table.database.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="mutransport-inline-window hidden" data-modal-title="{{ table.database|mutransportmodule_formattedTitle|e('html_attr') }}"><i class="fa fa-id-card-o"></i></a>
               {% else %}
                   {{ table.database|mutransportmodule_formattedTitle }}
               {% endif %}
@@ -71,14 +71,15 @@
     {% if mayManage %}
         <p class="managelink">
             {% set createTitle = __('Create field') %}
-            <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'edit', {table: table.getKey()}) }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'edit', {table: table.getKey()}) }}" title="{{ createTitle|e('html_attr') }}"><i class="fa fa-plus"></i> {{ createTitle }}</a>
         </p>
     {% endif %}
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.tables.display_view', id=table.getKey(), urlObject=currentUrlObject) %}
-    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-        <h4>{{ providerArea }}</h4>
-        {{ hook }}
-    {% endfor %}
+    {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.tables.display_view', id=table.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+    {% if hooks is iterable and hooks|length > 0 %}
+        {% for area, hook in hooks %}
+            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook }}</div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

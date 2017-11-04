@@ -10,6 +10,7 @@ services:
     mu_transport_module.controller_helper:
         class: MU\TransportModule\Helper\ControllerHelper
         arguments:
+            - "@translator.default"
             - "@request_stack"
             - "@form.factory"
             - "@zikula_extensions_module.api.variable"

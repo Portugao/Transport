@@ -28,7 +28,7 @@ class LinkContainer extends AbstractLinkContainer
 	 *
 	 * @return array Array of header links
 	 */
-	public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+	/*public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
 	{
         $links = parent::getLinks($type = LinkContainerInterface::TYPE_ADMIN);
         
@@ -48,5 +48,5 @@ class LinkContainer extends AbstractLinkContainer
         }
         
         return $links;
-	}
+	}*/
 }

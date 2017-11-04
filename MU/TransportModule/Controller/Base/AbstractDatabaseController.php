@@ -17,9 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Bundle\HookBundle\Category\FormAwareCategory;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Component\SortableColumns\Column;
@@ -35,7 +32,6 @@ abstract class AbstractDatabaseController extends AbstractController
 {
     /**
      * This is the default action handling the index admin area called without defining arguments.
-     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -50,7 +46,6 @@ abstract class AbstractDatabaseController extends AbstractController
     
     /**
      * This is the default action handling the index area called without defining arguments.
-     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -82,7 +77,6 @@ abstract class AbstractDatabaseController extends AbstractController
     }
     /**
      * This action provides an item list overview in the admin area.
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -101,7 +95,6 @@ abstract class AbstractDatabaseController extends AbstractController
     
     /**
      * This action provides an item list overview.
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -161,8 +154,6 @@ abstract class AbstractDatabaseController extends AbstractController
     }
     /**
      * This action provides a item detail view in the admin area.
-     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param DatabaseEntity $database Treated database instance
@@ -179,8 +170,6 @@ abstract class AbstractDatabaseController extends AbstractController
     
     /**
      * This action provides a item detail view.
-     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param DatabaseEntity $database Treated database instance
@@ -227,7 +216,6 @@ abstract class AbstractDatabaseController extends AbstractController
     }
     /**
      * This action provides a handling of edit requests in the admin area.
-     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      *
@@ -244,7 +232,6 @@ abstract class AbstractDatabaseController extends AbstractController
     
     /**
      * This action provides a handling of edit requests.
-     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      *
@@ -291,8 +278,6 @@ abstract class AbstractDatabaseController extends AbstractController
     }
     /**
      * This action provides a handling of simple delete requests in the admin area.
-     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param DatabaseEntity $database Treated database instance
@@ -310,8 +295,6 @@ abstract class AbstractDatabaseController extends AbstractController
     
     /**
      * This action provides a handling of simple delete requests.
-     * @ParamConverter("database", class="MUTransportModule:DatabaseEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="database.getUpdatedDate()", ETag="'Database' ~ database.getid() ~ database.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param DatabaseEntity $database Treated database instance
@@ -419,54 +402,6 @@ abstract class AbstractDatabaseController extends AbstractController
         
         // fetch and return the appropriate template
         return $this->get('mu_transport_module.view_helper')->processTemplate($objectType, 'delete', $templateParameters);
-    }
-    
-    /**
-     * This is a custom action in the admin area.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminSelect2DatabasesAction(Request $request)
-    {
-    	return $this->select2DatabasesInternal($request, true);
-    }
-    
-    /**
-     * This is a custom action.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function select2DatabasesAction(Request $request)
-    {
-    	return $this->select2DatabasesInternal($request, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminSelect2Databases() and select2Databases().
-     */
-    protected function select2DatabasesInternal(Request $request, $isAdmin = false)
-    {
-    	// parameter specifying which type of objects we are treating
-    	$objectType = 'database';
-    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-    	if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-    		throw new AccessDeniedException();
-    	}
-    
-    	$templateParameters = [
-    			'routeArea' => $isAdmin ? 'admin' : ''
-    	];
-    
-    	// return template
-    	return $this->render('@MUTransportModule/Database/select2Databases.html.twig', $templateParameters);
     }
 
     /**

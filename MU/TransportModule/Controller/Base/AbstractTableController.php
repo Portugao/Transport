@@ -17,9 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Bundle\HookBundle\Category\FormAwareCategory;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Component\SortableColumns\Column;
@@ -35,7 +32,6 @@ abstract class AbstractTableController extends AbstractController
 {
     /**
      * This is the default action handling the index admin area called without defining arguments.
-     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -50,7 +46,6 @@ abstract class AbstractTableController extends AbstractController
     
     /**
      * This is the default action handling the index area called without defining arguments.
-     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -82,7 +77,6 @@ abstract class AbstractTableController extends AbstractController
     }
     /**
      * This action provides an item list overview in the admin area.
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -101,7 +95,6 @@ abstract class AbstractTableController extends AbstractController
     
     /**
      * This action provides an item list overview.
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -159,7 +152,6 @@ abstract class AbstractTableController extends AbstractController
     }
     /**
      * This action provides a handling of edit requests in the admin area.
-     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      *
@@ -176,7 +168,6 @@ abstract class AbstractTableController extends AbstractController
     
     /**
      * This action provides a handling of edit requests.
-     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      *
@@ -223,8 +214,6 @@ abstract class AbstractTableController extends AbstractController
     }
     /**
      * This action provides a handling of simple delete requests in the admin area.
-     * @ParamConverter("table", class="MUTransportModule:TableEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param TableEntity $table Treated table instance
@@ -242,8 +231,6 @@ abstract class AbstractTableController extends AbstractController
     
     /**
      * This action provides a handling of simple delete requests.
-     * @ParamConverter("table", class="MUTransportModule:TableEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param TableEntity $table Treated table instance
@@ -400,58 +387,7 @@ abstract class AbstractTableController extends AbstractController
         return $this->render('@MUTransportModule/Table/getTables.html.twig', $templateParameters);
     }
     /**
-     * This is a custom action in the admin area.
-     * Pull the tables in the container for source and traget.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminSelectSourceAndTargetTableAction(Request $request)
-    {
-        return $this->selectSourceAndTargetTableInternal($request, true);
-    }
-    
-    /**
-     * This is a custom action.
-     * Pull the tables in the container for source and traget.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function selectSourceAndTargetTableAction(Request $request)
-    {
-        return $this->selectSourceAndTargetTableInternal($request, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminSelectSourceAndTargetTable() and selectSourceAndTargetTable().
-     */
-    protected function selectSourceAndTargetTableInternal(Request $request, $isAdmin = false)
-    {
-        // parameter specifying which type of objects we are treating
-        $objectType = 'table';
-        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        if (!$this->hasPermission('MUTransportModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-            throw new AccessDeniedException();
-        }
-        
-        $templateParameters = [
-            'routeArea' => $isAdmin ? 'admin' : ''
-        ];
-        
-        // return template
-        return $this->render('@MUTransportModule/Table/selectSourceAndTargetTable.html.twig', $templateParameters);
-    }
-    /**
      * This action provides a item detail view in the admin area.
-     * @ParamConverter("table", class="MUTransportModule:TableEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param TableEntity $table Treated table instance
@@ -468,8 +404,6 @@ abstract class AbstractTableController extends AbstractController
     
     /**
      * This action provides a item detail view.
-     * @ParamConverter("table", class="MUTransportModule:TableEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="table.getUpdatedDate()", ETag="'Table' ~ table.getid() ~ table.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param TableEntity $table Treated table instance

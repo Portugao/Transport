@@ -120,7 +120,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $relatedComponent = 'MUTransportModule:Field:';
             $relatedInstance = $entity->getKey() . '::';
             if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
-                $title = $this->__('Create field');
+                $title = $this->__('Create fields');
                 $menu->addChild($title, [
                     'route' => 'mutransportmodule_field_' . $routeArea . 'edit',
                     'routeParameters' => ['table' => $entity->getKey()]
@@ -181,7 +181,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $relatedComponent = 'MUTransportModule:Table:';
             $relatedInstance = $entity->getKey() . '::';
             if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
-                $title = $this->__('Create table');
+                $title = $this->__('Create tables');
                 $menu->addChild($title, [
                     'route' => 'mutransportmodule_table_' . $routeArea . 'edit',
                     'routeParameters' => ['database' => $entity->getKey()]
