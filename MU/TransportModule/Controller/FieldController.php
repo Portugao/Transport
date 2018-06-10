@@ -287,8 +287,6 @@ class FieldController extends AbstractFieldController
     	$conn = new \PDO('mysql:dbname=' . $database['dbName'] . ';host=' . $database['host'], $database['dbUser'], $database['dbPassword']);
     	$statement = $conn->query('DESCRIBE ' . $table['name']);
     	$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-    
-    	$entityManager = $this->container->get('doctrine.entitymanager');
     	 
     	$count = 0;
     	 
@@ -332,8 +330,8 @@ class FieldController extends AbstractFieldController
     		}
     		$newField->setTable($table);
     		$newField->setWorkflowState('approved');
-    		$entityManager->persist($newField);
-    		$entityManager->flush();
+    		$this->getDoctrine()->getManager()->persist($newField);
+    		$this->getDoctrine()->getManager()->flush();
     
     		$count++;
     		$fieldList[] = $field;

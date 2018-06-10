@@ -36,7 +36,7 @@ class AbstractFilterDatabaseEvent extends Event
      * @param DatabaseEntity $database Processed entity
      * @param array $entityChangeSet Change set for preUpdate events
      */
-    public function __construct(DatabaseEntity $database, $entityChangeSet = [])
+    public function __construct(DatabaseEntity $database, array $entityChangeSet = [])
     {
         $this->database = $database;
         $this->entityChangeSet = $entityChangeSet;
@@ -55,7 +55,7 @@ class AbstractFilterDatabaseEvent extends Event
     /**
      * Returns the change set.
      *
-     * @return array
+     * @return array Entity change set
      */
     public function getEntityChangeSet()
     {

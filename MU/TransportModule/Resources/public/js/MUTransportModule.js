@@ -1,15 +1,13 @@
 'use strict';
 
-function mUTransportCapitaliseFirstLetter(string)
-{
+function mUTransportCapitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 /**
  * Initialise the quick navigation form in list views.
  */
-function mUTransportInitQuickNavigation()
-{
+function mUTransportInitQuickNavigation() {
     var quickNavForm;
     var objectType;
 
@@ -34,8 +32,7 @@ function mUTransportInitQuickNavigation()
 /**
  * Simulates a simple alert using bootstrap.
  */
-function mUTransportSimpleAlert(anchorElement, title, content, alertId, cssClass)
-{
+function mUTransportSimpleAlert(anchorElement, title, content, alertId, cssClass) {
     var alertBox;
 
     alertBox = ' \
@@ -56,89 +53,38 @@ function mUTransportSimpleAlert(anchorElement, title, content, alertId, cssClass
 /**
  * Initialises the mass toggle functionality for admin view pages.
  */
-function mUTransportInitMassToggle()
-{
+function mUTransportInitMassToggle() {
     if (jQuery('.mutransport-mass-toggle').length > 0) {
         jQuery('.mutransport-mass-toggle').unbind('click').click(function (event) {
-            if (jQuery('.table.fixed-columns').length > 0) {
-                jQuery('.mutransport-toggle-checkbox').prop('checked', false);
-                jQuery('.table.fixed-columns .mutransport-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            } else {
-                jQuery('.mutransport-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            }
+            jQuery('.mutransport-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
         });
     }
 }
 
 /**
- * Initialises fixed table columns.
- */
-function mUTransportInitFixedColumns()
-{
-    jQuery('.table.fixed-columns').remove();
-    jQuery('.table').each(function() {
-        var originalTable, fixedColumnsTable, fixedTableWidth;
-
-        originalTable = jQuery(this);
-        fixedTableWidth = 0;
-        if (originalTable.find('.fixed-column').length > 0) {
-            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns').removeAttr('id');
-            originalTable.find('.dropdown').addClass('hidden');
-            fixedColumnsTable.find('.dropdown').removeClass('hidden');
-            fixedColumnsTable.css('left', originalTable.parent().position().left);
-
-            fixedColumnsTable.find('th, td').not('.fixed-column').remove();
-            fixedColumnsTable.find('th').each(function (i, elem) {
-                jQuery(this).css('width', originalTable.find('th').eq(i).css('width'));
-                fixedTableWidth += originalTable.find('th').eq(i).width();
-            });
-            fixedColumnsTable.css('width', fixedTableWidth + 'px');
-
-            fixedColumnsTable.find('tr').each(function (i, elem) {
-                jQuery(this).height(originalTable.find('tr:eq(' + i + ')').height());
-            });
-        }
-    });
-    mUTransportInitMassToggle();
-}
-
-/**
  * Creates a dropdown menu for the item actions.
  */
-function mUTransportInitItemActions(context)
-{
+function mUTransportInitItemActions(context) {
     var containerSelector;
     var containers;
-    var listClasses;
-
+    
     containerSelector = '';
     if (context == 'view') {
         containerSelector = '.mutransportmodule-view';
-        listClasses = 'list-unstyled dropdown-menu';
     } else if (context == 'display') {
         containerSelector = 'h2, h3';
-        listClasses = 'list-unstyled dropdown-menu';
     }
-
+    
     if (containerSelector == '') {
         return;
     }
-
+    
     containers = jQuery(containerSelector);
     if (containers.length < 1) {
         return;
     }
-
-    containers.find('.dropdown > ul').removeClass('list-inline').addClass(listClasses);
-    containers.find('.dropdown > ul a').each(function (index) {
-        var title;
-
-        title = jQuery(this).find('i').first().attr('title');
-        if (title == '') {
-            title = jQuery(this).find('i').first().data('original-title');
-        }
-        jQuery(this).html(jQuery(this).html() + title);
-    });
+    
+    containers.find('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
     containers.find('.dropdown > ul a i').addClass('fa-fw');
     containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
 }
@@ -146,8 +92,7 @@ function mUTransportInitItemActions(context)
 /**
  * Helper function to create new Bootstrap modal window instances.
  */
-function mUTransportInitInlineWindow(containerElem)
-{
+function mUTransportInitInlineWindow(containerElem) {
     var newWindowId;
     var modalTitle;
 
@@ -157,7 +102,7 @@ function mUTransportInitInlineWindow(containerElem)
     // define name of window
     newWindowId = containerElem.attr('id') + 'Dialog';
 
-    containerElem.unbind('click').click(function(event) {
+    containerElem.unbind('click').click(function (event) {
         event.preventDefault();
 
         // check if window exists already
@@ -196,14 +141,13 @@ function mUTransportInitInlineWindow(containerElem)
 /**
  * Initialises modals for inline display of related items.
  */
-function mUTransportInitQuickViewModals()
-{
+function mUTransportInitQuickViewModals() {
     jQuery('.mutransport-inline-window').each(function (index) {
         mUTransportInitInlineWindow(jQuery(this));
     });
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     var isViewPage;
     var isDisplayPage;
 
@@ -213,9 +157,6 @@ jQuery(document).ready(function() {
     if (isViewPage) {
         mUTransportInitQuickNavigation();
         mUTransportInitMassToggle();
-        jQuery(window).resize(mUTransportInitFixedColumns);
-        mUTransportInitFixedColumns();
-        window.setTimeout(mUTransportInitFixedColumns, 1000);
         mUTransportInitItemActions('view');
     } else if (isDisplayPage) {
         mUTransportInitItemActions('display');

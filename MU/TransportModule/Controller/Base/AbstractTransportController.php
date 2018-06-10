@@ -111,7 +111,7 @@ abstract class AbstractTransportController extends AbstractController
     }
     
     /**
-     * This method takes care of the cpoying of datas from a source table to a target table
+     * This method takes care of the copying of datas from a source table to a target table
      *
      * @param Request $request Current request instance
      *
@@ -127,7 +127,7 @@ abstract class AbstractTransportController extends AbstractController
     	
     	// we get factory helper
     	$entityFactory = $this->get('mu_transport_module.entity_factory');
-    	// we get a table controller
+    	// we get a table repository
     	$tableRepository = $entityFactory->getRepository('table');
     
     	$form = $this->createForm(FieldselectType::class);
@@ -189,7 +189,7 @@ abstract class AbstractTransportController extends AbstractController
     			$conn2 = new \PDO('mysql:dbname=' . $targetDatabase['dbName'] . ';host=' . $targetDatabase['host'], $targetDatabase['dbUser'], $targetDatabase['dbPassword']);
     			
     			$countCopy = 0;
-    			// foreach for copy of sourceEntries to to the target table
+    			// foreach for copy of sourceEntries to the target table
     			foreach ($sourceEntries as $entry) { 			
     			    $statement2 = $conn2->prepare("INSERT INTO " . $targetTable['name'] . " (" . $intoValue . ") VALUES ($placeholder)");
     			    $count2 = 0;
@@ -244,7 +244,7 @@ abstract class AbstractTransportController extends AbstractController
     	$sourceTable = $tableRepository->selectById($source);
     	// we get the target table
     	$targetTable = $tableRepository->selectById($target);
-    	// we get field repository
+    	// we get a field repository
     	$fieldRepository = $entityFactory->getRepository('field');
     	$where = 'tbl.table = ' . $source;
     	$sourceFields = $fieldRepository->selectWhere($where);
@@ -258,7 +258,7 @@ abstract class AbstractTransportController extends AbstractController
     	$templateParameters['sources'] = $sourceFields;
     	$templateParameters['targets'] = $targetFields;
     
-    	// render the select 2 databases form
+    	// render the handle fields form
     	return $this->render('@MUTransportModule/Transport/handleFields.html.twig', $templateParameters);
     }
 }

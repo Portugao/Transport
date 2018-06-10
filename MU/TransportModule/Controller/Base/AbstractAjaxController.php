@@ -49,7 +49,7 @@ abstract class AbstractAjaxController extends AbstractController
         $value = $request->query->get('v', '');
         
         if (empty($fieldName) || empty($value)) {
-            return new JsonResponse($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         
         // check if the given field is existing and unique
@@ -60,7 +60,7 @@ abstract class AbstractAjaxController extends AbstractController
                     break;
         }
         if (!count($uniqueFields) || !in_array($fieldName, $uniqueFields)) {
-            return new JsonResponse($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         
         $exclude = $request->query->getInt('ex', '');
@@ -78,6 +78,6 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         // return response
-        return new JsonResponse(['isDuplicate' => $result]);
+        return $this->json(['isDuplicate' => $result]);
     }
 }

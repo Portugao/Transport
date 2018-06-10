@@ -36,7 +36,7 @@ class AbstractFilterTableEvent extends Event
      * @param TableEntity $table Processed entity
      * @param array $entityChangeSet Change set for preUpdate events
      */
-    public function __construct(TableEntity $table, $entityChangeSet = [])
+    public function __construct(TableEntity $table, array $entityChangeSet = [])
     {
         $this->table = $table;
         $this->entityChangeSet = $entityChangeSet;
@@ -55,7 +55,7 @@ class AbstractFilterTableEvent extends Event
     /**
      * Returns the change set.
      *
-     * @return array
+     * @return array Entity change set
      */
     public function getEntityChangeSet()
     {

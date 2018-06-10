@@ -372,16 +372,14 @@ class TableController extends AbstractTableController
     	while ($row = $result->fetch(PDO::FETCH_NUM)) {
     		$tableList[] = $row[0];
     	}
-    	 
-    	$entityManager = $this->container->get('doctrine.entitymanager');
     
     	foreach ($tableList as $table) {
     		$newTable = new TableEntity();
     		$newTable->setName($table);
     		$newTable->setDatabase($database);
     		$newTable->setWorkflowState('approved');
-    		$entityManager->persist($newTable);
-    		$entityManager->flush();
+    		$this->getDoctrine()->getManager()->persist($newTable);
+    		$this->getDoctrine()->getManager()->flush();
     	}
     	$templateParameters['tables'] = $tableList;
     

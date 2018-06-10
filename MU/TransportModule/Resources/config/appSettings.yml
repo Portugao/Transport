@@ -1,0 +1,5 @@
+services:
+    mu_transport_module.app_settings:
+        class: MU\TransportModule\AppSettings
+        arguments:
+            - "@zikula_extensions_module.api.variable"

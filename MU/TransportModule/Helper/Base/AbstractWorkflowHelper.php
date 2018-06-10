@@ -49,7 +49,7 @@ abstract class AbstractWorkflowHelper
     /**
      * @var CurrentUserApiInterface
      */
-    private $currentUserApi;
+    protected $currentUserApi;
 
     /**
      * @var EntityFactory
@@ -109,6 +109,11 @@ abstract class AbstractWorkflowHelper
              'value' => 'approved',
              'text' => $this->translator->__('Approved'),
              'ui' => 'success'
+         ];
+         $states[] = [
+             'value' => 'trashed',
+             'text' => $this->translator->__('Trashed'),
+             'ui' => 'danger'
          ];
          $states[] = [
              'value' => 'deleted',
@@ -182,13 +187,25 @@ abstract class AbstractWorkflowHelper
             case 'submit':
                 $title = $this->translator->__('Submit');
                 break;
+            case 'trash':
+                $title = $this->translator->__('Trash');
+                break;
+            case 'recover':
+                $title = $this->translator->__('Recover');
+                break;
             case 'delete':
                 $title = $this->translator->__('Delete');
                 break;
         }
     
-        if ($title == '' && substr($actionId, 0, 6) == 'update') {
-            $title = $this->translator->__('Update');
+        if ($title == '') {
+            if ($actionId == 'update') {
+                $title = $this->translator->__('Update');
+            } elseif ($actionId == 'trash') {
+                $title = $this->translator->__('Trash');
+            } elseif ($actionId == 'recover') {
+                $title = $this->translator->__('Recover');
+        	}
         }
     
         return $title;
@@ -208,12 +225,18 @@ abstract class AbstractWorkflowHelper
             case 'submit':
                 $buttonClass = 'success';
                 break;
+            case 'trash':
+                $buttonClass = '';
+                break;
+            case 'recover':
+                $buttonClass = '';
+                break;
             case 'delete':
                 $buttonClass = 'danger';
                 break;
         }
     
-        if ($buttonClass == '' && substr($actionId, 0, 6) == 'update') {
+        if ($buttonClass == '' && $actionId == 'update') {
             $buttonClass = 'success';
     	}
     
@@ -229,9 +252,9 @@ abstract class AbstractWorkflowHelper
      *
      * @param EntityAccess $entity    The given entity instance
      * @param string       $actionId  Name of action to be executed
-     * @param bool         $recursive True if the function called itself
+     * @param boolean      $recursive True if the function called itself
      *
-     * @return bool False on error or true if everything worked well
+     * @return boolean Whether everything worked well or not
      */
     public function executeAction(EntityAccess $entity, $actionId = '', $recursive = false)
     {

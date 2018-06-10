@@ -6,8 +6,7 @@ var editForm;
 var formButtons;
 var triggerValidation = true;
 
-function mUTransportTriggerFormValidation()
-{
+function mUTransportTriggerFormValidation() {
     mUTransportExecuteCustomValidationConstraints(editedObjectType, editedEntityId);
 
     if (!editForm.get(0).checkValidity()) {
@@ -37,8 +36,7 @@ function mUTransportHandleFormSubmit (event) {
 /**
  * Initialises an entity edit form.
  */
-function mUTransportInitEditForm(mode, entityId)
-{
+function mUTransportInitEditForm(mode, entityId) {
     if (jQuery('.mutransport-edit-form').length < 1) {
         return;
     }
@@ -66,13 +64,15 @@ function mUTransportInitEditForm(mode, entityId)
     });
 
     formButtons = editForm.find('.form-buttons input');
-    editForm.find('.btn-danger').first().bind('click keypress', function (event) {
-        if (!window.confirm(Translator.__('Do you really want to delete this entry?'))) {
-            event.preventDefault();
-        }
-    });
+    if (editForm.find('.btn-danger').length > 0) {
+        editForm.find('.btn-danger').first().bind('click keypress', function (event) {
+            if (!window.confirm(Translator.__('Do you really want to delete this entry?'))) {
+                event.preventDefault();
+            }
+        });
+    }
     editForm.find('button[type=submit]').bind('click keypress', function (event) {
-        triggerValidation = !jQuery(this).prop('formnovalidate');
+        triggerValidation = !jQuery(this).attr('formnovalidate');
     });
     editForm.submit(mUTransportHandleFormSubmit);
 

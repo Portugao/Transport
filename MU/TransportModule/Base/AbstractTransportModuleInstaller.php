@@ -43,9 +43,9 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
         }
     
         // set up all our vars with initial values
-        $this->setVar('tableEntriesPerPage', '10');
-        $this->setVar('databaseEntriesPerPage', '10');
-        $this->setVar('fieldEntriesPerPage', '10');
+        $this->setVar('tableEntriesPerPage', 10);
+        $this->setVar('databaseEntriesPerPage', 10);
+        $this->setVar('fieldEntriesPerPage', 10);
     
         // initialisation successful
         return true;
@@ -82,171 +82,10 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
                     return false;
                 }
         }
-    
-        // Note there are several helpers available for making migrating your extension from Zikula 1.3 to 1.4 easier.
-        // The following convenience methods are each responsible for a single aspect of upgrading to Zikula 1.4.x.
-    
-        // here is a possible usage example
-        // of course 1.2.3 should match the number you used for the last stable 1.3.x module version.
-        /* if ($oldVersion = '1.2.3') {
-            // rename module for all modvars
-            $this->updateModVarsTo14();
-            
-            // update extension information about this app
-            $this->updateExtensionInfoFor14();
-            
-            // rename existing permission rules
-            $this->renamePermissionsFor14();
-            
-            // rename all tables
-            $this->renameTablesFor14();
-            
-            // remove event handler definitions from database
-            $this->dropEventHandlersFromDatabase();
-            
-            // update module name in the hook tables
-            $this->updateHookNamesFor14();
-            
-            // update module name in the workflows table
-            $this->updateWorkflowsFor14();
-        } * /
-    
-        // remove obsolete persisted hooks from the database
-        //$this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
     */
     
         // update successful
         return true;
-    }
-    
-    /**
-     * Renames the module name for variables in the module_vars table.
-     */
-    protected function updateModVarsTo14()
-    {
-        $conn = $this->getConnection();
-        $conn->update('module_vars', ['modname' => 'MUTransportModule'], ['modname' => 'Transport']);
-    }
-    
-    /**
-     * Renames this application in the core's extensions table.
-     */
-    protected function updateExtensionInfoFor14()
-    {
-        $conn = $this->getConnection();
-        $conn->update('modules', ['name' => 'MUTransportModule', 'directory' => 'MU/TransportModule'], ['name' => 'Transport']);
-    }
-    
-    /**
-     * Renames all permission rules stored for this app.
-     */
-    protected function renamePermissionsFor14()
-    {
-        $conn = $this->getConnection();
-        $componentLength = strlen('Transport') + 1;
-    
-        $conn->executeQuery("
-            UPDATE group_perms
-            SET component = CONCAT('MUTransportModule', SUBSTRING(component, $componentLength))
-            WHERE component LIKE 'Transport%';
-        ");
-    }
-    
-    /**
-     * Renames all (existing) tables of this app.
-     */
-    protected function renameTablesFor14()
-    {
-        $conn = $this->getConnection();
-    
-        $oldPrefix = 'transport_';
-        $oldPrefixLength = strlen($oldPrefix);
-        $newPrefix = 'mu_transport_';
-    
-        $sm = $conn->getSchemaManager();
-        $tables = $sm->listTables();
-        foreach ($tables as $table) {
-            $tableName = $table->getName();
-            if (substr($tableName, 0, $oldPrefixLength) != $oldPrefix) {
-                continue;
-            }
-    
-            $newTableName = str_replace($oldPrefix, $newPrefix, $tableName);
-    
-            $conn->executeQuery("
-                RENAME TABLE $tableName
-                TO $newTableName;
-            ");
-        }
-    }
-    
-    /**
-     * Removes event handlers from database as they are now described by service definitions and managed by dependency injection.
-     */
-    protected function dropEventHandlersFromDatabase()
-    {
-        \EventUtil::unregisterPersistentModuleHandlers('Transport');
-    }
-    
-    /**
-     * Updates the module name in the hook tables.
-     */
-    protected function updateHookNamesFor14()
-    {
-        $conn = $this->getConnection();
-    
-        $conn->update('hook_area', ['owner' => 'MUTransportModule'], ['owner' => 'Transport']);
-    
-        $componentLength = strlen('subscriber.transport') + 1;
-        $conn->executeQuery("
-            UPDATE hook_area
-            SET areaname = CONCAT('subscriber.mutransportmodule', SUBSTRING(areaname, $componentLength))
-            WHERE areaname LIKE 'subscriber.transport%';
-        ");
-    
-        $conn->update('hook_binding', ['sowner' => 'MUTransportModule'], ['sowner' => 'Transport']);
-    
-        $conn->update('hook_runtime', ['sowner' => 'MUTransportModule'], ['sowner' => 'Transport']);
-    
-        $componentLength = strlen('transport') + 1;
-        $conn->executeQuery("
-            UPDATE hook_runtime
-            SET eventname = CONCAT('mutransportmodule', SUBSTRING(eventname, $componentLength))
-            WHERE eventname LIKE 'transport%';
-        ");
-    
-        $conn->update('hook_subscriber', ['owner' => 'MUTransportModule'], ['owner' => 'Transport']);
-    
-        $componentLength = strlen('transport') + 1;
-        $conn->executeQuery("
-            UPDATE hook_subscriber
-            SET eventname = CONCAT('mutransportmodule', SUBSTRING(eventname, $componentLength))
-            WHERE eventname LIKE 'transport%';
-        ");
-    }
-    
-    /**
-     * Updates the module name in the workflows table.
-     */
-    protected function updateWorkflowsFor14()
-    {
-        $conn = $this->getConnection();
-        $conn->update('workflows', ['module' => 'MUTransportModule'], ['module' => 'Transport']);
-        $conn->update('workflows', ['obj_table' => 'TableEntity'], ['module' => 'MUTransportModule', 'obj_table' => 'table']);
-        $conn->update('workflows', ['obj_table' => 'DatabaseEntity'], ['module' => 'MUTransportModule', 'obj_table' => 'database']);
-        $conn->update('workflows', ['obj_table' => 'FieldEntity'], ['module' => 'MUTransportModule', 'obj_table' => 'field']);
-    }
-    
-    /**
-     * Returns connection to the database.
-     *
-     * @return Connection the current connection
-     */
-    protected function getConnection()
-    {
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-    
-        return $entityManager->getConnection();
     }
     
     /**
@@ -279,7 +118,7 @@ abstract class AbstractTransportModuleInstaller extends AbstractExtensionInstall
     /**
      * Build array with all entity classes for MUTransportModule.
      *
-     * @return array list of class names
+     * @return string[] List of class names
      */
     protected function listEntityClasses()
     {
