@@ -7,4 +7,4 @@ Also you can move datas from module to module.
 ### jQuery UI
 Transport contains an jQuery UI for flexible assignment of fields.
 
-This version is under development. Pease check not on production sites. Make a backup of your database!
+This version is under development. Please check not on production sites. Make a backup of your database!
