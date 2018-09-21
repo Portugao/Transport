@@ -5,9 +5,9 @@
 {% block title %}
     {% set templateTitle = table|mutransportmodule_formattedTitle|default(__('Table')) %}
     {{ templateTitle|notifyFilters('mutransportmodule.filter_hooks.tables.filter')|safeHtml }}
-    {% set itemActions = knp_menu_get('MUTransportModule:ItemActionsMenu:menu', [], {entity: table, area: routeArea, context: 'display'}) %}
+    {% set itemActions = knp_menu_get('mUTransportMenuItemActions', [], {entity: table, area: routeArea, context: 'display'}) %}
     <div class="dropdown">
-        <a id="itemActions{{ table.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        <a id="itemActions{{ table.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
         {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
     </div>
 {% endblock %}
@@ -67,7 +67,7 @@
         ) }}
     {% endif %}
     
-    {% set mayManage = hasPermission('MUTransportModule:Field:', '::', 'ACCESS_EDIT') %}
+    {% set mayManage = permissionHelper.hasComponentPermission('field', constant('ACCESS_EDIT')) %}
     {% if mayManage %}
         <p class="managelink">
             {% set createTitle = __('Create field') %}
@@ -76,10 +76,12 @@
     {% endif %}
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.tables.display_view', id=table.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
-    {% if hooks is iterable and hooks|length > 0 %}
-        {% for area, hook in hooks %}
-            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
-        {% endfor %}
+    {% if table.supportsHookSubscribers() %}
+        {% set hooks = notifyDisplayHooks(eventName='mutransportmodule.ui_hooks.tables.display_view', id=table.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
     {% endif %}
 {% endblock %}

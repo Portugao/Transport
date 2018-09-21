@@ -1,0 +1,21 @@
+services:
+    mu_transport_module.link_container:
+        class: MU\TransportModule\Container\LinkContainer
+        arguments:
+            - "@translator.default"
+            - "@router"
+            - "@mu_transport_module.controller_helper"
+            - "@mu_transport_module.permission_helper"
+        tags: ['zikula.link_container']
+    mu_transport_module.menu_builder:
+        class: MU\TransportModule\Menu\MenuBuilder
+        arguments:
+            - "@translator.default"
+            - "@knp_menu.factory"
+            - "@event_dispatcher"
+            - "@request_stack"
+            - "@mu_transport_module.permission_helper"
+            - "@mu_transport_module.entity_display_helper"
+            - "@zikula_users_module.current_user"
+        tags:
+            - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: mUTransportMenuItemActions }

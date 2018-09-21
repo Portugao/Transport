@@ -1,5 +1,5 @@
 {# purpose of this template: fields view filter form #}
-{% if hasPermission('MUTransportModule:Field:', '::', 'ACCESS_EDIT') %}
+{% if permissionHelper.hasComponentPermission('field', constant('ACCESS_EDIT')) %}
     {% form_theme quickNavForm with [
         'bootstrap_3_layout.html.twig'
     ] %}

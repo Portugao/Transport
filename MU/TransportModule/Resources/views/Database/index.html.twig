@@ -1,7 +1,9 @@
 {# purpose of this template: databases index view #}
 {% extends routeArea == 'admin' ? 'MUTransportModule::adminBase.html.twig' : 'MUTransportModule::base.html.twig' %}
-{% block title __('databases') %}
+{% block title __('Databases') %}
 {% block admin_page_icon 'home' %}
 {% block content %}
-    <p>{{ __('Welcome to the database section of the Transport application.') }}</p>
+    <div class="mutransportmodule-database mutransportmodule-index">
+        <p>{{ __('Welcome to the database section of the Transport application.') }}</p>
+    </div>
 {% endblock %}

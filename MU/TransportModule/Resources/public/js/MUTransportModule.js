@@ -86,11 +86,15 @@ function mUTransportInitItemActions(context) {
     
     containers.find('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
     containers.find('.dropdown > ul a i').addClass('fa-fw');
-    containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
+    if (containers.find('.dropdown-toggle').length > 0) {
+        containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
+    }
 }
 
 /**
- * Helper function to create new Bootstrap modal window instances.
+ * Helper function to create new dialog window instances.
+ * Note we use jQuery UI dialogs instead of Bootstrap modals here
+ * because we want to be able to open multiple windows simultaneously.
  */
 function mUTransportInitInlineWindow(containerElem) {
     var newWindowId;

@@ -60,6 +60,7 @@ services:
     mu_transport_module.workflow_events_listener:
         class: MU\TransportModule\Listener\WorkflowEventsListener
         arguments:
-            - "@zikula_permissions_module.api.permission"
+            - "@mu_transport_module.entity_factory"
+            - "@mu_transport_module.permission_helper"
         tags: ['kernel.event_subscriber']
     

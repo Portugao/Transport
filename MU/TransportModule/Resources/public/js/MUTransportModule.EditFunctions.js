@@ -16,7 +16,7 @@ function mUTransportTriggerFormValidation() {
     }
 }
 
-function mUTransportHandleFormSubmit (event) {
+function mUTransportHandleFormSubmit(event) {
     if (triggerValidation) {
         mUTransportTriggerFormValidation();
         if (!editForm.get(0).checkValidity()) {

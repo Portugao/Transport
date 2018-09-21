@@ -54,9 +54,9 @@ function mUTransportValidateNoSpace(val) {
 function mUTransportExecuteCustomValidationConstraints(objectType, currentEntityId) {
     jQuery('.validate-unique').each(function () {
         if (!mUTransportUniqueCheck(jQuery(this), currentEntityId)) {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('This value is already assigned, but must be unique. Please change it.'));
+            jQuery(this).get(0).setCustomValidity(Translator.__('This value is already assigned, but must be unique. Please change it.'));
         } else {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
+            jQuery(this).get(0).setCustomValidity('');
         }
     });
 }

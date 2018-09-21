@@ -36,7 +36,7 @@
                         <input type="checkbox" class="mutransport-mass-toggle" />
                     </th>
                 {% endif %}
-                <th id="hItemActionsStart" scope="col" class="unsorted z-w02">{{ __('Actions') }}</th>
+                <th id="hItemActionsStart" scope="col" class="z-w02">{{ __('Actions') }}</th>
                 <th id="hFieldName" scope="col" class="text-left">
                     <a href="{{ sort.fieldName.url }}" title="{{ __f('Sort by %s', {'%s': 'field name'}) }}" class="{{ sort.fieldName.class }}">{{ __('Field name') }}</a>
                 </th>
@@ -73,9 +73,9 @@
                     </td>
                 {% endif %}
                 <td id="itemActions{{ field.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap z-w02">
-                    {% set itemActions = knp_menu_get('MUTransportModule:ItemActionsMenu:menu', [], {entity: field, area: routeArea, context: 'view'}) %}
+                    {% set itemActions = knp_menu_get('mUTransportMenuItemActions', [], {entity: field, area: routeArea, context: 'view'}) %}
                     <div class="dropdown">
-                        <a id="itemActions{{ field.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        <a id="itemActions{{ field.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
                         {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
                     </div>
                 </td>
@@ -149,7 +149,7 @@
 {% block page_nav_links %}
     <p>
         {% if canBeCreated %}
-            {% if hasPermission('MUTransportModule:Field:', '::', 'ACCESS_EDIT') %}
+            {% if permissionHelper.hasComponentPermission('field', constant('ACCESS_EDIT')) %}
                 {% set createTitle = __('Create field') %}
                 <a href="{{ path('mutransportmodule_field_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}"><i class="fa fa-plus"></i> {{ createTitle }}</a>
             {% endif %}

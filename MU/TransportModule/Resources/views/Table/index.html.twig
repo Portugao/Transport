@@ -1,7 +1,9 @@
 {# purpose of this template: tables index view #}
 {% extends routeArea == 'admin' ? 'MUTransportModule::adminBase.html.twig' : 'MUTransportModule::base.html.twig' %}
-{% block title __('tables') %}
+{% block title __('Tables') %}
 {% block admin_page_icon 'home' %}
 {% block content %}
-    <p>{{ __('Welcome to the table section of the Transport application.') }}</p>
+    <div class="mutransportmodule-table mutransportmodule-index">
+        <p>{{ __('Welcome to the table section of the Transport application.') }}</p>
+    </div>
 {% endblock %}
