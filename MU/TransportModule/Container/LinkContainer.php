@@ -74,7 +74,7 @@ class LinkContainer extends AbstractLinkContainer
 	
 		$routeArea = LinkContainerInterface::TYPE_ADMIN == $type ? 'admin' : '';
 		if (LinkContainerInterface::TYPE_ADMIN == $type) {
-			if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
+		    if ($this->permissionHelper->hasPermission(ACCESS_READ)) {
 				$links[] = [
 						'url' => $this->router->generate('mutransportmodule_database_index'),
 						'text' => $this->__('Frontend', 'mutransportmodule'),
@@ -83,7 +83,7 @@ class LinkContainer extends AbstractLinkContainer
 				];
 			}
 		} else {
-			if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+		    if ($this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
 				$links[] = [
 						'url' => $this->router->generate('mutransportmodule_database_adminindex'),
 						'text' => $this->__('Backend', 'mutransportmodule'),
@@ -94,7 +94,7 @@ class LinkContainer extends AbstractLinkContainer
 		}
 	
 		if (in_array('table', $allowedObjectTypes)
-				&& $this->permissionApi->hasPermission($this->getBundleName() . ':Table:', '::', $permLevel)) {
+		    && $this->permissionHelper->hasComponentPermission('table', $permLevel)) {
 					$links[] = [
 							'url' => $this->router->generate('mutransportmodule_table_' . $routeArea . 'view'),
 							'text' => $this->__('Tables', 'mutransportmodule'),
@@ -102,7 +102,7 @@ class LinkContainer extends AbstractLinkContainer
 					];
 				}
 		if (in_array('database', $allowedObjectTypes)
-			&& $this->permissionApi->hasPermission($this->getBundleName() . ':Database:', '::', $permLevel)) {
+		    && $this->permissionHelper->hasComponentPermission('database', $permLevel)) {
 				$links[] = [
 					'url' => $this->router->generate('mutransportmodule_database_' . $routeArea . 'view'),
 					'text' => $this->__('Databases', 'mutransportmodule'),
@@ -110,14 +110,14 @@ class LinkContainer extends AbstractLinkContainer
 				];
 		}
 		if (in_array('field', $allowedObjectTypes)
-			&& $this->permissionApi->hasPermission($this->getBundleName() . ':Field:', '::', $permLevel)) {
+		    && $this->permissionHelper->hasComponentPermission('field', $permLevel)) {
 				$links[] = [
 					'url' => $this->router->generate('mutransportmodule_field_' . $routeArea . 'view'),
 					'text' => $this->__('Fields', 'mutransportmodule'),
 					'title' => $this->__('Fields list', 'mutransportmodule')
 				];
 		}
-	        if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+		if ($routeArea == 'admin' && $this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
         	$links[] = [
         			'url' => $this->router->generate('mutransportmodule_transport_select2databases'),
         			'text' => $this->__('Database select', 'mutransportmodule'),
@@ -125,7 +125,7 @@ class LinkContainer extends AbstractLinkContainer
         			'icon' => 'wrench'
         	];
         }
-		if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+        if ($routeArea == 'admin' && $this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
 			$links[] = [
 					'url' => $this->router->generate('mutransportmodule_config_config'),
 					'text' => $this->__('Configuration', 'mutransportmodule'),
