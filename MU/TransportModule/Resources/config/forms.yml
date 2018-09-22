@@ -28,9 +28,9 @@ services:
             - "@mu_transport_module.listentries_helper"
         tags:
             - { name: form.type }
-    
-    mu_transport_module.form.handler.table:
-        class: MU\TransportModule\Form\Handler\Table\EditHandler
+            
+    mu_transport_module.form.handler.common:
+        abstract: true
         arguments:
             - "@kernel"
             - "@translator.default"
@@ -38,17 +38,20 @@ services:
             - "@request_stack"
             - "@router"
             - "@logger"
-            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
             - "@zikula_users_module.current_user"
             - "@mu_transport_module.entity_factory"
             - "@mu_transport_module.controller_helper"
             - "@mu_transport_module.model_helper"
+            - "@mu_transport_module.permission_helper"
             - "@mu_transport_module.workflow_helper"
             - "@mu_transport_module.hook_helper"
         calls:
             - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
-        tags:
-            - { name: form.type }
+    
+    mu_transport_module.form.handler.table:
+        class: MU\TransportModule\Form\Handler\Table\EditHandler
+        parent: mu_transport_module.form.handler.common
     
     mu_transport_module.form.type.table:
         class: MU\TransportModule\Form\Type\TableType
@@ -63,24 +66,7 @@ services:
     
     mu_transport_module.form.handler.database:
         class: MU\TransportModule\Form\Handler\Database\EditHandler
-        arguments:
-            - "@kernel"
-            - "@translator.default"
-            - "@form.factory"
-            - "@request_stack"
-            - "@router"
-            - "@logger"
-            - "@zikula_permissions_module.api.permission"
-            - "@zikula_users_module.current_user"
-            - "@mu_transport_module.entity_factory"
-            - "@mu_transport_module.controller_helper"
-            - "@mu_transport_module.model_helper"
-            - "@mu_transport_module.workflow_helper"
-            - "@mu_transport_module.hook_helper"
-        calls:
-            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
-        tags:
-            - { name: form.type }
+        parent: mu_transport_module.form.handler.common
     
     mu_transport_module.form.type.database:
         class: MU\TransportModule\Form\Type\DatabaseType

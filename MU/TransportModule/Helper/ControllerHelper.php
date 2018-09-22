@@ -20,6 +20,7 @@ use MU\TransportModule\Helper\Base\AbstractControllerHelper;
 class ControllerHelper extends AbstractControllerHelper
 {
     public function getParameter($digit) {
-    	return $this->request->query->getDigits($digit);
+    	$request = $this->requestStack->getCurrentRequest();
+    	return $request->query->getDigits($digit);
     }
 }
