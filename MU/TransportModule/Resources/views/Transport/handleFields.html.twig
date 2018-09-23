@@ -75,25 +75,28 @@
         </div>
         {{ form_widget(form.fieldCombination) }}
         {{ form_end(form) }}
-
-  <script>
-  var MU = jQuery.noConflict();  
-  MU(document).ready(function() {
   
-  MU('.btn > .closebutton').click(function(e) {
+      {% set formInitScript %}
+        <script>
+        /* <![CDATA[ */
+
+            
+            ( function($) {
+                $(document).ready(function() {
+  $('.btn > .closebutton').click(function(e) {
       e.preventDefault();
-      MU(this).prev().fadeOut();  
+      $(this).prev().fadeOut();  
       }); 
   
   // make sourcelist item draggable
-  MU('#sourcelist > li').draggable({
+  $('#sourcelist > li').draggable({
     revert: 'invalid'
   });
   // make source list droppable
-  MU('#sourcelist').droppable({
+  $('#sourcelist').droppable({
       accept: ".dropped",
       drop: function(event, ui) {
-          ui.helper.attr("style", "position: relative").removeClass('dropped').removeClass('btn-xs').addClass('btn-sm').appendTo(MU(this));
+          ui.helper.attr("style", "position: relative").removeClass('dropped').removeClass('btn-xs').addClass('btn-sm').appendTo($(this));
           // make moved elements draggable
       }
   })
@@ -101,25 +104,25 @@
   .sortable().disableSelection();
   
   // make list for fields droppable
-  MU('.listforfields').droppable({
+  $('.listforfields').droppable({
       accept: ".btn",
       drop: function(event, ui) {
-          ui.helper.addClass('dropped').addClass('btn-xs').removeClass('btn-sm').attr("style","").appendTo(MU(this))
+          ui.helper.addClass('dropped').addClass('btn-xs').removeClass('btn-sm').attr("style","").appendTo($(this))
           // verschobenes Element draggable machen
           .draggable({
               revert: 'invalid'
           });
           var fieldvalue = '';
           var fieldSourceValue = '';
-          MU(".listforfields").each(function() {
-              if(MU(this).has('li').length > 0) {
+          $(".listforfields").each(function() {
+              if($(this).has('li').length > 0) {
                   if(fieldvalue == '') {
-                      fieldvalue = MU(this).parent('.field').find('.target p').text();
+                      fieldvalue = $(this).parent('.field').find('.target p').text();
                       fieldvalue = fieldvalue + ';';
-                      var listitems = MU(this).find('li');
+                      var listitems = $(this).find('li');
                       var count = listitems.length;
                       listitems.each(function(i) {
-                              fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text();
+                              fieldSourceValue = fieldSourceValue + $(this).find('.listtitle').text();
                               if(i < count - 1) {
                                   fieldSourceValue = fieldSourceValue + ',';
                               }
@@ -128,12 +131,12 @@
                       fieldvalue = fieldvalue + fieldSourceValue;
                       fieldSourceValue = '';
                   } else {
-                      fieldvalue = fieldvalue + '|' + MU(this).parent('.field').find('.target p').text();
+                      fieldvalue = fieldvalue + '|' + $(this).parent('.field').find('.target p').text();
                       fieldvalue = fieldvalue + ';';
-                      var listitems = MU(this).find('li');
+                      var listitems = $(this).find('li');
                       var count = listitems.length;
                           listitems.each(function(i) {
-                              fieldSourceValue = fieldSourceValue + MU(this).find('.listtitle').text();
+                              fieldSourceValue = fieldSourceValue + $(this).find('.listtitle').text();
                               if(i < count - 1) {
                                   fieldSourceValue = fieldSourceValue + ',';
                               }
@@ -141,7 +144,7 @@
                       fieldvalue = fieldvalue + fieldSourceValue;
                       fieldSourceValue = '';
                   }
-                  MU('input[id=mutransportmodule_transport_fieldCombination]').val(fieldvalue);
+                  $('input[id=mutransportmodule_transport_fieldCombination]').val(fieldvalue);
               }
           })
       }
@@ -152,8 +155,12 @@
   });
   
   // make target list sortable
-  MU('#targetlist').sortable();
-   
-  });
-  </script>
+  $('#targetlist').sortable();
+
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', formInitScript) }}
 {% endblock %}
