@@ -14,10 +14,236 @@ namespace MU\TransportModule\Menu;
 
 use MU\TransportModule\Menu\Base\AbstractMenuBuilder;
 
+use Knp\Menu\ItemInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
+use MU\TransportModule\Entity\TableEntity;
+use MU\TransportModule\Entity\DatabaseEntity;
+use MU\TransportModule\Entity\FieldEntity;
+use MU\TransportModule\TransportEvents;
+use MU\TransportModule\Event\ConfigureItemActionsMenuEvent;
+
 /**
  * Menu builder implementation class.
  */
 class MenuBuilder extends AbstractMenuBuilder
 {
-    // feel free to add own extensions here
+    /**
+     * Builds the item actions menu.
+     *
+     * @param array $options List of additional options
+     *
+     * @return ItemInterface The assembled menu
+     */
+    public function createItemActionsMenu(array $options = [])
+    {
+        $menu = $this->factory->createItem('itemActions');
+        if (!isset($options['entity']) || !isset($options['area']) || !isset($options['context'])) {
+            return $menu;
+        }
+        
+        $entity = $options['entity'];
+        $routeArea = $options['area'];
+        $context = $options['context'];
+        $menu->setChildrenAttribute('class', 'list-inline item-actions');
+        
+        $this->eventDispatcher->dispatch(TransportEvents::MENU_ITEMACTIONS_PRE_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));
+        
+        $currentUserId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
+        if ($entity instanceof TableEntity) {
+            $routePrefix = 'mutransportmodule_table_';
+            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
+            
+            if ($routeArea == 'admin') {
+                $title = $this->__('Preview', 'mutransportmodule');
+                $previewRouteParameters = $entity->createUrlArgs();
+                $previewRouteParameters['preview'] = 1;
+                $menu->addChild($title, [
+                    'route' => $routePrefix . 'display',
+                    'routeParameters' => $previewRouteParameters
+                ]);
+                $menu[$title]->setLinkAttribute('target', '_blank');
+                $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
+            }
+            if ($context != 'display') {
+                $title = $this->__('Details', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'display',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', str_replace('"', '', $this->entityDisplayHelper->getFormattedTitle($entity)));
+                $menu[$title]->setAttribute('icon', 'fa fa-eye');
+            }
+            if ($this->permissionHelper->mayEdit($entity)) {
+                $title = $this->__('Edit', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Edit this table', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
+                $title = $this->__('Reuse', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => ['astemplate' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new table', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
+            }
+            if ($this->permissionHelper->mayDelete($entity)) {
+                $title = $this->__('Delete', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'delete',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Delete this table', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
+            }
+            if ($context == 'display') {
+                $title = $this->__('Tables list', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'view'
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-reply');
+            }
+            
+            // more actions for adding new related items
+            
+            if ($isOwner || $this->permissionHelper->hasComponentPermission('field', ACCESS_EDIT)) {
+                $title = $this->__('Create fields', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => 'mutransportmodule_field_' . $routeArea . 'edit',
+                    'routeParameters' => ['table' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-plus');
+            }
+            
+            if ($isOwner || $this->permissionHelper->hasComponentPermission('field', ACCESS_EDIT)) {
+                $title = $this->__('Get fields', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => 'mutransportmodule_field_' . $routeArea . 'getfields',
+                    'routeParameters' => ['table' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-plus');
+            }
+        }
+        if ($entity instanceof DatabaseEntity) {
+            $routePrefix = 'mutransportmodule_database_';
+            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
+            
+            if ($routeArea == 'admin') {
+                $title = $this->__('Preview', 'mutransportmodule');
+                $previewRouteParameters = $entity->createUrlArgs();
+                $previewRouteParameters['preview'] = 1;
+                $menu->addChild($title, [
+                    'route' => $routePrefix . 'display',
+                    'routeParameters' => $previewRouteParameters
+                ]);
+                $menu[$title]->setLinkAttribute('target', '_blank');
+                $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
+            }
+            if ($context != 'display') {
+                $title = $this->__('Details', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'display',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', str_replace('"', '', $this->entityDisplayHelper->getFormattedTitle($entity)));
+                $menu[$title]->setAttribute('icon', 'fa fa-eye');
+            }
+            if ($this->permissionHelper->mayEdit($entity)) {
+                $title = $this->__('Edit', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Edit this database', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
+                $title = $this->__('Reuse', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => ['astemplate' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new database', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
+            }
+            if ($this->permissionHelper->mayDelete($entity)) {
+                $title = $this->__('Delete', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'delete',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Delete this database', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
+            }
+            if ($context == 'display') {
+                $title = $this->__('Databases list', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'view'
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-reply');
+            }
+            
+            // more actions for adding new related items
+            
+            if ($isOwner || $this->permissionHelper->hasComponentPermission('table', ACCESS_EDIT)) {
+                $title = $this->__('Create tables', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => 'mutransportmodule_table_' . $routeArea . 'edit',
+                    'routeParameters' => ['database' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-plus');
+            }
+            
+            if ($isOwner || $this->permissionHelper->hasComponentPermission('table', ACCESS_EDIT)) {
+                $title = $this->__('Get tables', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => 'mutransportmodule_table_' . $routeArea . 'gettables',
+                    'routeParameters' => ['database' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-plus');
+            }
+        }
+        if ($entity instanceof FieldEntity) {
+            $routePrefix = 'mutransportmodule_field_';
+            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
+            
+            if ($this->permissionHelper->mayEdit($entity)) {
+                $title = $this->__('Edit', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Edit this field', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
+                $title = $this->__('Reuse', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'edit',
+                    'routeParameters' => ['astemplate' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new field', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
+            }
+            if ($this->permissionHelper->mayDelete($entity)) {
+                $title = $this->__('Delete', 'mutransportmodule');
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'delete',
+                    'routeParameters' => $entity->createUrlArgs()
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Delete this field', 'mutransportmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
+            }
+        }
+        
+        $this->eventDispatcher->dispatch(TransportEvents::MENU_ITEMACTIONS_POST_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));
+        
+        return $menu;
+    }
 }
