@@ -33,7 +33,6 @@ abstract class AbstractTransportController extends AbstractController
 	 *
 	 * @param Request $request Current request instance
 	 *
-	 * @return Response Output
 	 *
 	 * @throws AccessDeniedException Thrown if the user doesn't have required permissions
 	 */
@@ -74,7 +73,6 @@ abstract class AbstractTransportController extends AbstractController
      *
      * @param Request $request Current request instance
      *
-     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -115,7 +113,6 @@ abstract class AbstractTransportController extends AbstractController
      *
      * @param Request $request Current request instance
      *
-     * @return redirect
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -131,6 +128,8 @@ abstract class AbstractTransportController extends AbstractController
     	$tableRepository = $entityFactory->getRepository('table');
     
     	$form = $this->createForm(FieldselectType::class);
+    	
+    	$sourceEntries = array();
     
     	if ($form->handleRequest($request)->isValid()) {
     		if ($form->get('select')->isClicked()) {
@@ -188,9 +187,11 @@ abstract class AbstractTransportController extends AbstractController
     			
     			$conn2 = new \PDO('mysql:dbname=' . $targetDatabase['dbName'] . ';host=' . $targetDatabase['host'], $targetDatabase['dbUser'], $targetDatabase['dbPassword']);
     			
+    			
     			$countCopy = 0;
     			// foreach for copy of sourceEntries to the target table
-    			foreach ($sourceEntries as $entry) { 			
+    			foreach ($sourceEntries as $entry) { 
+    			    $valueValue = array();
     			    $statement2 = $conn2->prepare("INSERT INTO " . $targetTable['name'] . " (" . $intoValue . ") VALUES ($placeholder)");
     			    $count2 = 0;
     			    // foreach for value array
