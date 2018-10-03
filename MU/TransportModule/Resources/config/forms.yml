@@ -8,16 +8,14 @@ services:
             - "@request_stack"
             - "@mu_transport_module.entity_display_helper"
             - "@mu_transport_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_transport_module.form.type.databasequicknav:
         class: MU\TransportModule\Form\Type\QuickNavigation\DatabaseQuickNavType
         arguments:
             - "@translator.default"
             - "@mu_transport_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_transport_module.form.type.fieldquicknav:
         class: MU\TransportModule\Form\Type\QuickNavigation\FieldQuickNavType
@@ -26,8 +24,7 @@ services:
             - "@request_stack"
             - "@mu_transport_module.entity_display_helper"
             - "@mu_transport_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
             
     mu_transport_module.form.handler.common:
         abstract: true
@@ -61,8 +58,7 @@ services:
             - "@mu_transport_module.collection_filter_helper"
             - "@mu_transport_module.entity_display_helper"
             - "@mu_transport_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_transport_module.form.handler.database:
         class: MU\TransportModule\Form\Handler\Database\EditHandler
@@ -76,24 +72,21 @@ services:
             - "@mu_transport_module.collection_filter_helper"
             - "@mu_transport_module.entity_display_helper"
             - "@mu_transport_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_transport_module.form.type.config:
         class: MU\TransportModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
             - "@=service('zikula_extensions_module.api.variable').getAll('MUTransportModule')"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
             
     mu_transport_module.form.type.databaseselect:
         class: MU\TransportModule\Form\Type\DatabaseselectType
         arguments:
             - "@translator.default"
             - "@mu_transport_module.entity_factory"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
             
     mu_transport_module.form.type.tableselect:
         class: MU\TransportModule\Form\Type\TableselectType
@@ -101,8 +94,7 @@ services:
             - "@translator.default"
             - "@mu_transport_module.entity_factory"
             - "@mu_transport_module.controller_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
             
     mu_transport_module.form.type.fieldseselect:
         class: MU\TransportModule\Form\Type\FieldselectType
@@ -110,5 +102,4 @@ services:
             - "@translator.default"
             - "@mu_transport_module.entity_factory"
             - "@request_stack"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
